@@ -1,7 +1,7 @@
 
 public class ShowBoard {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) { //Unit Testing
 		int n = 8, m = 9; // n = x = columns , m = y = rows
 		char[][] board = new char[n][m];
 		
@@ -12,14 +12,19 @@ public class ShowBoard {
 				board[c][r] = pItem.getRndItem();
 		
 		
+		showBoard(board);
 		
 		
 	}
 	
 	
 	
-	public void showBoard(char[][] board) {
-		int n = board.length, m = board[0].length;
+	public static void showBoard(char[][] board) {
+		int n = board.length, m = board[0].length; // n = x = columns , m = y = rows
+		;;;System.out.println(n + " " + m); //**
+		
+		
+		
 		
 	}
 	

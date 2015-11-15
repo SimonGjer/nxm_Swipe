@@ -7,7 +7,7 @@ public class ProbItem {
 
 		ProbItem pi = new ProbItem();
 
-		for(int i=0; i < 20; i++)
+		for(int i = 0; i < 20; i++)
 			System.out.println("Random Item: " + pi.getRndItem());
 
 		System.out.println();
