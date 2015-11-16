@@ -31,8 +31,6 @@ public class ProbItem {
 		}
 	}
 
-
-
 	int n;
 	int[] fqs;
 	char[] chs;
@@ -66,12 +64,12 @@ public class ProbItem {
 
 		chRet = new char[sumFre];
 		int iCh = 0;
-		for (int i=0; i < fqs.length; i++)
-			for (int j=0; j < fqs[i]; j++)
+		for (int i = 0; i < fqs.length; i++)
+			for (int j = 0; j < fqs[i]; j++)
 				chRet[iCh++] = chs[i];
 	}
 
-	/** Returns a random item as if the item was drawn from a sack of items (the drawn item is put into the sack again).
+	/** Returns a random item, as if the item was drawn from a sack of items (the drawn item is put into the sack again).
 	 * @return a random item
 	 */
 	public char getRndItem() {

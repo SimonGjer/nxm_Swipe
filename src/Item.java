@@ -21,7 +21,7 @@ public class Item {
 
 	public static final File file = new File("." + "\\imgs\\Acorn.png");
 	
-	public static int nImage = 10; 
+	public static int nImage = 8; 
 	public static BufferedImage[] imgs = new BufferedImage[nImage];
 
 	public static Color getColor(char ch) {

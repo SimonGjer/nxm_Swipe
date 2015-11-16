@@ -46,7 +46,7 @@ public class MenuPanel {
         menu.add(menuItem);
 
         
-        ImageIcon icon = createImageIcon(".\\imgs\\middle.gif");
+        ImageIcon icon = createImageIcon("imgs\\middle.gif");
 //        File file = new File("F:\\Dropbox\\Workspace DropBox 3\\nxm-Swipe\\imgs\\middle.gif");
 //        System.out.println("file.exists() = " + file.exists());
 //        

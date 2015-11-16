@@ -24,37 +24,39 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		btn1.addActionListener(this);
 		btn1.setToolTipText("Creates a new random board");
 
-		btn2 = new JButton("Row +1", newBtnIcon);
+		btn2 = new JButton("Col +1", newBtnIcon);
 		btn2.setVerticalTextPosition(AbstractButton.CENTER);
 		btn2.setHorizontalTextPosition(AbstractButton.LEADING);
 		//		b2.setMnemonic(KeyEvent.VK_N);
-		btn2.setActionCommand("rowPlus");
+		btn2.setActionCommand("colPlus");
 		btn2.addActionListener(this);
-		btn2.setToolTipText("Adds a row");
+		btn2.setToolTipText("Adds a column");
 
-		btn3 = new JButton("Row -1", newBtnIcon);
+		btn3 = new JButton("Col -1", newBtnIcon);
 		btn3.setVerticalTextPosition(AbstractButton.CENTER);
 		btn3.setHorizontalTextPosition(AbstractButton.LEADING);
 		//		b2.setMnemonic(KeyEvent.VK_N);
-		btn3.setActionCommand("rowMinus");
+		btn3.setActionCommand("colMinus");
 		btn3.addActionListener(this);
-		btn3.setToolTipText("Removes a row");
-
-		btn4 = new JButton("Col +1", newBtnIcon);
+		btn3.setToolTipText("Removes a column");
+		
+		btn4 = new JButton("Row +1", newBtnIcon);
 		btn4.setVerticalTextPosition(AbstractButton.CENTER);
 		btn4.setHorizontalTextPosition(AbstractButton.LEADING);
 		//		b2.setMnemonic(KeyEvent.VK_N);
-		btn4.setActionCommand("colPlus");
+		btn4.setActionCommand("rowPlus");
 		btn4.addActionListener(this);
-		btn4.setToolTipText("Adds a column");
+		btn4.setToolTipText("Adds a row");
 
-		btn5 = new JButton("Col -1", newBtnIcon);
+		btn5 = new JButton("Row -1", newBtnIcon);
 		btn5.setVerticalTextPosition(AbstractButton.CENTER);
 		btn5.setHorizontalTextPosition(AbstractButton.LEADING);
 		//		b2.setMnemonic(KeyEvent.VK_N);
-		btn5.setActionCommand("colMinus");
+		btn5.setActionCommand("rowMinus");
 		btn5.addActionListener(this);
-		btn5.setToolTipText("Removes a column");
+		btn5.setToolTipText("Removes a row");
+
+		
 
 
 

@@ -11,8 +11,6 @@ public class ShowBoard extends JPanel {
 
 	public static char[][] board;
 
-	//	static ShowBoard sb = new ShowBoard();
-
 	public static int dI = 90; // width & height of a single Item
 
 	private static JFrame thisFrame;
@@ -36,14 +34,7 @@ public class ShowBoard extends JPanel {
 		frame.add(buttonPanel, BorderLayout.EAST);
 		
 		frame.add(new ShowBoard(), BorderLayout.CENTER);
-		newSize(); //frame.setSize(n * dI + 16 + wPanelEast, m * dI + 38); //16 & 38 border of windoww
-		
-		//		frame.setContentPane(bp);
-
-		//		JPanel panel = new JPanel();
-		//		panel.setLayout(new BorderLayout());
-		//		panel.add(bp, BorderLayout.EAST);
-		
+		newSize();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -55,20 +46,17 @@ public class ShowBoard extends JPanel {
 		System.out.println("hMenu: " + hMenu);
 		thisFrame.setSize(Board.n * dI + 16 + wPanelEast, Board.m * dI + 38 + hMenu);
 //		thisFrame.pack();
-		
 		thisFrame.setTitle(Board.n + " x " + Board.m + " Swipe");
 	}
 
 	private static Graphics g;
-	//	private static Object thisPaint;
 
 	@Override
 	public void paint(Graphics g) {
 
-		System.out.println("paint(Graphics g)");
+		System.out.println("paint(Graphics g)"); //**
 
 		board = Board.getBoard();
-		//		board = Board.newRndBoard();
 
 		System.out.println("board[0][0] = " + board[0][0]);
 
@@ -80,9 +68,6 @@ public class ShowBoard extends JPanel {
 		//		g2d.setFont(font);
 		//		g2d.setBackground(Color.CYAN);
 
-
-		//		Color cGray = Color.GRAY;
-		//		Color cLGray = Color.LIGHT_GRAY;
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(0, 0, g2d.getClip().getBounds().width, g2d.getClip().getBounds().height);
 
@@ -91,7 +76,6 @@ public class ShowBoard extends JPanel {
 				char ch = board[c][r];
 				g2d.setColor((((c + r) & 1) == 0) ? Color.GRAY : Color.LIGHT_GRAY);
 				g2d.fillRect(c * dI, r * dI, dI - 1, dI - 1);
-				//				g2d.drawString("" + ch, 8 + c * 50, 48 - 4 + r * 50);
 				Image img = Item.getImage(ch);
 				g2d.drawImage(img, c * dI, r * dI, (c + 1) * dI + 1, (r + 1) * dI + 1, 0, 0, 90, 90, null);
 			}
