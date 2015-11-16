@@ -1,79 +1,75 @@
-
 public class Board {
 
-	public static char[][] board;
-	public static ProbItem pItem = new ProbItem();
-	public static int n = 8, m = 9; // n = x = columns , m = y = rows
+    public static char[][] board;
+    public static ProbItem pItem = new ProbItem();
+    public static int n = 8, m = 9; // n = x = columns , m = y = rows
 
+    public static char[][] getBoard() {
+        return board;
+    }
 
-	public static char[][] getBoard() {
-		return board;
-	}
+    public static char[][] newRndBoard() {
+        System.out.println("newRndBoard() n x m " + n + " x " + m); //**
 
-	public static char[][] newRndBoard() {
-		System.out.println("newRndBoard() n x m " + n + " x " + m); //**
+        char[][] b = new char[n][m];
 
-		char[][] b = new char[n][m];
+        for (int r = 0; r < b[0].length; r++)
+            for (int c = 0; c < b.length; c++)
+                b[c][r] = pItem.getRndItem();
 
-		for(int r = 0; r < b[0].length; r++)
-			for(int c = 0; c < b.length; c++)
-				b[c][r] = pItem.getRndItem();
+        board = b;
+        System.out.println("newRndBoard() - board[0][0] = " + board[0][0]);
+        return board;
+    }
 
-		board = b;
-		System.out.println("newRndBoard() - board[0][0] = " + board[0][0]);
-		return board;
-	}
+    public static char[][] newRndBoard(int n, int m) {
+        char[][] b = new char[n][m];
 
-	public static char[][] newRndBoard(int n, int m) {
-		char[][] b = new char[n][m];
+        for (int r = 0; r < b[0].length; r++)
+            for (int c = 0; c < b.length; c++)
+                b[c][r] = pItem.getRndItem();
 
-		for(int r = 0; r < b[0].length; r++)
-			for(int c = 0; c < b.length; c++)
-				b[c][r] = pItem.getRndItem();
+        board = b;
+        return board;
+    }
 
-		board = b;
-		return board;
-	}
+    public static void rowPlus() { // Should we call it 'addRow' ?
+        m++;
+        buildBoard();
+        for (int c = 0; c < n - 1; c++)
+            board[c][m - 1] = pItem.getRndItem();
+    }
 
+    public static void colPlus() {
+        n++;
+        buildBoard();
+        for (int r = 0; r < 0; r++)
+            board[n - 1][r] = pItem.getRndItem();
+    }
 
-	public static void rowPlus() {
-		m++;
-		char[][] b = new char[n][m];
-		for(int r = 0; r < b[0].length; r++)
-			for(int c = 0; c < b.length; c++)
-				b[c][r] = (r <  b[c].length - 1) ? board[c][r] : pItem.getRndItem(); 
+    public static void rowMinus() {
+        if (m > 1) {
+            m--;
+            buildBoard();
+        }
+    }
 
-				board = b;
-	}
+    public static void colMinus() {
+        if (n > 1) {
+            n--;
+            buildBoard();
+        }
+    }
 
-	public static void rowMinus() {
-		if (m > 1 ) {m--;
-		char[][] b = new char[n][m];
-		for(int r = 0; r < b[0].length; r++)
-			for(int c = 0; c < b.length; c++)
-				b[c][r] = board[c][r]; 
+    public static void buildBoard() {
+        char[][] b = new char[n][m];
+        int rN = (b[0].length > board[0].length) ? board[0].length : b[0].length;
+        int cN = (b.length > board.length) ? board.length : b.length;
 
-		board = b;
-		}
-	}
+        for (int r = 0; r < rN; r++)
+            for (int c = 0; c < cN; c++)
+                b[c][r] = board[c][r];
 
-	public static void colPlus() {
-		n++;
-		char[][] b = new char[n][m];
-		for(int r = 0; r < b[0].length; r++)
-			for(int c = 0; c < b.length; c++)
-				b[c][r] = (c < board.length) ? board[c][r] : pItem.getRndItem(); 
-
-				board = b;
-	}
-	public static void colMinus() {
-		if (n > 1 ) {n--;
-		char[][] b = new char[n][m];
-		for(int r = 0; r < b[0].length; r++)
-			for(int c = 0; c < b.length; c++)
-				b[c][r] = board[c][r]; 
-
-		board = b;
-		}
-	}
+        board = b;
+    }
 }
