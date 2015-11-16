@@ -10,19 +10,17 @@ import javax.imageio.ImageIO;
 public class Item {
 
 	public static void main(String[] args) {
-		System.out.println("File: " + files.length);
-		for(File f : files) System.out.println("File: " + f.getName());
-		System.out.println(file.exists());
+//		System.out.println("File: " + files.length);
+//		for(File f : files) System.out.println("File: " + f.getName());
+//		System.out.println(file.exists());
 	}
 
 	public static final Color cBrown = new Color(Color.YELLOW.getRed() / 3, Color.YELLOW.getGreen() / 3, Color.YELLOW.getBlue() / 3);
 	public static final Color cViolet = new Color((Color.RED.getRed() + Color.BLUE.getRed()) / 2, 0, (Color.RED.getBlue() + Color.BLUE.getRed()) / 2);
-	public static final File[] files = new File("." + "\\imgs").listFiles(); //**
-
+//	public static final File[] files = new File("." + "\\imgs").listFiles(); //**
 
 	public static final File file = new File("." + "\\imgs\\Acorn.png");
-	//	BufferedImage imgAcorg = ImageIO.read(file);
-
+	
 	public static int nImage = 10; 
 	public static BufferedImage[] imgs = new BufferedImage[nImage];
 
@@ -53,8 +51,6 @@ public class Item {
 
 		char ch = '\\';
 
-		//		BufferedImage img;
-
 		if (!new File("." + ch + "imgs" + ch + "Acorn.png").exists()) {
 			ch = '/';
 			if (!new File("." + ch + "imgs" + ch + "Acorn.png").exists()) {
@@ -70,8 +66,8 @@ public class Item {
 			imgs[5] = ImageIO.read(new File("." + ch + "imgs" + ch + "Flower_Blue.png"));
 			imgs[6] = ImageIO.read(new File("." + ch + "imgs" + ch + "Strawberry.png"));
 			imgs[7] = ImageIO.read(new File("." + ch + "imgs" + ch + "Mushroom.png"));
-//			imgs[4] = ImageIO.read(new File("." + ch + "imgs" + ch + "Clover.png"));
-//			imgs[5] = ImageIO.read(new File("." + ch + "imgs" + ch + "Clover_Golden.png"));
+//			imgs[8] = ImageIO.read(new File("." + ch + "imgs" + ch + "Clover.png"));
+//			imgs[9] = ImageIO.read(new File("." + ch + "imgs" + ch + "Clover_Golden.png"));
 
 		}
 		catch (IOException e) {
