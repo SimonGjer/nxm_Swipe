@@ -36,14 +36,14 @@ public class Board {
     public static void rowPlus() { // Should we call it 'addRow' ?
         m++;
         buildBoard();
-        for (int c = 0; c < n - 1; c++)
+        for (int c = 0; c < n; c++)
             board[c][m - 1] = pItem.getRndItem();
     }
 
     public static void colPlus() {
         n++;
         buildBoard();
-        for (int r = 0; r < 0; r++)
+        for (int r = 0; r < m; r++)
             board[n - 1][r] = pItem.getRndItem();
     }
 
