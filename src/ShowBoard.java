@@ -12,20 +12,19 @@ public class ShowBoard extends JPanel {
 	public static char[][] board;
 
 	public static int dI = 90; // width & height of a single Item
-	public static int wMaxWinSize = 1200;
-	public static int hMaxWinSize = 900;
+	public static int wMaxWinSize = 1300;
+	public static int hMaxWinSize = 1000;
 
 	public static int wMinWinSize = 600;
 	public static int hMinWinSize = 600;
 
 	private static JFrame thisFrame;
 
-	//	public static final int wPanel = 106 + 1;
 	//Unit Testing
 	public static void main(String[] args) {
 		System.out.println("Main"); //**
 
-		board = Board.newRndBoard();
+		Board.newRndBoard();
 
 		JFrame frame = new JFrame(Board.n + " x " + Board.m + " Swipe");
 		thisFrame = frame;
@@ -41,11 +40,10 @@ public class ShowBoard extends JPanel {
 		frame.add(new ShowBoard(), BorderLayout.CENTER);
 		newSize();
 		frame.setVisible(true);
+//		;;DrawSwipe.drawSwipe(new int[2]);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	//	static int wWin;
-	//	static int hWin;
 	static final int hMenu = 23; //thisFrame.getJMenuBar().getHeight();
 	static final int hWinBorder = 38;
 	static final int wWinBorder = 16;
@@ -57,13 +55,11 @@ public class ShowBoard extends JPanel {
 	static double pScale = 1.0;
 
 	public static void newSize() {
-//		board = Board.getBoard();
-
 		updataScale(pScale);
 
-		thisFrame.setSize(wWin, hWin);
 		thisFrame.setTitle(Board.n + " x " + Board.m + " Swipe");
-		if (wWinOld == wWin || hWinOld == hWin) rePaint();
+		if (wWinOld == wWin && hWinOld == hWin) rePaint(); //The setSize will only repaint if the size of the window change
+		else thisFrame.setSize(wWin, hWin);
 		wWinOld = wWin; hWinOld = hWin;
 	}
 
@@ -77,18 +73,17 @@ public class ShowBoard extends JPanel {
 			pScale = Math.min((double) (wMaxWinSize - wWinBorder - wPanel) / wWin,
 					(double) (hMaxWinSize - hWinBorder - hMenu) / hWin);
 		dI = (int) (90 * pScale);
-		
+
 		wWin = Board.n * dI + wWinBorder + wPanel + 1;
 		hWin = Board.m * dI + hWinBorder + hMenu + 1;
-		
+
 		if (wWin < wMinWinSize) wWin = wMinWinSize;
 		if (hWin < hMinWinSize) hWin = hMinWinSize;
-		
-		
 	}
 
 
 	private static Graphics g;
+	private static Graphics2D g2d;
 
 	@Override
 	public void paint(Graphics g) {
@@ -99,8 +94,10 @@ public class ShowBoard extends JPanel {
 
 		System.out.println("board[0][0] = " + board[0][0]);
 
-		this.g = g;
+
 		Graphics2D g2d = (Graphics2D) g;
+		this.g = g;
+		this.g2d = g2d;
 
 		//		int fontSize = 48;
 		//		Font font =  new Font("Verdana", Font.BOLD, fontSize);
@@ -118,13 +115,22 @@ public class ShowBoard extends JPanel {
 				Image img = Item.getImage(ch);
 				g2d.drawImage(img, c * dI, r * dI, (c + 1) * dI + 1, (r + 1) * dI + 1, 0, 0, 90, 90, null);
 			}
+		Swipe.drawSwipe();
 	}
 
 
 	public static void rePaint() {
+		//		System.out.println("rePaint()");
 		thisFrame.setVisible(false); // !!!
 		thisFrame.setVisible(true);
 	}
+
+//	public static void reShowBoard(DrawSwipe ds) {
+//		;;;thisFrame.add(ds, BorderLayout.EAST);
+//	}
+
+	public static Graphics getG() {return g;}
+	public static Graphics2D getG2D() {return g2d;}
 }
 
 

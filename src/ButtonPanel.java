@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 public class ButtonPanel extends JPanel implements ActionListener {
 
-	protected JButton btn1, btn2, btn3, btn4, btn5, btn6;
+	protected JButton btn1, btn2, btn3, btn4, btn5, btn6, btn7;
 
 	public ButtonPanel() {
 		ImageIcon newBtnIcon = createImageIcon("imgs\\right.gif");
@@ -64,7 +64,13 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		btn6.addActionListener(this);
 		btn6.setToolTipText("Find the number of swipe areas (components)");
 		
-
+		btn7 = new JButton("tmp Swipe", newBtnIcon);
+		btn7.setVerticalTextPosition(AbstractButton.CENTER);
+		btn7.setHorizontalTextPosition(AbstractButton.LEADING);
+		//		b2.setMnemonic(KeyEvent.VK_N);
+		btn7.setActionCommand("tmpSwipe");
+		btn7.addActionListener(this);
+		btn7.setToolTipText("Test Swipe");
 
 
 
@@ -78,6 +84,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		panelEast.add(btn4);
 		panelEast.add(btn5);
 		panelEast.add(btn6);
+		panelEast.add(btn7);
 
 		
 		add(panelEast);
@@ -128,6 +135,11 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		case "getComp":
 			//Get the number of component
 			break;
+		case "tmpSwipe":
+			Swipe.drawSwipe();
+			break;
+			
+			
 		}
 
 	}	

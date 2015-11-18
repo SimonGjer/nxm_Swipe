@@ -50,7 +50,6 @@ public class Item {
 	private static void readImages()  {
 
 		char ch = '\\';
-
 		if (!new File("." + ch + "imgs" + ch + "Acorn.png").exists()) {
 			ch = '/';
 			if (!new File("." + ch + "imgs" + ch + "Acorn.png").exists()) {
