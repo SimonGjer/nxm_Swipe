@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 public class ButtonPanel extends JPanel implements ActionListener {
 
-	protected JButton btn1, btn2, btn3, btn4, btn5;
+	protected JButton btn1, btn2, btn3, btn4, btn5, btn6;
 
 	public ButtonPanel() {
 		ImageIcon newBtnIcon = createImageIcon("imgs\\right.gif");
@@ -56,6 +56,13 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		btn5.addActionListener(this);
 		btn5.setToolTipText("Removes a row");
 
+		btn6 = new JButton("Find nComp", newBtnIcon);
+		btn6.setVerticalTextPosition(AbstractButton.CENTER);
+		btn6.setHorizontalTextPosition(AbstractButton.LEADING);
+		//		b2.setMnemonic(KeyEvent.VK_N);
+		btn6.setActionCommand("getComp");
+		btn6.addActionListener(this);
+		btn6.setToolTipText("Find the number of swipe areas (components)");
 		
 
 
@@ -70,7 +77,9 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		panelEast.add(btn3);
 		panelEast.add(btn4);
 		panelEast.add(btn5);
+		panelEast.add(btn6);
 
+		
 		add(panelEast);
 
 
@@ -94,32 +103,30 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		case "new":
 			System.out.println("new...");
 			Board.newRndBoard();
-
 			ShowBoard.rePaint();
 			break;
 		case "rowPlus":
 			System.out.println("Row +1...");
 			Board.rowPlus();
 			ShowBoard.newSize();
-//			ShowBoard.setVisibleTrue(true);
 			break;
 		case "rowMinus":
 			System.out.println("Row -1...");
 			Board.rowMinus();
 			ShowBoard.newSize();
-//			ShowBoard.setVisibleTrue(true);
 			break;
 		case "colPlus":
 			System.out.println("Col +1...");
 			Board.colPlus();
-//			ShowBoard.newBoard();
 			ShowBoard.newSize();
 			break;
 		case "colMinus":
 			System.out.println("Col -1...");
 			Board.colMinus();
-//			ShowBoard.newBoard();
 			ShowBoard.newSize();
+			break;
+		case "getComp":
+			//Get the number of component
 			break;
 		}
 

@@ -12,10 +12,15 @@ public class ShowBoard extends JPanel {
 	public static char[][] board;
 
 	public static int dI = 90; // width & height of a single Item
+	public static int wMaxWinSize = 1200;
+	public static int hMaxWinSize = 900;
+
+	public static int wMinWinSize = 600;
+	public static int hMinWinSize = 600;
 
 	private static JFrame thisFrame;
 
-	public static final int wPanelEast = 150;
+	//	public static final int wPanel = 106 + 1;
 	//Unit Testing
 	public static void main(String[] args) {
 		System.out.println("Main"); //**
@@ -24,30 +29,64 @@ public class ShowBoard extends JPanel {
 
 		JFrame frame = new JFrame(Board.n + " x " + Board.m + " Swipe");
 		thisFrame = frame;
-		
+
 		MenuPanel menuPanel = new MenuPanel();
 		frame.setJMenuBar(menuPanel.createMenuBar());
-        frame.setContentPane(menuPanel.createContentPane());
-		
-        ButtonPanel buttonPanel = new ButtonPanel();
+		frame.setContentPane(menuPanel.createContentPane());
+
+		ButtonPanel buttonPanel = new ButtonPanel();
 		buttonPanel.setOpaque(true);
-		frame.add(buttonPanel, BorderLayout.EAST);
-		
+		frame.add(buttonPanel, BorderLayout.WEST);
+
 		frame.add(new ShowBoard(), BorderLayout.CENTER);
 		newSize();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	//	static int wWin;
+	//	static int hWin;
+	static final int hMenu = 23; //thisFrame.getJMenuBar().getHeight();
+	static final int hWinBorder = 38;
+	static final int wWinBorder = 16;
+	static final int wPanel = 110;
+
+	static int wWin, wWinOld;
+	static int hWin, hWinOld;
+
+	static double pScale = 1.0;
+
 	public static void newSize() {
-		board = Board.getBoard();
-		
-		int hMenu = 23; //thisFrame.getJMenuBar().getHeight();
-		System.out.println("hMenu: " + hMenu);
-		thisFrame.setSize(Board.n * dI + 16 + wPanelEast, Board.m * dI + 38 + hMenu);
-//		thisFrame.pack();
+//		board = Board.getBoard();
+
+		updataScale(pScale);
+
+		thisFrame.setSize(wWin, hWin);
 		thisFrame.setTitle(Board.n + " x " + Board.m + " Swipe");
+		if (wWinOld == wWin || hWinOld == hWin) rePaint();
+		wWinOld = wWin; hWinOld = hWin;
 	}
+
+	public static void updataScale(double pScale) {
+		pScale = 1.0;
+		dI = 90;
+		wWin = Board.n * dI + wWinBorder + wPanel + 1;
+		hWin = Board.m * dI + hWinBorder + hMenu + 1;
+
+		if (wWin > wMaxWinSize || hWin > hMaxWinSize)
+			pScale = Math.min((double) (wMaxWinSize - wWinBorder - wPanel) / wWin,
+					(double) (hMaxWinSize - hWinBorder - hMenu) / hWin);
+		dI = (int) (90 * pScale);
+		
+		wWin = Board.n * dI + wWinBorder + wPanel + 1;
+		hWin = Board.m * dI + hWinBorder + hMenu + 1;
+		
+		if (wWin < wMinWinSize) wWin = wMinWinSize;
+		if (hWin < hMinWinSize) hWin = hMinWinSize;
+		
+		
+	}
+
 
 	private static Graphics g;
 
@@ -75,7 +114,7 @@ public class ShowBoard extends JPanel {
 			for(int c = 0; c < board.length; c++) {
 				char ch = board[c][r];
 				g2d.setColor((((c + r) & 1) == 0) ? Color.GRAY : Color.LIGHT_GRAY);
-				g2d.fillRect(c * dI, r * dI, dI - 1, dI - 1);
+				g2d.fillRect(c * dI + 1, r * dI + 1, dI - 1, dI - 1);
 				Image img = Item.getImage(ch);
 				g2d.drawImage(img, c * dI, r * dI, (c + 1) * dI + 1, (r + 1) * dI + 1, 0, 0, 90, 90, null);
 			}

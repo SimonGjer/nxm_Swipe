@@ -104,6 +104,19 @@ public class MenuPanel {
         menu.getAccessibleContext().setAccessibleDescription("This menu does nothing");
         menuBar.add(menu);
 
+        //Item
+        menu = new JMenu("Item");
+        menu.setMnemonic(KeyEvent.VK_H);
+        menu.getAccessibleContext().setAccessibleDescription("This menu change the types and frequencies of items");
+        menuBar.add(menu);
+        
+        menuItem = new JMenuItem("Select types", KeyEvent.VK_A); //menuItem.setMnemonic(KeyEvent.VK_T); //used constructor instead
+//        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+        menuItem.getAccessibleContext().setAccessibleDescription("This doesn't do anything yet");
+        menu.add(menuItem);
+        
+        
+        
         //Help
         menu = new JMenu("Help");
         menu.setMnemonic(KeyEvent.VK_H);
