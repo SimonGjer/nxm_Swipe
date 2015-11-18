@@ -136,9 +136,8 @@ public class ButtonPanel extends JPanel implements ActionListener {
 			//Get the number of component
 			break;
 		case "tmpSwipe":
-			Swipe.drawSwipe();
+			Swipe.rndSwipe();
 			break;
-			
 			
 		}
 

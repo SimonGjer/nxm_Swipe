@@ -55,7 +55,7 @@ public class ShowBoard extends JPanel {
 	static double pScale = 1.0;
 
 	public static void newSize() {
-		updataScale(pScale);
+		updataScale();
 
 		thisFrame.setTitle(Board.n + " x " + Board.m + " Swipe");
 		if (wWinOld == wWin && hWinOld == hWin) rePaint(); //The setSize will only repaint if the size of the window change
@@ -63,7 +63,7 @@ public class ShowBoard extends JPanel {
 		wWinOld = wWin; hWinOld = hWin;
 	}
 
-	public static void updataScale(double pScale) {
+	public static void updataScale() {
 		pScale = 1.0;
 		dI = 90;
 		wWin = Board.n * dI + wWinBorder + wPanel + 1;
