@@ -46,7 +46,7 @@ public class ShowBoard extends JPanel {
 	static final int hMenu = 23; //thisFrame.getJMenuBar().getHeight();
 	static final int hWinBorder = 38;
 	static final int wWinBorder = 16;
-	static final int wPanel = 110;
+	static final int wPanel = 130;
 
 	static int wWin, wWinOld;
 	static int hWin, hWinOld;

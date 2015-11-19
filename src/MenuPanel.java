@@ -45,12 +45,7 @@ public class MenuPanel {
         menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
         menu.add(menuItem);
 
-        
-        ImageIcon icon = createImageIcon("imgs\\middle.gif");
-//        File file = new File("F:\\Dropbox\\Workspace DropBox 3\\nxm-Swipe\\imgs\\middle.gif");
-//        System.out.println("file.exists() = " + file.exists());
-//        
-//        ImageIcon icon = createImageIcon("F:\\Dropbox\\Workspace DropBox 3\\nxm-Swipe\\imgs\\middle.gif");
+        ImageIcon icon = createImageIcon("imgs/middle.gif");
         
         menuItem = new JMenuItem("Reset to 8x9", icon);
         menuItem.setMnemonic(KeyEvent.VK_A);

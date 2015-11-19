@@ -1,16 +1,20 @@
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class ButtonPanel extends JPanel implements ActionListener {
+public class ButtonPanel extends JPanel implements ActionListener, MouseListener  {
 
 	protected JButton[] btn;
 
@@ -18,19 +22,30 @@ public class ButtonPanel extends JPanel implements ActionListener {
 
 	public ButtonPanel() {
 
-		int nBtn = 8;
+		int nBtn = 9;
 		JButton[] btn = new JButton[nBtn];
 
 		int iBtn = 0;
-		ImageIcon newBtnIcon = createImageIcon("." + "\\imgs\\right.gif");
 
-		btn[iBtn] = new JButton("New Board", newBtnIcon);
+		ImageIcon iconTest = new ImageIcon("imgs/right.gif");
+
+		btn[iBtn] = new JButton("New Board", iconTest);
 		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
 		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
 		btn[iBtn].setMnemonic(KeyEvent.VK_N);
 		btn[iBtn].setActionCommand("new");
 		btn[iBtn].addActionListener(this);
 		btn[iBtn].setToolTipText("Creates a new random board");
+		iBtn++;
+
+		//Item SubPanel
+		btn[iBtn] = new JButton("Item freq");
+		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
+		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
+		//		btn[iBtn].setMnemonic(KeyEvent.VK_N);
+		btn[iBtn].setActionCommand("itemPopUp");
+		btn[iBtn].addActionListener(this);
+		btn[iBtn].setToolTipText("Change the frequencies of items");
 		iBtn++;
 
 		btn[iBtn] = new JButton("Col +1");
@@ -95,38 +110,19 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		btn[iBtn].addActionListener(this);
 		btn[iBtn].setToolTipText("Test Swipe");
 		iBtn++;
-
-
-
-
+	
 		JPanel panelEast = new JPanel();
 		panelEast.setLayout(new GridLayout(10,1));
-		for(int i=0; i < iBtn; i++) 
-			panelEast.add(btn[i]);
-		//		panelEast.add(btn2);
-		//		panelEast.add(btn3);
-		//		panelEast.add(btn4);
-		//		panelEast.add(btn5);
-		//		panelEast.add(btn6);
-		//		panelEast.add(btn7);
 
+		for(int i = 0; i < iBtn; i++) 
+			panelEast.add(btn[i]);
 
 		add(panelEast);
 
-
 	}
 
-	protected static ImageIcon createImageIcon(String path) {
-		java.net.URL imgURL = ButtonPanel.class.getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: " + path);
-			return null;
-		}
-	}
+	private static JFrame frameItem;
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		//		System.out.println(e.getActionCommand());
 
@@ -136,6 +132,18 @@ public class ButtonPanel extends JPanel implements ActionListener {
 			Board.newRndBoard();
 			Swipe.resetSwipe();
 			ShowBoard.rePaint();
+			break;
+		case "itemPopUp":
+			System.out.println("Item PopUp...");
+			if (frameItem == null) {
+				JFrame frame = new JFrame("Item Change");
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setSize(350, 250);
+				frame.getContentPane().add(getItemJPanel(), BorderLayout.CENTER);
+					//			frame.pack();
+				frame.setVisible(true);
+				frameItem = frame;
+			}
 			break;
 		case "rowPlus":
 			System.out.println("Row +1...");
@@ -176,6 +184,120 @@ public class ButtonPanel extends JPanel implements ActionListener {
 			break;
 
 		}
+	}
 
-	}	
+	//	class ItemPane extends JDialog implements ActionListener, PropertyChangeListener {	
+	public JPanel getItemJPanel() {
+
+		ImageIcon iconApple_24px = new ImageIcon("imgs/Apple_24px.png");
+		JButton btnApple = new JButton("", iconApple_24px);
+		ImageIcon iconChestnut_24px = new ImageIcon("imgs/Chestnut_24px.png");
+		JButton btnChestnut = new JButton("", iconChestnut_24px);
+		ImageIcon iconBlueBerry_24px = new ImageIcon("imgs/BlueBerry_24px.png");
+		JButton btnBlueBerry = new JButton("", iconBlueBerry_24px);
+		ImageIcon iconAcorn_24px = new ImageIcon("imgs/Acorn_24px.png");
+		JButton btnAcorn = new JButton("", iconAcorn_24px);
+
+		ImageIcon iconMinus = new ImageIcon("imgs/Minus_24px.png");
+		JButton btnMinus1 = new JButton("", iconMinus);
+		JButton btnMinus2 = new JButton("", iconMinus);
+		JButton btnMinus3 = new JButton("", iconMinus);
+		JButton btnMinus4 = new JButton("", iconMinus);
+		ImageIcon iconPlus = new ImageIcon("imgs/Plus_24px.png");
+		JButton btnPlus1 = new JButton("", iconPlus);
+		JButton btnPlus2 = new JButton("", iconPlus);
+		JButton btnPlus3 = new JButton("", iconPlus);
+		JButton btnPlus4 = new JButton("", iconPlus);
+
+		btnMinus1.setName("AppleMinus"); btnMinus2.setName("ChestnutMinus"); btnMinus3.setName("BlueBerryMinus"); btnMinus4.setName("AcornMinus");
+		btnPlus1.setName("ApplePlus"); btnPlus2.setName("ChestnutPlus"); btnPlus3.setName("BlueBerryPlus"); btnPlus4.setName("AcornPlus");
+
+		btnMinus1.addMouseListener(this); btnMinus2.addMouseListener(this); btnMinus3.addMouseListener(this); btnMinus4.addMouseListener(this);
+		btnPlus1.addMouseListener(this); btnPlus2.addMouseListener(this); btnPlus3.addMouseListener(this); btnPlus4.addMouseListener(this);
+
+		JButton btnAppleNum = new JButton("" + ProbItem.fqs[0]);
+		JButton btnChestnutNum = new JButton("" + ProbItem.fqs[2]);
+		JButton btnBlueBerryNum = new JButton("" + ProbItem.fqs[1]);
+		JButton btnAcornNum = new JButton("" + ProbItem.fqs[7]);
+
+		JButton btnApplePro = new JButton((ProbItem.fqs[0] * 100 / ProbItem.sumFre) + "%");
+		JButton btnChestnutPro = new JButton((ProbItem.fqs[2] * 100 / ProbItem.sumFre) + "%");
+		JButton btnBlueBerryPro = new JButton((ProbItem.fqs[1] * 100 / ProbItem.sumFre) + "%");
+		JButton btnAcornPro = new JButton((ProbItem.fqs[7] * 100 / ProbItem.sumFre) + "%");
+
+		JPanel panelItems = new JPanel();
+		panelItems.setLayout(new GridLayout(4, 5));
+
+		panelItems.add(btnApple); panelItems.add(btnMinus1); panelItems.add(btnPlus1); panelItems.add(btnAppleNum); panelItems.add(btnApplePro);
+		panelItems.add(btnChestnut); panelItems.add(btnMinus2); panelItems.add(btnPlus2); panelItems.add(btnChestnutNum); panelItems.add(btnChestnutPro);
+		panelItems.add(btnBlueBerry); panelItems.add(btnMinus3); panelItems.add(btnPlus3); panelItems.add(btnBlueBerryNum); panelItems.add(btnBlueBerryPro);
+		panelItems.add(btnAcorn); panelItems.add(btnMinus4); panelItems.add(btnPlus4); panelItems.add(btnAcornNum); panelItems.add(btnAcornPro);
+
+		return panelItems;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+//		;;;System.out.println("mouseClicked: " + e.getComponent().getName());
+		switch (e.getComponent().getName()) {
+		case "AppleMinus": ProbItem.minus('A'); break;
+		case "ApplePlus": ProbItem.plus('A'); break;
+		case "ChestnutMinus": ProbItem.minus('C'); break;
+		case "ChestnutPlus": ProbItem.plus('C'); break;
+		case "BlueBerryMinus": ProbItem.minus('B'); break;
+		case "BlueBerryPlus": ProbItem.plus('B'); break;
+		case "AcornMinus": ProbItem.minus('H'); break;
+		case "AcornPlus": ProbItem.plus('H'); break;
+		}
+		System.out.println("ProbItem.fqs[0]" + ProbItem.fqs[0]);
+		// TODO Auto-generated method stub
+		frameItem.getContentPane().add(getItemJPanel(), BorderLayout.CENTER);
+		frameItem.setVisible(true);
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+//		;;;System.out.println("mouseEntered");
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+//		;;;System.out.println("mouseExited");
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+//		;;;System.out.println("mousePressed");
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+//		;;;System.out.println("mouseReleased");
+		// TODO Auto-generated method stub
+
+	}
+
+
+
+	//		@Override
+	//		public void propertyChange(PropertyChangeEvent e) {
+	//
+	//
+	//		}
+	//
+	//		@Override
+	//		public void actionPerformed(ActionEvent e) {
+	//			// TODO Auto-generated method stub
+	//
+	//		}
+
 }
+
+
+

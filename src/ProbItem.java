@@ -31,22 +31,40 @@ public class ProbItem {
 		}
 	}
 
-	int n;
-	int[] fqs;
-	char[] chs;
-	char[] chRet;
-	int sumFre = 0;
+	static int n;
+	static int[] fqs;
+	static char[] chs;
+	static char[] chRet;
+	static int sumFre = 0;
 
-	Random random = new Random();
+	static Random random = new Random();
 
-	ProbItem() {
-		n = 3;
+	public ProbItem() {
+		n = 8;
 		fqs = new int[n];
 		chs = new char[n];
 		chs[0] = 'A'; fqs[0] = 1;
 		chs[1] = 'B'; fqs[1] = 1;
 		chs[2] = 'C'; fqs[2] = 1;
+		chs[3] = 'D'; fqs[3] = 0;
+		chs[4] = 'E'; fqs[4] = 0;
+		chs[5] = 'F'; fqs[5] = 0;
+		chs[6] = 'G'; fqs[6] = 0;
+		chs[7] = 'H'; fqs[7] = 0;
 
+		createChRet();
+	}
+	
+	public static void minus(char ch) { change(ch, -1); }
+		public static void plus(char ch) { change(ch, 1); }
+	
+	public static void change(char ch, int v) {
+		if (sumFre + v < 1) return;
+		int i = (ch - 'A') % n;
+		if (i < 0) i += n;
+		if (fqs[i] + v < 0) return;
+		fqs[i] += v;
+		sumFre += v;
 		createChRet();
 	}
 
@@ -54,12 +72,13 @@ public class ProbItem {
 	 * @param frequencies
 	 * @param chs
 	 */
-	ProbItem(int[] frequencies, char[] chs) {
+	public ProbItem(int[] frequencies, char[] chs) {
 		this.fqs = frequencies; this.chs = chs;
 		createChRet();
 	}
 
-	private void createChRet() {
+	private static void createChRet() {
+		sumFre = 0;
 		for (int f : fqs) sumFre += f;
 
 		chRet = new char[sumFre];
