@@ -20,8 +20,8 @@ public class ShowBoard extends JPanel {
 
 	private static JFrame thisFrame;
 
-	//Unit Testing
-	public static void main(String[] args) {
+
+	public static void main(String[] args) { // Unit Testing
 		System.out.println("Main"); //**
 
 		Board.newRndBoard();
@@ -40,7 +40,6 @@ public class ShowBoard extends JPanel {
 		frame.add(new ShowBoard(), BorderLayout.CENTER);
 		newSize();
 		frame.setVisible(true);
-//		;;DrawSwipe.drawSwipe(new int[2]);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
@@ -70,8 +69,7 @@ public class ShowBoard extends JPanel {
 		hWin = Board.m * dI + hWinBorder + hMenu + 1;
 
 		if (wWin > wMaxWinSize || hWin > hMaxWinSize)
-			pScale = Math.min((double) (wMaxWinSize - wWinBorder - wPanel) / wWin,
-					(double) (hMaxWinSize - hWinBorder - hMenu) / hWin);
+			pScale = Math.min((double) (wMaxWinSize - wWinBorder - wPanel) / wWin, (double) (hMaxWinSize - hWinBorder - hMenu) / hWin);
 		dI = (int) (90 * pScale);
 
 		wWin = Board.n * dI + wWinBorder + wPanel + 1;
@@ -92,8 +90,7 @@ public class ShowBoard extends JPanel {
 
 		board = Board.getBoard();
 
-		System.out.println("board[0][0] = " + board[0][0]);
-
+//		System.out.println("board[0][0] = " + board[0][0]);
 
 		Graphics2D g2d = (Graphics2D) g;
 		this.g = g;
@@ -124,11 +121,8 @@ public class ShowBoard extends JPanel {
 		thisFrame.setVisible(false); // !!!
 		thisFrame.setVisible(true);
 	}
-
-//	public static void reShowBoard(DrawSwipe ds) {
-//		;;;thisFrame.add(ds, BorderLayout.EAST);
-//	}
-
+	
+	
 	public static Graphics getG() {return g;}
 	public static Graphics2D getG2D() {return g2d;}
 }

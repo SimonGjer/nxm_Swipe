@@ -2,6 +2,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
@@ -39,7 +40,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		btn3.setActionCommand("colMinus");
 		btn3.addActionListener(this);
 		btn3.setToolTipText("Removes a column");
-		
+
 		btn4 = new JButton("Row +1", newBtnIcon);
 		btn4.setVerticalTextPosition(AbstractButton.CENTER);
 		btn4.setHorizontalTextPosition(AbstractButton.LEADING);
@@ -63,7 +64,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		btn6.setActionCommand("getComp");
 		btn6.addActionListener(this);
 		btn6.setToolTipText("Find the number of swipe areas (components)");
-		
+
 		btn7 = new JButton("tmp Swipe", newBtnIcon);
 		btn7.setVerticalTextPosition(AbstractButton.CENTER);
 		btn7.setHorizontalTextPosition(AbstractButton.LEADING);
@@ -86,7 +87,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		panelEast.add(btn6);
 		panelEast.add(btn7);
 
-		
+
 		add(panelEast);
 
 
@@ -104,12 +105,13 @@ public class ButtonPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand());
+//		System.out.println(e.getActionCommand());
 
 		switch (e.getActionCommand()) {
 		case "new":
 			System.out.println("new...");
 			Board.newRndBoard();
+			Swipe.resetSwipe();
 			ShowBoard.rePaint();
 			break;
 		case "rowPlus":
@@ -132,13 +134,18 @@ public class ButtonPanel extends JPanel implements ActionListener {
 			Board.colMinus();
 			ShowBoard.newSize();
 			break;
-		case "getComp":
-			//Get the number of component
+		case "getComp"://Show the number of component
+			ArrayList<boolean[][]> components = Component.getComponents(Board.getBoard());
+			int[][] s = Swipe.transformComp(components);
+			Swipe.drawSwipe(s);
+			ShowBoard.rePaint();
 			break;
 		case "tmpSwipe":
+			//			for (int i = 0; i < 100; i++) 
 			Swipe.rndSwipe();
+			ShowBoard.rePaint();
 			break;
-			
+
 		}
 
 	}	
