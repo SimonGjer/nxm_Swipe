@@ -16,13 +16,13 @@ public class Swipe {
 
 	;;;public static Random random = new Random();
 
-	public static int[] swipe = new int[] {1,0, 1,1, 2,2, 2,3, 3,3, 4,3, 5,3, 4,2, 5,2, 6,2, 7,2, 7,3}; //Format x1,y1, x2,y2, ...
-	public static int[][] swipes = new int[][] {{1,0, 1,1}, {3,3, 4,4}, {5,2, 6,2}, {6,4, 5,4},  {9,9, 8,8, 7,7}}; //Format {swipe, swipe, swipe, etc.}
+	public static int[] swipe = new int[0]; // {1,0, 1,1, 2,2, 2,3, 3,3, 4,3, 5,3, 4,2, 5,2, 6,2, 7,2, 7,3}; //Format x1,y1, x2,y2, ...
+	public static int[][] swipes = new int[0][0]; // {{1,0, 1,1}, {3,3, 4,4}, {5,2, 6,2}, {6,4, 5,4},  {9,9, 8,8, 7,7}}; //Format {swipe, swipe, swipe, etc.}
 
 	public static void resetSwipe() {
 		swipes = new int[0][0];
 	} 
-	
+
 	public static void setSwipe(int[] s) { 
 		swipes = new int[1][0];
 		swipes[0] = s;
@@ -39,7 +39,7 @@ public class Swipe {
 		setSwipes(s);
 		drawSwipe();
 	}	
-	
+
 	public static void drawSwipe() {
 		System.out.println("drawSwipe()"); //**
 
@@ -82,7 +82,7 @@ public class Swipe {
 				g2d.drawImage(img, xPos, yPos, xPos + wImgScale, yPos + hImgcaleS, 0, 0, wImg, hImg, null);
 			}
 		}
-			}
+	}
 
 
 
@@ -111,8 +111,8 @@ public class Swipe {
 			swipe[i] = swipe[i-2] + dx; swipe[i+1] = swipe[i-1] + dy;
 		}
 		swipes = new int[1][0];
-				swipes[0] = swipe;
-//		ShowBoard.rePaint();
+		swipes[0] = swipe;
+		//		ShowBoard.rePaint();
 	}
 
 
@@ -138,10 +138,11 @@ public class Swipe {
 
 	}
 
-	public static int[][] transformComp(ArrayList<boolean[][]> components) {
+	public static int[][] transformComp(boolean[][][] components) {
 		ArrayList<int[]> cSwipes = new ArrayList<int[]>();
 
-		for (boolean[][] comp : components) {
+		for (int i=0; i < components.length; i++) {
+			boolean[][] comp = components[i];
 			int nCol = comp.length, nRow = comp[0].length;
 			for (int iRow = 0; iRow < nRow; iRow++)
 				for (int iCol = 0; iCol < nCol; iCol++) {
@@ -159,7 +160,7 @@ public class Swipe {
 		int[][] compSwipes = new int[s][0];
 		for(int i=0; i < s; i++)
 			compSwipes[i] = cSwipes.get(i);
-		
+
 		return compSwipes;
 	}
 
