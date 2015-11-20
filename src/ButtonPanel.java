@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
@@ -14,7 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class ButtonPanel extends JPanel implements ActionListener, MouseListener  {
+public class ButtonPanel extends JPanel implements ActionListener, MouseListener {
 
 	protected JButton[] btn;
 
@@ -22,7 +23,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 
 	public ButtonPanel() {
 
-		int nBtn = 9;
+		int nBtn = 10;
 		JButton[] btn = new JButton[nBtn];
 
 		int iBtn = 0;
@@ -42,7 +43,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		btn[iBtn] = new JButton("Item freq");
 		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
 		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
-		//		btn[iBtn].setMnemonic(KeyEvent.VK_N);
+		btn[iBtn].setMnemonic(KeyEvent.VK_F);
 		btn[iBtn].setActionCommand("itemPopUp");
 		btn[iBtn].addActionListener(this);
 		btn[iBtn].setToolTipText("Change the frequencies of items");
@@ -96,7 +97,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		btn[iBtn] = new JButton("Bigest Comp");
 		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
 		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
-		//		b2.setMnemonic(KeyEvent.VK_N);
+		btn[iBtn].setMnemonic(KeyEvent.VK_B);
 		btn[iBtn].setActionCommand("bigComp");
 		btn[iBtn].addActionListener(this);
 		btn[iBtn].setToolTipText("Find the biggest swipe area (component)");
@@ -110,7 +111,16 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		btn[iBtn].addActionListener(this);
 		btn[iBtn].setToolTipText("Test Swipe");
 		iBtn++;
-	
+		
+		btn[iBtn] = new JButton("Brute Force");
+		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
+		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
+		//		b2.setMnemonic(KeyEvent.VK_N);
+		btn[iBtn].setActionCommand("BruteForce");
+		btn[iBtn].addActionListener(this);
+		btn[iBtn].setToolTipText("Does a DFS-Brute Force on the bigest component to find the longest swipe");
+		iBtn++;
+
 		JPanel panelEast = new JPanel();
 		panelEast.setLayout(new GridLayout(10,1));
 
@@ -140,7 +150,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setSize(350, 250);
 				frame.getContentPane().add(getItemJPanel(), BorderLayout.CENTER);
-					//			frame.pack();
+				//			frame.pack();
 				frame.setVisible(true);
 				frameItem = frame;
 			}
@@ -167,13 +177,13 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 			break;
 		case "getComp"://Show the number of component
 			boolean[][][] components = Component.getComponents(Board.getBoard());
-			int[][] s = Swipe.transformComp(components);
+			int[][] s = Swipe.compToSwipe(components);
 			Swipe.drawSwipe(s);
 			ShowBoard.rePaint();
 			break;
 		case "bigComp"://Show the number of component
 			boolean[][][] compBig1 = Component.getNBigestComponents(Board.getBoard(), 1);
-			int[][] sBig1 = Swipe.transformComp(compBig1);
+			int[][] sBig1 = Swipe.compToSwipe(compBig1);
 			Swipe.drawSwipe(sBig1);
 			ShowBoard.rePaint();
 			break;
@@ -181,6 +191,17 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 			//			for (int i = 0; i < 100; i++) 
 			Swipe.rndSwipe();
 			ShowBoard.rePaint();
+			break;
+		case "BruteForce":
+			Vertex[][] vertex = BruteForce.boardToGraph(Board.getBoard());
+			
+//			BruteForce.drawGraph(vertex);
+			ArrayList<Integer> longestPath = BruteForce.findLongestPath(vertex);
+			Swipe.drawSwipe2(longestPath);
+			ShowBoard.rePaint();
+//			boolean[][][] comp2 = Component.getNBigestComponents(Board.getBoard(), 1);
+//			int[][] longestSwipe = BruteForce.bruteForce(comp2);
+//			Swipe.drawSwipe(longestSwipe);
 			break;
 
 		}
@@ -203,6 +224,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		JButton btnMinus2 = new JButton("", iconMinus);
 		JButton btnMinus3 = new JButton("", iconMinus);
 		JButton btnMinus4 = new JButton("", iconMinus);
+
 		ImageIcon iconPlus = new ImageIcon("imgs/Plus_24px.png");
 		JButton btnPlus1 = new JButton("", iconPlus);
 		JButton btnPlus2 = new JButton("", iconPlus);
@@ -238,7 +260,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-//		;;;System.out.println("mouseClicked: " + e.getComponent().getName());
+		//		;;;System.out.println("mouseClicked: " + e.getComponent().getName());
 		switch (e.getComponent().getName()) {
 		case "AppleMinus": ProbItem.minus('A'); break;
 		case "ApplePlus": ProbItem.plus('A'); break;
@@ -256,29 +278,29 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-//		;;;System.out.println("mouseEntered");
+	public void mouseEntered(MouseEvent e) {
+		//		;;;System.out.println("mouseEntered");
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-//		;;;System.out.println("mouseExited");
+	public void mouseExited(MouseEvent e) {
+		//		;;;System.out.println("mouseExited");
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-//		;;;System.out.println("mousePressed");
+	public void mousePressed(MouseEvent e) {
+		//		;;;System.out.println("mousePressed");
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-//		;;;System.out.println("mouseReleased");
+	public void mouseReleased(MouseEvent e) {
+		//		;;;System.out.println("mouseReleased");
 		// TODO Auto-generated method stub
 
 	}

@@ -2,7 +2,7 @@ public class Board {
 
 	private static char[][] board;
 	private static ProbItem pItem = new ProbItem();
-	public static int n = 10, m = 10; // n = x = columns , m = y = rows
+	public static int n = 7, m = 7; // n = x = columns , m = y = rows
 
 	public static char[][] getBoard() {
 		return board;

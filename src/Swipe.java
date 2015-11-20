@@ -38,7 +38,28 @@ public class Swipe {
 	public static void drawSwipe(int[][] s) {
 		setSwipes(s);
 		drawSwipe();
-	}	
+	}
+	public static void drawSwipe2(ArrayList<Integer> s) { //Java can't see the difference between "ArrayList<Integer>" and "ArrayList<Integer[]>" - this is the reason for the "2" in the name "drawSwipe2"
+		int[] tmp = new int[s.size()];
+		for(int i = 0; i < s.size(); i++){
+			tmp[i]=s.get(i);
+		}
+		drawSwipe(tmp); 
+	}
+
+
+	public static void drawSwipe(ArrayList<Integer[]> s) {
+			int[][] tmp = new int[s.size()][0];
+			for (int i = 0; i < s.size(); i++) {
+				int[] tmp2 = new int[s.get(i).length];
+				for(int j = 0; j < s.get(i).length; j++) {
+					tmp2[j] = s.get(i)[j];
+				}
+				tmp[i] = tmp2;
+			}
+			drawSwipe(tmp);
+	}
+
 
 	public static void drawSwipe() {
 		System.out.println("drawSwipe()"); //**
@@ -138,7 +159,7 @@ public class Swipe {
 
 	}
 
-	public static int[][] transformComp(boolean[][][] components) {
+	public static int[][] compToSwipe(boolean[][][] components) {
 		ArrayList<int[]> cSwipes = new ArrayList<int[]>();
 
 		for (int i=0; i < components.length; i++) {

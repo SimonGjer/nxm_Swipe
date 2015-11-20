@@ -45,9 +45,6 @@ public class Component {
 		return compRet;
 	}
 
-
-
-
 	public static boolean[][][] getNBigestComponents(char[][] board, int nRet) {
 		boolean[][][] components = getComponents(board);
 		nRet = Math.min(nRet, components.length);
