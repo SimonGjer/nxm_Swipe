@@ -26,7 +26,7 @@ public class ShowBoard extends JPanel {
 
 		Board.newRndBoard();
 
-		JFrame frame = new JFrame(Board.n + " x " + Board.m + " Swipe");
+		JFrame frame = new JFrame(Board.nCol + " x " + Board.nRow + " Swipe");
 		thisFrame = frame;
 
 		MenuPanel menuPanel = new MenuPanel();
@@ -56,7 +56,7 @@ public class ShowBoard extends JPanel {
 	public static void newSize() {
 		updataScale();
 
-		thisFrame.setTitle(Board.n + " x " + Board.m + " Swipe");
+		thisFrame.setTitle(Board.nCol + " x " + Board.nRow + " Swipe");
 		if (wWinOld == wWin && hWinOld == hWin) rePaint(); //The setSize will only repaint if the size of the window change
 		else thisFrame.setSize(wWin, hWin);
 		wWinOld = wWin; hWinOld = hWin;
@@ -65,15 +65,15 @@ public class ShowBoard extends JPanel {
 	public static void updataScale() {
 		pScale = 1.0;
 		dI = 90;
-		wWin = Board.n * dI + wWinBorder + wPanel + 1;
-		hWin = Board.m * dI + hWinBorder + hMenu + 1;
+		wWin = Board.nCol * dI + wWinBorder + wPanel + 1;
+		hWin = Board.nRow * dI + hWinBorder + hMenu + 1;
 
 		if (wWin > wMaxWinSize || hWin > hMaxWinSize)
 			pScale = Math.min((double) (wMaxWinSize - wWinBorder - wPanel) / wWin, (double) (hMaxWinSize - hWinBorder - hMenu) / hWin);
 		dI = (int) (90 * pScale);
 
-		wWin = Board.n * dI + wWinBorder + wPanel + 1;
-		hWin = Board.m * dI + hWinBorder + hMenu + 1;
+		wWin = Board.nCol * dI + wWinBorder + wPanel + 1;
+		hWin = Board.nRow * dI + hWinBorder + hMenu + 1;
 
 		if (wWin < wMinWinSize) wWin = wMinWinSize;
 		if (hWin < hMinWinSize) hWin = hMinWinSize;
@@ -104,7 +104,7 @@ public class ShowBoard extends JPanel {
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(0, 0, g2d.getClip().getBounds().width, g2d.getClip().getBounds().height);
 
-		for(int r = 0; r < board[0].length; r++)
+		for(int r = 0; r < board[0].length; r++) {
 			for(int c = 0; c < board.length; c++) {
 				char ch = board[c][r];
 				g2d.setColor((((c + r) & 1) == 0) ? Color.GRAY : Color.LIGHT_GRAY);
@@ -112,7 +112,12 @@ public class ShowBoard extends JPanel {
 				Image img = Item.getImage(ch);
 				g2d.drawImage(img, c * dI, r * dI, (c + 1) * dI + 1, (r + 1) * dI + 1, 0, 0, 90, 90, null);
 			}
-		Swipe.drawSwipe();
+		}
+		Graph.drawGraph(g2d);
+		
+		
+		
+		Path.drawPath();
 	}
 
 

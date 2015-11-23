@@ -23,7 +23,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 
 	public ButtonPanel() {
 
-		int nBtn = 10;
+		int nBtn = 11;
 		JButton[] btn = new JButton[nBtn];
 
 		int iBtn = 0;
@@ -111,7 +111,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		btn[iBtn].addActionListener(this);
 		btn[iBtn].setToolTipText("Test Swipe");
 		iBtn++;
-		
+
 		btn[iBtn] = new JButton("Brute Force");
 		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
 		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
@@ -119,6 +119,15 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		btn[iBtn].setActionCommand("BruteForce");
 		btn[iBtn].addActionListener(this);
 		btn[iBtn].setToolTipText("Does a DFS-Brute Force on the bigest component to find the longest swipe");
+		iBtn++;
+
+		btn[iBtn] = new JButton("SuperNode");
+		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
+		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
+		//		b2.setMnemonic(KeyEvent.VK_N);
+		btn[iBtn].setActionCommand("SuperNode");
+		btn[iBtn].addActionListener(this);
+		btn[iBtn].setToolTipText("Find Super Nodes in a graph");
 		iBtn++;
 
 		JPanel panelEast = new JPanel();
@@ -140,7 +149,8 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		case "new":
 			System.out.println("new...");
 			Board.newRndBoard();
-			Swipe.resetSwipe();
+			Path.resetPath();
+			Graph.setGraph(null);
 			ShowBoard.rePaint();
 			break;
 		case "itemPopUp":
@@ -177,33 +187,32 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 			break;
 		case "getComp"://Show the number of component
 			boolean[][][] components = Component.getComponents(Board.getBoard());
-			int[][] s = Swipe.compToSwipe(components);
-			Swipe.drawSwipe(s);
+			int[][] s = Path.compToPath(components);
+			Path.drawPath(s);
 			ShowBoard.rePaint();
 			break;
 		case "bigComp"://Show the number of component
 			boolean[][][] compBig1 = Component.getNBigestComponents(Board.getBoard(), 1);
-			int[][] sBig1 = Swipe.compToSwipe(compBig1);
-			Swipe.drawSwipe(sBig1);
+			int[][] sBig1 = Path.compToPath(compBig1);
+			Path.drawPath(sBig1);
 			ShowBoard.rePaint();
 			break;
 		case "tmpSwipe":
-			//			for (int i = 0; i < 100; i++) 
-			Swipe.rndSwipe();
+			Path.rndPath();
 			ShowBoard.rePaint();
 			break;
 		case "BruteForce":
-			Vertex[][] vertex = BruteForce.boardToGraph(Board.getBoard());
-			
-//			BruteForce.drawGraph(vertex);
+			VertexSimple[][] vertex = BruteForce.boardToGraph(Board.getBoard());
 			ArrayList<Integer> longestPath = BruteForce.findLongestPath(vertex);
-			Swipe.drawSwipe2(longestPath);
+			Path.drawPath2(longestPath);
 			ShowBoard.rePaint();
-//			boolean[][][] comp2 = Component.getNBigestComponents(Board.getBoard(), 1);
-//			int[][] longestSwipe = BruteForce.bruteForce(comp2);
-//			Swipe.drawSwipe(longestSwipe);
 			break;
-
+		case "SuperNode":
+			VertexSuper[][] G = BruteForce.getGraphWithSuperNodes(Board.getBoard());
+			Graph.setGraph(G);
+			ShowBoard.rePaint();
+			Graph.fTogglePaint = !Graph.fTogglePaint;
+			break;
 		}
 	}
 

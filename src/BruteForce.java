@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 
 public class BruteForce {
@@ -9,21 +10,15 @@ public class BruteForce {
 	static final int[] dCol = new int[]{0, 1, 1, 1, 0, -1, -1, -1 };
 	static final int[] dRow = new int[]{-1, -1, 0, 1, 1, 1, 0, -1 };
 
-
-	public static void bruteForce(boolean[][] comp) {
-
-	}
-
-	public static Vertex[][] boardToGraph (char[][] board) {
+	public static VertexSimple[][] boardToGraph (char[][] board) {
 		int nCol = board.length, nRow = board[0].length;
-		//		System.out.println("nRow: " + nRow);
-		//		System.out.println("nCol: " + nCol);
+		//		System.out.println("nRow: " + nRow); System.out.println("nCol: " + nCol);
 
-		Vertex[][] vertex = new Vertex[nCol][nRow];
+		VertexSimple[][] vertex = new VertexSimple[nCol][nRow];
 
 		for(int iRow = 0; iRow < nRow; iRow++) {
 			for(int iCol = 0; iCol < nCol; iCol++) {
-				vertex[iCol][iRow] = new Vertex();
+				vertex[iCol][iRow] = new VertexSimple();
 			}
 		}
 		;;;System.out.println("vertex[0][0].edgeTo = " + vertex[0][0].edgeTo);
@@ -64,30 +59,24 @@ public class BruteForce {
 	}
 
 
-	public static void drawGraph(Vertex[][] graph) {
+	public static void drawGraph(VertexSimple[][] graph) {
 		ArrayList<Integer[]> s = new ArrayList<>();
 
 		int nCol = graph.length, nRow = graph[0].length;
 		for(int iRow = 0; iRow < nRow; iRow++) {
 			for(int iCol = 0; iCol < nCol; iCol++) {
-				Vertex v = graph[iCol][iRow];
-				//				int[] check = new int[] {RIGTH, RIGTHDOWN, DOWN, DOWNLEFT};
-				//				for(int i = 0; i < check.length; i++) {
-				//					if (v.edgeTo[i] != null) s.add(new int[]{});
-				//				}
+				VertexSimple v = graph[iCol][iRow];
 				if (v.edgeTo[RIGTH] != null) s.add(new Integer[]{iCol, iRow, iCol + 1, iRow});
 				if (v.edgeTo[RIGTHDOWN] != null) s.add(new Integer[]{iCol, iRow, iCol + 1, iRow + 1});
 				if (v.edgeTo[DOWN] != null) s.add(new Integer[]{iCol, iRow, iCol, iRow + 1});
 				if (v.edgeTo[DOWNLEFT] != null) s.add(new Integer[]{iCol, iRow, iCol - 1, iRow + 1});
 			}
 		}
-		Swipe.drawSwipe(s);
+		Path.drawPath(s);
 	}
 
 
-	public static ArrayList<Integer> findLongestPath(Vertex[][] graph) {
-		int maxLength = 0;
-
+	public static ArrayList<Integer> findLongestPath(VertexSimple[][] graph) {
 		longestPath = new ArrayList<Integer>();
 
 		int nCol = graph.length, nRow = graph[0].length;
@@ -98,13 +87,12 @@ public class BruteForce {
 				visitNeighbors(iCol, iRow, visited, graph, new ArrayList<Integer>());
 			}
 		}
-
 		return longestPath;
 	}
 
 	static ArrayList<Integer> longestPath;
 
-	public static ArrayList<Integer> visitNeighbors(int iCol, int iRow, boolean[][] visited, Vertex[][] graph, ArrayList<Integer> path){
+	public static ArrayList<Integer> visitNeighbors(int iCol, int iRow, boolean[][] visited, VertexSimple[][] graph, ArrayList<Integer> path){
 		visited[iCol][iRow] = true;
 		path.add(iCol); path.add(iRow);
 		if(path.size() > longestPath.size()) { longestPath = new ArrayList<Integer>(path); }
@@ -121,4 +109,100 @@ public class BruteForce {
 		return longestPath;
 	}
 
+
+
+	public static VertexSuper[][] getGraphWithSuperNodes(char[][] board) {
+
+		int nCol = board.length, nRow = board[0].length;
+		//		System.out.println("nRow: " + nRow); System.out.println("nCol: " + nCol);
+
+		VertexSuper[][] vs = new VertexSuper[nCol][nRow];
+
+		for(int iRow = 0; iRow < nRow; iRow++) {
+			for(int iCol = 0; iCol < nCol; iCol++) {
+				vs[iCol][iRow] = new VertexSuper(iCol, iRow);
+				vs[iCol][iRow].item = board[iCol][iRow];
+			}
+		}
+
+		for(int iRow = 0; iRow < nRow; iRow++) {
+			for(int iCol = 0; iCol < nCol; iCol++) {
+				if(iCol + 1 < nCol)
+					if (board[iCol][iRow] == board[iCol + 1][iRow]) {
+						vs[iCol][iRow].edgeToSimple[RIGTH] = vs[iCol + 1][iRow]; vs[iCol + 1][iRow].edgeToSimple[LEFT] = vs[iCol][iRow];
+					}
+				if(iCol > 0 && iRow + 1 < nRow)
+					if (board[iCol][iRow] == board[iCol - 1][iRow + 1]) {
+						vs[iCol][iRow].edgeToSimple[DOWNLEFT] = vs[iCol - 1][iRow + 1];	vs[iCol - 1][iRow + 1].edgeToSimple[RIGTHUP] = vs[iCol][iRow];
+					}
+				if(iRow + 1 < nRow)
+					if (board[iCol][iRow] == board[iCol][iRow + 1]) {
+						vs[iCol][iRow].edgeToSimple[DOWN] = vs[iCol][iRow + 1];	vs[iCol][iRow + 1].edgeToSimple[UP] = vs[iCol][iRow];
+					}
+				if(iCol + 1 < nCol && iRow + 1 < nRow) 
+					if (board[iCol][iRow] == board[iCol + 1][iRow + 1]) {
+						vs[iCol][iRow].edgeToSimple[RIGTHDOWN] = vs[iCol + 1][iRow + 1]; vs[iCol + 1][iRow + 1].edgeToSimple[LEFTUP] = vs[iCol][iRow];
+					}
+			}
+		}
+		for(int iRow = 0; iRow < nRow; iRow++) 
+			for(int iCol = 0; iCol < nCol; iCol++)
+				vs[iCol][iRow].updateSuperEdge();
+
+
+		Stack<VertexSuper> stack = new Stack<>();
+		for(int iRow = 0; iRow < nRow; iRow++) {
+			for(int iCol = 0; iCol < nCol; iCol++) {
+				stack.push(vs[iCol][iRow]);
+			}
+		}
+	
+		while(!stack.isEmpty()) {
+			VertexSuper v = stack.pop();
+			if (v.getSuperNode() == null) {
+				if (v.nEdge <= 2 && v.nEdge >= 1) {
+					for (int i = 0; i < v.edgeTo.size(); i++) {
+						VertexSuper vAdd = v.edgeTo.get(i);
+						if (vAdd.nEdge <= 2 && vAdd.nEdge >= 1) {
+							//Create SuperNode
+							int valueTotal = v.value + vAdd.value;
+							double xSuper = (v.xPos * v.value + vAdd.xPos * vAdd.value) / valueTotal;
+							double ySuper = (v.yPos * v.value + vAdd.yPos * vAdd.value) / valueTotal;
+							VertexSuper vSuper = new VertexSuper(xSuper , ySuper);
+							vSuper.addAbsorbedEdge(v); vSuper.addAbsorbedEdge(vAdd);
+							vSuper.value = valueTotal;
+							vSuper.item = v.item;
+							v.setSuperNode(vSuper); vAdd.setSuperNode(vSuper);
+
+							for (VertexSuper vOut : v.edgeTo) {
+								if (vOut != vAdd) {
+									vSuper.addEdge(vOut);
+									vOut = vSuper;
+									for (VertexSuper vOutOut : vOut.edgeTo) {
+										if (vOutOut == v) {
+											vOutOut = vSuper;
+										}
+									}
+								}
+							}
+							for (VertexSuper vAddOut : vAdd.edgeTo) {
+								if (vAddOut != v) {
+									vSuper.addEdge(vAddOut);
+									vAddOut = vSuper;
+									for (VertexSuper vAddOutOut : vAddOut.edgeTo) {
+										if (vAddOutOut == vAdd) {
+											vAddOutOut = vSuper;
+										}
+									}
+								}
+							}
+							stack.push(vSuper);
+							break;
+						}
+					}
+				}
+			}
+		}
+		return vs;
+	}
 }
