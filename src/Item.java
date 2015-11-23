@@ -63,4 +63,14 @@ public class Item {
 			System.out.println("can't read file");
 		}
 	}
+	
+	public static Image getRingImage() {
+		try {
+			return ImageIO.read(new File("./imgs/White Ring_90px.png"));
+					}
+		catch (IOException e) {
+			System.out.println("can't read file");
+		}
+		return null;
+	}
 }
