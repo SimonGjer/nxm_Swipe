@@ -131,7 +131,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		iBtn++;
 
 		JPanel panelEast = new JPanel();
-		panelEast.setLayout(new GridLayout(10,1));
+		panelEast.setLayout(new GridLayout(30,1));
 
 		for(int i = 0; i < iBtn; i++) 
 			panelEast.add(btn[i]);
@@ -208,7 +208,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 			ShowBoard.rePaint();
 			break;
 		case "SuperNode":
-			VertexSuper[][] G = BruteForce.getGraphWithSuperNodes(Board.getBoard());
+			VertexSuper[][] G = BruteForce.getGraphWithSuperNodesTmp(Board.getBoard());
 			Graph.setGraph(G);
 			ShowBoard.rePaint();
 			Graph.fTogglePaint = !Graph.fTogglePaint;
