@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 
-public class BruteForce {
+public class BruteForce implements Runnable {
 
 
 	static final int UP = 0, RIGTHUP = 1, RIGTH = 2, RIGTHDOWN = 3, DOWN =4, DOWNLEFT = 5, LEFT = 6, LEFTUP = 7;
@@ -12,7 +12,6 @@ public class BruteForce {
 
 	public static VertexSimple[][] boardToGraph (char[][] board) {
 		int nCol = board.length, nRow = board[0].length;
-		//		System.out.println("nRow: " + nRow); System.out.println("nCol: " + nCol);
 
 		VertexSimple[][] vertex = new VertexSimple[nCol][nRow];
 
@@ -21,7 +20,6 @@ public class BruteForce {
 				vertex[iCol][iRow] = new VertexSimple();
 			}
 		}
-		;;;System.out.println("vertex[0][0].edgeTo = " + vertex[0][0].edgeTo);
 
 		for(int iRow = 0; iRow < nRow; iRow++) {
 			for(int iCol = 0; iCol < nCol; iCol++) {
@@ -75,8 +73,12 @@ public class BruteForce {
 		Path.drawPath(s);
 	}
 
-
+	private static int iIter;
+	
 	public static ArrayList<Integer> findLongestPath(VertexSimple[][] graph) {
+		iIter = 0;
+		Buffer.resetPaths();
+		
 		longestPath = new ArrayList<Integer>();
 
 		int nCol = graph.length, nRow = graph[0].length;
@@ -87,15 +89,18 @@ public class BruteForce {
 				visitNeighbors(iCol, iRow, visited, graph, new ArrayList<Integer>());
 			}
 		}
+		System.out.println("Interations done: " + iIter);
 		return longestPath;
 	}
 
 	static ArrayList<Integer> longestPath;
 
 	public static ArrayList<Integer> visitNeighbors(int iCol, int iRow, boolean[][] visited, VertexSimple[][] graph, ArrayList<Integer> path){
+		iIter++;
 		visited[iCol][iRow] = true;
 		path.add(iCol); path.add(iRow);
-		if(path.size() > longestPath.size()) { longestPath = new ArrayList<Integer>(path); }
+		Buffer.addEachPath(path);
+		if(path.size() > longestPath.size()) { longestPath = new ArrayList<Integer>(path); Buffer.addBestPath(longestPath);}
 
 		for(int d = 0; d < 8; d++) {
 			if(graph[iCol][iRow].edgeTo[d] != null) {
@@ -196,6 +201,8 @@ public class BruteForce {
 								}
 							}
 							stack.push(vSuper);
+
+
 							break;
 						}
 					}
@@ -257,32 +264,49 @@ public class BruteForce {
 							VertexSuper vAdd = v.edgeTo.get(i);
 							if (vAdd.nEdge <= 2 && vAdd.nEdge >= 1) {
 								//Create SuperNode
-								int valueTotal = v.value + vAdd.value;
-								double xSuper = (v.xPos * v.value + vAdd.xPos * vAdd.value) / valueTotal;
-								double ySuper = (v.yPos * v.value + vAdd.yPos * vAdd.value) / valueTotal;
+								int valueTotalSuper = v.value + vAdd.value;
+								double xSuper = (v.xPos * v.value + vAdd.xPos * vAdd.value) / valueTotalSuper;
+								double ySuper = (v.yPos * v.value + vAdd.yPos * vAdd.value) / valueTotalSuper;
 								VertexSuper vSuper = new VertexSuper(xSuper , ySuper);
 								vSuper.addAbsorbedEdge(v); vSuper.addAbsorbedEdge(vAdd);
-								vSuper.value = valueTotal;
+								vSuper.value = valueTotalSuper;
 								vSuper.item = v.item;
 								v.setSuperNode(vSuper); vAdd.setSuperNode(vSuper);
 
-								for (VertexSuper vOut : v.edgeTo) {
+								//								for (VertexSuper vOut : v.edgeTo) {
+								for (int iOut = 0; iOut < v.edgeTo.size(); iOut++) {
+									VertexSuper vOut = v.edgeTo.get(iOut);
 									if (vOut != vAdd) {
 										vSuper.addEdge(vOut);
+										v.removeEdge(vOut);
+										//v.remove(vOut);v.add(vSuper);
+										v.addEdge(vSuper);
+										;;;
 										for (int iOutOut = 0; iOutOut < vOut.edgeTo.size(); iOutOut++) {
-											if (vOut.edgeTo.get(iOutOut) == v || vOut.edgeTo.get(iOutOut) == vAdd) {
-												vOut.edgeTo.set(iOutOut, vSuper);
-											}
+//											if (vOut.edgeTo.get(iOutOut) == v || vOut.edgeTo.get(iOutOut) == vAdd) {
+												vOut.edgeTo.remove(v); vOut.edgeTo.remove(vAdd); vOut.edgeTo.add(vSuper);
+//												vOut.edgeTo.set(iOutOut, vSuper);
+//											}
 										}
 									}
 								}
-								for (VertexSuper vAddOut : vAdd.edgeTo) {
+								//								for (VertexSuper vAddOut : vAdd.edgeTo) {
+								for (int iAddOut = 0; iAddOut < vAdd.edgeTo.size(); iAddOut++) {
+									VertexSuper vAddOut = vAdd.edgeTo.get(iAddOut);
 									if (vAddOut != v) {
 										vSuper.addEdge(vAddOut);
+
+
+										v.removeEdge(vAddOut);
+										//v.remove(vOut);v.add(vSuper);
+										v.addEdge(vSuper);
+
 										for (int iAddOutOut = 0; iAddOutOut < vAddOut.edgeTo.size(); iAddOutOut++) {
-											if (vAddOut.edgeTo.get(iAddOutOut) == vAdd || vAddOut.edgeTo.get(iAddOutOut) == v) {
-												vAddOut.edgeTo.set(iAddOutOut, vSuper);
-											}
+//											if (vAddOut.edgeTo.get(iAddOutOut) == vAdd || vAddOut.edgeTo.get(iAddOutOut) == v) {
+//												vAddOut.edgeTo.set(iAddOutOut, vSuper);
+											vAddOut.edgeTo.remove(v); vAddOut.edgeTo.remove(vAdd); vAddOut.edgeTo.add(vSuper);
+//											
+//											}
 										}
 									}
 								}
@@ -296,4 +320,18 @@ public class BruteForce {
 		} while (!fAllDone);
 		return vs;
 	}
+
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+//		boardToGraph(Board.getBoard());
+		BruteForce.findLongestPath(boardToGraph(Board.getBoard()));
+		
+	}
+	
+	
+//	public ArrayList<Integer> run(VertexSimple[][] graph) {
+//		return findLongestPath(graph);
+//	}
 }

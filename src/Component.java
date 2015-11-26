@@ -25,6 +25,7 @@ public class Component {
 				if (compUsed[iCol][iRow]) continue;
 				components.add(DFS(iCol, iRow));
 				compSize.add(size);
+//				ShowBoard.rePaint();
 				//				;;;Swipe.drawSwipe(Swipe.transformComp(components)); ShowBoard.rePaint();
 			}
 

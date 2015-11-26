@@ -39,6 +39,12 @@ public class VertexSuper {
 		for (VertexSuper v : edgeTo) if (v == vs) return;
 		edgeTo.add(vs);
 	}
+	
+	public void removeEdge(VertexSuper vs) {
+//		for (VertexSuper v : edgeTo) if (v == vs) edgeTo.remove(index);
+		for (int i = 0; i < edgeTo.size(); i++) if (edgeTo.get(i) == vs) edgeTo.remove(i);
+		}
+	
 
 	public void addAbsorbedEdge(VertexSuper vs) {
 		absorbedVertex.add(vs);

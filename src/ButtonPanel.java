@@ -3,7 +3,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -12,6 +11,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -23,7 +23,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 
 	public ButtonPanel() {
 
-		int nBtn = 11;
+		int nBtn = 14;
 		JButton[] btn = new JButton[nBtn];
 
 		int iBtn = 0;
@@ -121,6 +121,24 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		btn[iBtn].setToolTipText("Does a DFS-Brute Force on the bigest component to find the longest swipe");
 		iBtn++;
 
+		btn[iBtn] = new JButton("Path Progress");
+		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
+		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
+		//		b2.setMnemonic(KeyEvent.VK_N);
+		btn[iBtn].setActionCommand("Path Progress");
+		btn[iBtn].addActionListener(this);
+		btn[iBtn].setToolTipText("Show the progression of the best solution from the Brute Force methods");
+		iBtn++;
+		
+		btn[iBtn] = new JButton("Path Steps");
+		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
+		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
+		//		b2.setMnemonic(KeyEvent.VK_N);
+		btn[iBtn].setActionCommand("Path Steps");
+		btn[iBtn].addActionListener(this);
+		btn[iBtn].setToolTipText("Show the progression of the Brute Force methods");
+		iBtn++;
+
 		btn[iBtn] = new JButton("SuperNode");
 		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
 		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
@@ -129,6 +147,15 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		btn[iBtn].addActionListener(this);
 		btn[iBtn].setToolTipText("Find Super Nodes in a graph");
 		iBtn++;
+
+		//		btn[iBtn] = new JButton("Paint");
+		//		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
+		//		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
+		//		//		b2.setMnemonic(KeyEvent.VK_N);
+		//		btn[iBtn].setActionCommand("paint");
+		//		btn[iBtn].addActionListener(this);
+		//		btn[iBtn].setToolTipText("Test paint");
+		//		iBtn++;
 
 		JPanel panelEast = new JPanel();
 		panelEast.setLayout(new GridLayout(30,1));
@@ -142,6 +169,12 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 
 	private static JFrame frameItem;
 
+	public static int iBF_btn = 0;
+	public static boolean fBF_btn = false; 
+	
+	public static int iBFStep_btn = 0;
+	public static boolean fBFStep_btn = false; 
+	
 	public void actionPerformed(ActionEvent e) {
 		//		System.out.println(e.getActionCommand());
 
@@ -202,9 +235,22 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 			ShowBoard.rePaint();
 			break;
 		case "BruteForce":
+			//			Thread t = new Thread(new BruteForce());
+			//			t.run();
 			VertexSimple[][] vertex = BruteForce.boardToGraph(Board.getBoard());
 			ArrayList<Integer> longestPath = BruteForce.findLongestPath(vertex);
 			Path.drawPath2(longestPath);
+			ShowBoard.rePaint();
+			break;
+		case "Path Progress":
+			iBF_btn = 0;
+			fBF_btn = true;
+			ShowBoard.rePaint();
+			break;
+		case "Path Steps":
+			;;;System.out.println("BF-Steps");
+			iBFStep_btn = 0;
+			fBFStep_btn = true;
 			ShowBoard.rePaint();
 			break;
 		case "SuperNode":
@@ -213,6 +259,9 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 			ShowBoard.rePaint();
 			Graph.fTogglePaint = !Graph.fTogglePaint;
 			break;
+			//		case "paint":
+			//			ShowBoard.rePaint();
+			//			break;
 		}
 	}
 
@@ -220,13 +269,14 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 	public JPanel getItemJPanel() {
 
 		ImageIcon iconApple_24px = new ImageIcon("imgs/Apple_24px.png");
-		JButton btnApple = new JButton("", iconApple_24px);
+		JLabel lblApple = new JLabel(iconApple_24px);
 		ImageIcon iconChestnut_24px = new ImageIcon("imgs/Chestnut_24px.png");
-		JButton btnChestnut = new JButton("", iconChestnut_24px);
+		JLabel lblChestnut = new JLabel(iconChestnut_24px);
 		ImageIcon iconBlueBerry_24px = new ImageIcon("imgs/BlueBerry_24px.png");
-		JButton btnBlueBerry = new JButton("", iconBlueBerry_24px);
+		JLabel lblBlueBerry = new JLabel(iconBlueBerry_24px);
 		ImageIcon iconAcorn_24px = new ImageIcon("imgs/Acorn_24px.png");
-		JButton btnAcorn = new JButton("", iconAcorn_24px);
+		JLabel lblAcorn = new JLabel(iconAcorn_24px);
+
 
 		ImageIcon iconMinus = new ImageIcon("imgs/Minus_24px.png");
 		JButton btnMinus1 = new JButton("", iconMinus);
@@ -246,7 +296,10 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		btnMinus1.addMouseListener(this); btnMinus2.addMouseListener(this); btnMinus3.addMouseListener(this); btnMinus4.addMouseListener(this);
 		btnPlus1.addMouseListener(this); btnPlus2.addMouseListener(this); btnPlus3.addMouseListener(this); btnPlus4.addMouseListener(this);
 
-		JButton btnAppleNum = new JButton("" + ProbItem.fqs[0]);
+		String txt = "<html><head> <style> h1 {text-align:center;} </style> <h1>" + "_   " + ProbItem.fqs[0] + "</h1> </head> <body> </html>";
+		JLabel lblAppleNum = new JLabel(txt);
+
+		//		JButton btnApplelblAppleNumNum = new JButton("" + ProbItem.fqs[0]);
 		JButton btnChestnutNum = new JButton("" + ProbItem.fqs[2]);
 		JButton btnBlueBerryNum = new JButton("" + ProbItem.fqs[1]);
 		JButton btnAcornNum = new JButton("" + ProbItem.fqs[7]);
@@ -259,10 +312,10 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		JPanel panelItems = new JPanel();
 		panelItems.setLayout(new GridLayout(4, 5));
 
-		panelItems.add(btnApple); panelItems.add(btnMinus1); panelItems.add(btnPlus1); panelItems.add(btnAppleNum); panelItems.add(btnApplePro);
-		panelItems.add(btnChestnut); panelItems.add(btnMinus2); panelItems.add(btnPlus2); panelItems.add(btnChestnutNum); panelItems.add(btnChestnutPro);
-		panelItems.add(btnBlueBerry); panelItems.add(btnMinus3); panelItems.add(btnPlus3); panelItems.add(btnBlueBerryNum); panelItems.add(btnBlueBerryPro);
-		panelItems.add(btnAcorn); panelItems.add(btnMinus4); panelItems.add(btnPlus4); panelItems.add(btnAcornNum); panelItems.add(btnAcornPro);
+		panelItems.add(lblApple); panelItems.add(btnMinus1); panelItems.add(btnPlus1); panelItems.add(lblAppleNum); panelItems.add(btnApplePro);
+		panelItems.add(lblChestnut); panelItems.add(btnMinus2); panelItems.add(btnPlus2); panelItems.add(btnChestnutNum); panelItems.add(btnChestnutPro);
+		panelItems.add(lblBlueBerry); panelItems.add(btnMinus3); panelItems.add(btnPlus3); panelItems.add(btnBlueBerryNum); panelItems.add(btnBlueBerryPro);
+		panelItems.add(lblAcorn); panelItems.add(btnMinus4); panelItems.add(btnPlus4); panelItems.add(btnAcornNum); panelItems.add(btnAcornPro);
 
 		return panelItems;
 	}
@@ -281,7 +334,6 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		case "AcornPlus": ProbItem.plus('H'); break;
 		}
 		System.out.println("ProbItem.fqs[0]" + ProbItem.fqs[0]);
-		// TODO Auto-generated method stub
 		frameItem.getContentPane().add(getItemJPanel(), BorderLayout.CENTER);
 		frameItem.setVisible(true);
 	}
@@ -313,21 +365,6 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		// TODO Auto-generated method stub
 
 	}
-
-
-
-	//		@Override
-	//		public void propertyChange(PropertyChangeEvent e) {
-	//
-	//
-	//		}
-	//
-	//		@Override
-	//		public void actionPerformed(ActionEvent e) {
-	//			// TODO Auto-generated method stub
-	//
-	//		}
-
 }
 
 

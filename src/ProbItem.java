@@ -43,7 +43,7 @@ public class ProbItem {
 		n = 8;
 		fqs = new int[n];
 		chs = new char[n];
-		chs[0] = 'A'; fqs[0] = 1;
+		chs[0] = 'A'; fqs[0] = 2;
 		chs[1] = 'B'; fqs[1] = 1;
 		chs[2] = 'C'; fqs[2] = 1;
 		chs[3] = 'D'; fqs[3] = 0;
