@@ -23,16 +23,27 @@ public class Path {
 		paths = new int[0][0];
 	} 
 
-	public static void setPath(int[] s) { 
+	public static void setPath(int[] s) {
 		paths = new int[1][0];
 		paths[0] = s;
 	}
+	public static void setPath(Integer[] s) {
+		int[] sInt = new int[s.length];	for(int i=0; i<s.length; i++) sInt[i] = s[i]; //??LookAt
+		paths = new int[1][0];
+		paths[0] = sInt;
+	}
+		
 	public static void setPath(int[][] s) {
 		paths = s;
 	}
 
 	public static void drawPath(int[] s) {
 		setPath(s);
+		drawPath();
+	}
+	public static void drawPath(Integer[] s) {
+		int[] sInt = new int[s.length];	for(int i=0; i<s.length; i++) sInt[i] = s[i]; //??LookAt
+		setPath(sInt);
 		drawPath();
 	}
 	public static void drawPath(int[][] s) {
@@ -61,7 +72,7 @@ public class Path {
 	public static void drawPath() {
 		System.out.println("drawSwipe()"); //**
 
-		Graphics2D g2d = ShowBoard.getG2D();
+		Graphics2D g2d = ShowBoard.getGraphic2D();
 		if (g2d == null) return; //??
 
 		double pScale = ShowBoard.pScale;
@@ -87,12 +98,6 @@ public class Path {
 
 				int wImg = img.getWidth(null), hImg = img.getHeight(null);
 				int wImgScale = (int) (wImg * pScale), hImgcaleS = (int) (hImg * pScale);
-
-				//			;;;System.out.println("xPos: " + xPos + "   yPos: " + yPos);
-				//			;;;System.out.println("dI = " + dI);
-				//			;;;System.out.println("pScale = " + pScale);
-				//			;;;System.out.println("wImg: " + wImg + "   hImg: " + hImg);
-				//			;;;System.out.println("wImgScale: " + wImgScale + "   hImgcaleS: " + hImgcaleS);
 
 				xPos += (dx == 0) ? -wImgScale / 2 + dI / 2 : dI / 2 - wImgScale / 2;
 				yPos += (dy == 0) ? -hImgcaleS / 2 + dI / 2 : dI / 2 - hImgcaleS / 2;
