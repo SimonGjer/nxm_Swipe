@@ -88,6 +88,12 @@ public class ProbItem {
 				chRet[iCh++] = chs[i];
 	}
 
+	public char getItem(double rnd) {
+		return chRet[(int) (rnd * chRet.length)];
+	}
+	
+	
+	
 	/** Returns a random item, as if the item was drawn from a sack of items (the drawn item is put into the sack again).
 	 * @return a random item
 	 */

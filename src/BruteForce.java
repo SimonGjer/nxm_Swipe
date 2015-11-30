@@ -74,11 +74,11 @@ public class BruteForce implements Runnable {
 	}
 
 	private static int iIter;
-	
+
 	public static ArrayList<Integer> findLongestPath(VertexSimple[][] graph) {
 		iIter = 0;
 		Buffer.resetPaths();
-		
+
 		longestPath = new ArrayList<Integer>();
 
 		int nCol = graph.length, nRow = graph[0].length;
@@ -164,10 +164,10 @@ public class BruteForce implements Runnable {
 		while(!stack.isEmpty()) {
 			VertexSuper v = stack.pop();
 			if (v.getSuperNode() == null) {
-				if (v.nEdge <= 2 && v.nEdge >= 1) {
+				if (v.edgeTo.size() <= 2 && v.edgeTo.size() >= 1) {
 					for (int i = 0; i < v.edgeTo.size(); i++) {
 						VertexSuper vAdd = v.edgeTo.get(i);
-						if (vAdd.nEdge <= 2 && vAdd.nEdge >= 1) {
+						if (vAdd.edgeTo.size() <= 2 && vAdd.edgeTo.size() >= 1) {
 							//Create SuperNode
 							int valueTotal = v.value + vAdd.value;
 							double xSuper = (v.xPos * v.value + vAdd.xPos * vAdd.value) / valueTotal;
@@ -215,7 +215,37 @@ public class BruteForce implements Runnable {
 
 
 	public static VertexSuper[][] getGraphWithSuperNodesTmp(char[][] board) {
+		counter = 0;
+		int nCol = board.length, nRow = board[0].length;
 
+		VertexSuper[][] vs = buildInitialSuperGraph(board);
+
+		boolean fAllDone;
+		do {
+			fAllDone = true;
+			for(int iRow = 0; iRow < nRow; iRow++) {
+				for(int iCol = 0; iCol < nCol; iCol++) {
+					VertexSuper v = vs[iCol][iRow];
+					while(v.vSuper != null) v = v.vSuper;
+					//					if (v.getSuperNode() == null) {
+					if (v.edgeTo.size() <= 2 && v.edgeTo.size() >= 1) {
+						for (int i = 0; i < v.edgeTo.size(); i++) {
+							VertexSuper vAdd = v.edgeTo.get(i);
+							if (vAdd.edgeTo.size() <= 2 && vAdd.edgeTo.size() >= 1) {
+								createSuperNode(v, vAdd);
+								fAllDone = false;
+								break;
+							}
+						}
+					}
+				}
+			}
+		} while (!fAllDone);
+		System.out.println("SuperNode Done!");
+		return vs;
+	}
+
+	private static VertexSuper[][] buildInitialSuperGraph(char[][] board) {
 		int nCol = board.length, nRow = board[0].length;
 
 		VertexSuper[][] vs = new VertexSuper[nCol][nRow];
@@ -251,87 +281,72 @@ public class BruteForce implements Runnable {
 			for(int iCol = 0; iCol < nCol; iCol++)
 				vs[iCol][iRow].updateSuperEdge();
 
-		boolean fAllDone;
-		do {
-			fAllDone = true;
-			for(int iRow = 0; iRow < nRow; iRow++) {
-				for(int iCol = 0; iCol < nCol; iCol++) {
-					VertexSuper v = vs[iCol][iRow];
-					while(v.vSuper != null) v = v.vSuper;
-					//					if (v.getSuperNode() == null) {
-					if (v.nEdge <= 2 && v.nEdge >= 1) {
-						for (int i = 0; i < v.edgeTo.size(); i++) {
-							VertexSuper vAdd = v.edgeTo.get(i);
-							if (vAdd.nEdge <= 2 && vAdd.nEdge >= 1) {
-								//Create SuperNode
-								int valueTotalSuper = v.value + vAdd.value;
-								double xSuper = (v.xPos * v.value + vAdd.xPos * vAdd.value) / valueTotalSuper;
-								double ySuper = (v.yPos * v.value + vAdd.yPos * vAdd.value) / valueTotalSuper;
-								VertexSuper vSuper = new VertexSuper(xSuper , ySuper);
-								vSuper.addAbsorbedEdge(v); vSuper.addAbsorbedEdge(vAdd);
-								vSuper.value = valueTotalSuper;
-								vSuper.item = v.item;
-								v.setSuperNode(vSuper); vAdd.setSuperNode(vSuper);
-
-								//								for (VertexSuper vOut : v.edgeTo) {
-								for (int iOut = 0; iOut < v.edgeTo.size(); iOut++) {
-									VertexSuper vOut = v.edgeTo.get(iOut);
-									if (vOut != vAdd) {
-										vSuper.addEdge(vOut);
-										v.removeEdge(vOut);
-										//v.remove(vOut);v.add(vSuper);
-										v.addEdge(vSuper);
-										;;;
-										for (int iOutOut = 0; iOutOut < vOut.edgeTo.size(); iOutOut++) {
-//											if (vOut.edgeTo.get(iOutOut) == v || vOut.edgeTo.get(iOutOut) == vAdd) {
-												vOut.edgeTo.remove(v); vOut.edgeTo.remove(vAdd); vOut.edgeTo.add(vSuper);
-//												vOut.edgeTo.set(iOutOut, vSuper);
-//											}
-										}
-									}
-								}
-								//								for (VertexSuper vAddOut : vAdd.edgeTo) {
-								for (int iAddOut = 0; iAddOut < vAdd.edgeTo.size(); iAddOut++) {
-									VertexSuper vAddOut = vAdd.edgeTo.get(iAddOut);
-									if (vAddOut != v) {
-										vSuper.addEdge(vAddOut);
-
-
-										v.removeEdge(vAddOut);
-										//v.remove(vOut);v.add(vSuper);
-										v.addEdge(vSuper);
-
-										for (int iAddOutOut = 0; iAddOutOut < vAddOut.edgeTo.size(); iAddOutOut++) {
-//											if (vAddOut.edgeTo.get(iAddOutOut) == vAdd || vAddOut.edgeTo.get(iAddOutOut) == v) {
-//												vAddOut.edgeTo.set(iAddOutOut, vSuper);
-											vAddOut.edgeTo.remove(v); vAddOut.edgeTo.remove(vAdd); vAddOut.edgeTo.add(vSuper);
-//											
-//											}
-										}
-									}
-								}
-								fAllDone = false;
-								break;
-							}
-						}
-					}
-				}
-			}
-		} while (!fAllDone);
 		return vs;
 	}
 
+	private static int counter;
+
+	private static void createSuperNode(VertexSuper v, VertexSuper vAdd) {
+		System.out.println("Counter: " + (counter++));
+		int valueTotalSuper = v.value + vAdd.value;
+		double xSuper = (v.xPos * v.value + vAdd.xPos * vAdd.value) / valueTotalSuper;
+		double ySuper = (v.yPos * v.value + vAdd.yPos * vAdd.value) / valueTotalSuper;
+		VertexSuper vSuper = new VertexSuper(xSuper , ySuper);
+		vSuper.addAbsorbedEdge(v); vSuper.addAbsorbedEdge(vAdd);
+		vSuper.value = valueTotalSuper;
+		vSuper.item = v.item;
+		v.setSuperNode(vSuper); vAdd.setSuperNode(vSuper);
+
+		VertexSuper vCopy = v.getCopyOfVertex();
+		for (VertexSuper vOut : vCopy.edgeTo) {
+			if (vOut != vAdd) {
+				vSuper.addEdge(vOut);
+				v.removeEdge(vOut); //v.removeEdge(vOut);
+				v.addEdge(vSuper);//v.addEdge(vSuper);
+
+				VertexSuper vOutCopy = vOut.getCopyOfVertex();
+
+				for (int iOutOut = 0; iOutOut < vOutCopy.edgeTo.size(); iOutOut++) {
+					//					if (vOut.edgeTo.get(iOutOut) == v || vOut.edgeTo.get(iOutOut) == vAdd) {
+					vOut.removeEdge(v); vOut.removeEdge(vAdd); vOut.addEdge(vSuper);
+					//						vOut.edgeTo.set(iOutOut, vSuper);
+					System.out.println(iOutOut + ": " +xSuper + "," + ySuper);
+					//					}
+				}
+			}
+		}
+		VertexSuper vAddCopy = vAdd.getCopyOfVertex();
+
+
+		for (VertexSuper vAddOut : vAddCopy.edgeTo) {
+			if (vAddOut != v) {
+				vSuper.addEdge(vAddOut);
+				v.removeEdge(vAddOut);
+				v.addEdge(vSuper);
+
+				VertexSuper vAddOutCopy = vAddOut.getCopyOfVertex();
+
+				for (int iAddOutOut = 0; iAddOutOut < vAddOutCopy.edgeTo.size(); iAddOutOut++) {
+					//					if (vAddOut.edgeTo.get(iAddOutOut) == vAdd || vAddOut.edgeTo.get(iAddOutOut) == v) {
+					//						vAddOut.edgeTo.set(iAddOutOut, vSuper);
+					vAddOut.removeEdge(v); vAddOut.removeEdge(vAdd); vAddOut.addEdge(vSuper);
+					//					
+					//					}
+				}
+			}
+		}
+	}
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-//		boardToGraph(Board.getBoard());
+		//		boardToGraph(Board.getBoard());
 		BruteForce.findLongestPath(boardToGraph(Board.getBoard()));
-		
+
 	}
-	
-	
-//	public ArrayList<Integer> run(VertexSimple[][] graph) {
-//		return findLongestPath(graph);
-//	}
+
+
+	//	public ArrayList<Integer> run(VertexSimple[][] graph) {
+	//		return findLongestPath(graph);
+	//	}
 }

@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
@@ -18,11 +19,12 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
 
-public class MenuPanel {
+public class MenuPanel implements ActionListener {
 
 	JTextArea output;
     JScrollPane scrollPane;
-
+    JMenuItem menuItemAbout;
+    
     public JMenuBar createMenuBar() {
         JMenuBar menuBar;
         JMenu menu, submenu;
@@ -118,10 +120,11 @@ public class MenuPanel {
         menu.getAccessibleContext().setAccessibleDescription("This is the Help menu");
         menuBar.add(menu);
         
-        menuItem = new JMenuItem("About", KeyEvent.VK_A); //menuItem.setMnemonic(KeyEvent.VK_T); //used constructor instead
-//        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
-        menuItem.getAccessibleContext().setAccessibleDescription("This doesn't do anything yet");
-        menu.add(menuItem);
+        menuItemAbout = new JMenuItem("About", KeyEvent.VK_A); //menuItem.setMnemonic(KeyEvent.VK_T); //used constructor instead
+        //        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+        menuItemAbout.getAccessibleContext().setAccessibleDescription("This doesn't do anything yet");
+        menuItemAbout.addActionListener(this);
+        menu.add(menuItemAbout);
                 
         return menuBar;
     }
@@ -182,6 +185,15 @@ public class MenuPanel {
             }
         });
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		;;;System.out.println("Menu Action e: " + e);
+		;;;System.out.println("Menu Action (e.getSource() == menuItemAbout): " + (e.getSource() == menuItemAbout));
+		if (e.getSource() == menuItemAbout) winAbout.popUp();
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

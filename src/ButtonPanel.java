@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 
 public class ButtonPanel extends JPanel implements ActionListener, MouseListener {
@@ -134,7 +135,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		btn[iBtn].setVerticalTextPosition(AbstractButton.CENTER);
 		btn[iBtn].setHorizontalTextPosition(AbstractButton.LEADING);
 		//		b2.setMnemonic(KeyEvent.VK_N);
-		btn[iBtn].setActionCommand("Path Steps");
+		btn[iBtn].setActionCommand("Path " + "Steps");
 		btn[iBtn].addActionListener(this);
 		btn[iBtn].setToolTipText("Show the progression of the Brute Force methods");
 		iBtn++;
@@ -231,6 +232,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 			ShowBoard.rePaint();
 			break;
 		case "tmpSwipe":
+			Main.myLaunch(new String[0]);
 			Path.rndPath();
 			ShowBoard.rePaint();
 			break;
@@ -296,8 +298,9 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		btnMinus1.addMouseListener(this); btnMinus2.addMouseListener(this); btnMinus3.addMouseListener(this); btnMinus4.addMouseListener(this);
 		btnPlus1.addMouseListener(this); btnPlus2.addMouseListener(this); btnPlus3.addMouseListener(this); btnPlus4.addMouseListener(this);
 
-		String txt = "<html><head> <style> h1 {text-align:center;} </style> <h1>" + "_   " + ProbItem.fqs[0] + "</h1> </head> <body> </html>";
-		JLabel lblAppleNum = new JLabel(txt);
+		String txt = "<html><head> <style> h1 {text-align:center;} </style> <h1>" + ProbItem.fqs[0] + "</h1> </head> <body> </html>";
+		JLabel lblAppleNum = new JLabel(txt, SwingConstants.CENTER);
+		//lblAppleNum.setHorizontalAlignment(SwingConstants.CENTER);
 
 		//		JButton btnApplelblAppleNumNum = new JButton("" + ProbItem.fqs[0]);
 		JButton btnChestnutNum = new JButton("" + ProbItem.fqs[2]);

@@ -20,34 +20,9 @@ public class ShowBoard extends JPanel {
 	public static int wMinWinSize = 600;
 	public static int hMinWinSize = 600;
 
-	//	private static JFrame thisFrame;
-
 	public static Random random = new Random();
 
-	//	public ShowBoard() {
-	//		initUI();
-	//	}
-	//
-	//	private void initUI() {
-	//		final Surface surface = new Surface();
-	//		add(surface);
-	//		
-	//		addWindowListener(new WindowAdapter() {
-	//			@Override
-	//			public void windowClosing(WindowEvent e) {
-	//				Timer timer = surface.getTimer();
-	//						timer.stop();
-	//			}
-	//		});
-	//		
-	//		setTitle("Points");
-	//		setSize(350, 250);
-	//		setLocationRelativeTo(null);
-	//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	//	}
-
 	public static JFrame frame = new JFrame();
-
 
 	public static void main(String[] args) { // Unit Testing
 		System.out.println("Main"); //**
@@ -80,41 +55,7 @@ public class ShowBoard extends JPanel {
 
 		System.out.println("...");
 
-
-
-		//		while (true) {
-		//			//			Board.newRndBoard();
-		//			//			Path.resetPath();
-		//			//			Graph.setGraph(null);
-		//
-		//			//			VertexSimple[][] vertex = BruteForce.boardToGraph(Board.getBoard());
-		//			//			ArrayList<Integer> longestPath = BruteForce.findLongestPath(vertex);
-		//			//			Path.drawPath2(longestPath);
-		//
-		//			char[][] board = Board.getBoard();
-		//			board[0][0] = (char) ('A' + random.nextInt(3)); //board[random.nextInt(board.length)][random.nextInt(board[0].length)] = (char) ('A' + random.nextInt(3));
-		//			frame.repaint();
-		//			try {
-		//				Thread.sleep(20);
-		//			} catch (InterruptedException e) {
-		//				System.out.println("InterruptedException e = " + e);
-		//				// TODO Auto-generated catch block
-		//				e.printStackTrace();
-		//			}
-		//		}
-
-
-
-		//		EventQueue.invokeLater(new Runnable() {
-		//			@Override
-		//			public void run() {
-		//				System.out.println("...");
-		//				ShowBoard sb = new ShowBoard();
-		//				sb.setVisible(true);
-		//			}
-		//		});
-		//		
-		//		new ShowBoard();
+		//		Main.myLaunch(args);
 	}
 
 	static final int hMenu = 23; //thisFrame.getJMenuBar().getHeight();
@@ -153,8 +94,6 @@ public class ShowBoard extends JPanel {
 		if (hWin < hMinWinSize) hWin = hMinWinSize;
 	}
 
-
-	//	private static Graphics g;
 	private static Graphics2D g2d;
 
 	@Override
@@ -162,13 +101,8 @@ public class ShowBoard extends JPanel {
 		System.out.println("paint(Graphics g)"); //**
 
 		Graphics2D g2d = (Graphics2D) g;
-		//		this.g = g;
 		this.g2d = g2d;
 		board = Board.getBoard();
-		//		int fontSize = 48;
-		//		Font font =  new Font("Verdana", Font.BOLD, fontSize);
-		//		g2d.setFont(font);
-		//		g2d.setBackground(Color.CYAN);
 
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(0, 0, g2d.getClip().getBounds().width, g2d.getClip().getBounds().height);
@@ -191,7 +125,10 @@ public class ShowBoard extends JPanel {
 				ShowBoard.rePaint();
 				try { Thread.sleep(250); } catch (InterruptedException ei) {	System.out.println("InterruptedException ei = " + ei); ei.printStackTrace(); }
 				ButtonPanel.iBF_btn++;
-			} else { ButtonPanel.fBF_btn = false; }
+			} else {
+				Path.resetPath();
+				ButtonPanel.fBF_btn = false;
+			}
 		}
 
 		else if(ButtonPanel.fBFStep_btn) {
@@ -202,11 +139,11 @@ public class ShowBoard extends JPanel {
 				ShowBoard.rePaint();
 				try { Thread.sleep(20); } catch (InterruptedException ei) {	System.out.println("InterruptedException ei = " + ei); ei.printStackTrace(); }
 				ButtonPanel.iBFStep_btn++;
-			} else { ButtonPanel.fBFStep_btn = false; }
+			} else {
+				Path.resetPath();
+				ButtonPanel.fBFStep_btn = false;
+			}
 		}
-
-
-
 		Graph.drawGraph(g2d);
 		Path.drawPath();
 	}
@@ -214,16 +151,9 @@ public class ShowBoard extends JPanel {
 	public static void rePaint() {
 		;;;System.out.println("rePaint()");
 		frame.repaint();
-		//				frame.setVisible(false); // !!!
-		//				frame.setVisible(true);
 	}
 
-
-	//	public static Graphics getGraphic() { return g; }
 	public static Graphics2D getGraphic2D() { return g2d; }
-
-
-
 }
 
 

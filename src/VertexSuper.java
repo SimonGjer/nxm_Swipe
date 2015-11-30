@@ -11,18 +11,21 @@ public class VertexSuper {
 	VertexSuper[] edgeToSimple = new VertexSuper[8];
 	ArrayList<VertexSuper> edgeTo = new ArrayList<VertexSuper>();
 	ArrayList<VertexSuper> absorbedVertex = new ArrayList<VertexSuper>();
-	int nEdge;
 	double xPos, yPos;
-	int value = 1;
+	int value;
 	char item; //??
 	boolean fDrawn = false;
 	VertexSuper vSuper = null;
 
 	public VertexSuper(double xPos, double yPos) {
-		this.xPos = xPos; this.yPos = yPos;
-		this.value = 1;
+		this(xPos, yPos, 1);
 	}
 
+	public VertexSuper(double xPos, double yPos, int value) {
+		this.xPos = xPos; this.yPos = yPos;
+		this.value = value;
+	}
+	
 	public void createEdge(VertexSuper[][] vs, int col, int row, int d) {
 		edgeToSimple[d] = vs[col][row];
 		vs[col][row].edgeToSimple[(d + 4) % 8] = this; //
@@ -32,7 +35,6 @@ public class VertexSuper {
 		for(int i = 0; i < edgeToSimple.length; i++) {
 			if (edgeToSimple[i] != null) edgeTo.add(edgeToSimple[i]);
 		}
-		nEdge = edgeTo.size();
 	}
 
 	public void addEdge(VertexSuper vs) {
@@ -56,6 +58,19 @@ public class VertexSuper {
 	
 	public VertexSuper getSuperNode() {
 		return vSuper;
+	}
+	
+	public VertexSuper getCopyOfVertex() {
+		VertexSuper vCopy = new VertexSuper(xPos, yPos, value);
+		
+		vCopy.edgeToSimple = new VertexSuper[8];
+		for (int i = 0; i < vCopy.edgeToSimple.length; i++) vCopy.edgeToSimple[i] = edgeToSimple[i];
+		vCopy.edgeTo = new ArrayList<VertexSuper>(edgeTo);
+		vCopy.absorbedVertex = new ArrayList<VertexSuper>(absorbedVertex);;
+		vCopy.item = item; //??
+		vCopy.fDrawn = fDrawn;
+		
+		return vCopy;
 	}
 
 }
