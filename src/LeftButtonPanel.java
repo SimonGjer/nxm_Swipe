@@ -29,10 +29,7 @@ public class LeftButtonPanel {
 		btn = new Button("New Board"); btn.setId("New");
 		btn.setOnAction( e -> {
 			Board.newRndBoard(); Path.resetPath(); Graph.setGraph(null); Board3D.update();
-			if (fBtn_Comp) doComp();
-			if (fBtn_BigComp) doBigComp();
-			if (fBtn_BruteForce) doBruteForce();
-			if (fBtn_SuperNode) doSuperNode();
+			doBtn_Actions();
 		});
 		btns.add(btn);	
 
@@ -119,6 +116,14 @@ public class LeftButtonPanel {
 
 		return leftPanel;
 	}
+	
+	public static void doBtn_Actions() {
+		if (fBtn_Comp) doComp();
+		if (fBtn_BigComp) doBigComp();
+		if (fBtn_BruteForce) doBruteForce();
+		if (fBtn_SuperNode) doSuperNode();
+	}
+	
 	public static void doComp() {
 		boolean[][][] components = Component.getComponents(Board.getBoard());
 		int[][] path = Path.compToPath(components);

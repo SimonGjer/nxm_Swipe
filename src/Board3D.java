@@ -82,53 +82,53 @@ public class Board3D {
 		;;;testBox.setTranslateZ(nRow / 2.0 + 0.5);
 
 		//		Sphere testSphere = new Sphere(5);
-//		Cylinder testCyl = new Cylinder(0.1, 1); //Radius, length
-//
-//		Image imgCyl = new Image("images/Swipe_0_80.png");
-//		imgCyl = new Image("images/Apple.png");
-//
-//		PhongMaterial matCyl = new PhongMaterial();
-//		matCyl.setDiffuseColor(Color.WHITESMOKE);
-//		matCyl.setSpecularColor(Color.WHITE);
-//
-//		testCyl.setMaterial(matCyl);
-//		//		testCyl.setBlendMode(BlendMode.MULTIPLY);
-//		testCyl.setTranslateY(-0.3);
-//		testCyl.setRotationAxis(Rotate.X_AXIS);
-//		testCyl.setRotate(90);
-//		//		testCyl.setOpacity(0.3);
-//
-//
-//		//		AmbientLight light = new AmbientLight(Color.RED);
-//		//		light.getScope().addAll(testCyl, boxsPic[1][1]);
-//		Group cylGr = new Group();
-//		cylGr.getChildren().add(testCyl);
-//		//		
-//		cylGr.setRotationAxis(Rotate.Y_AXIS);
-//		cylGr.setRotate(45);
-//		//				cylGr.setOpacity(.2);
-//
-//		//cylGr.getChildren().add(light);
-//
-//		testCyl.setId("Test Cylinder");
-//
-//		cylGr.setOnMouseEntered(e -> {
-//			System.out.println("***");
-//			Node entered = e.getPickResult().getIntersectedNode();
-//			if (entered != null) {
-//				entered.setScaleY(Math.sqrt(2));
-//			}
-//		});
+		//		Cylinder testCyl = new Cylinder(0.1, 1); //Radius, length
+		//
+		//		Image imgCyl = new Image("images/Swipe_0_80.png");
+		//		imgCyl = new Image("images/Apple.png");
+		//
+		//		PhongMaterial matCyl = new PhongMaterial();
+		//		matCyl.setDiffuseColor(Color.WHITESMOKE);
+		//		matCyl.setSpecularColor(Color.WHITE);
+		//
+		//		testCyl.setMaterial(matCyl);
+		//		//		testCyl.setBlendMode(BlendMode.MULTIPLY);
+		//		testCyl.setTranslateY(-0.3);
+		//		testCyl.setRotationAxis(Rotate.X_AXIS);
+		//		testCyl.setRotate(90);
+		//		//		testCyl.setOpacity(0.3);
+		//
+		//
+		//		//		AmbientLight light = new AmbientLight(Color.RED);
+		//		//		light.getScope().addAll(testCyl, boxsPic[1][1]);
+		//		Group cylGr = new Group();
+		//		cylGr.getChildren().add(testCyl);
+		//		//		
+		//		cylGr.setRotationAxis(Rotate.Y_AXIS);
+		//		cylGr.setRotate(45);
+		//		//				cylGr.setOpacity(.2);
+		//
+		//		//cylGr.getChildren().add(light);
+		//
+		//		testCyl.setId("Test Cylinder");
+		//
+		//		cylGr.setOnMouseEntered(e -> {
+		//			System.out.println("***");
+		//			Node entered = e.getPickResult().getIntersectedNode();
+		//			if (entered != null) {
+		//				entered.setScaleY(Math.sqrt(2));
+		//			}
+		//		});
 
 
 
 		Rotate rotX90 = new Rotate(90, 0, 0, 0, Rotate.X_AXIS);
 		Rotate rotZ30 = new Rotate(30, 0, 0, 0, Rotate.Z_AXIS);
 
-//		Cylinder testCyl2 = new Cylinder(0.1, 1);
-//		testCyl2.setMaterial(matCyl);
-//		testCyl2.setTranslateX(2);
-//		testCyl2.getTransforms().addAll(rotX90, rotZ30);
+		//		Cylinder testCyl2 = new Cylinder(0.1, 1);
+		//		testCyl2.setMaterial(matCyl);
+		//		testCyl2.setTranslateX(2);
+		//		testCyl2.getTransforms().addAll(rotX90, rotZ30);
 
 
 		Box boxBoard = new Box(nCol + 0.2 , 0.5, nRow + 0.2);
@@ -179,7 +179,7 @@ public class Board3D {
 
 	public static void update(Group board3d, char[][] board) {
 		if (board3d == null) return;
-//		;;;System.out.println("board3d.getChildren().size(): " + board3d.getChildren().size());
+		//		;;;System.out.println("board3d.getChildren().size(): " + board3d.getChildren().size());
 		int nCol = Board.nCol, nRow = Board.nRow;
 		for (int iRow = 0; iRow < nRow; iRow++) {
 			for (int iCol = 0; iCol < nCol; iCol++) {
@@ -188,10 +188,34 @@ public class Board3D {
 			}
 		}		
 
-//		for(Node iNode : board3d.getChildren()) {
-//			//			System.out.println(iNode.getId());
-//			String txt = iNode.getId();
-//			if (txt != null && txt.contains("Field")) {}
-//		}
+		//		for(Node iNode : board3d.getChildren()) {
+		//			//			System.out.println(iNode.getId());
+		//			String txt = iNode.getId();
+		//			if (txt != null && txt.contains("Field")) {}
+		//		}
+	}
+
+	public static void replaceSelectedWith(Group board3d, char ch) {
+		char[][] board = Board.getBoard();
+		for(Node node : board3d.getChildren()) {
+			String id = node.getId();
+			if (id != null) {
+				if (id.contains("Field") && id.contains("*")) {
+					//					System.out.println("node: " + node);
+					String[] s = id.split(" ");
+					int x = Integer.parseInt(s[1]);
+					int y = Integer.parseInt(s[2]);
+					board[x][y] = ch;
+
+					//Deselect nodes
+					node.setScaleX(1);
+					node.setScaleY(1);
+					node.setScaleZ(1);
+					node.setId(id.substring(0, id.length() - 2));
+				}
+			}
+		}
+		Board3D.update();
+		LeftButtonPanel.doBtn_Actions();
 	}
 }

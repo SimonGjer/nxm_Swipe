@@ -61,8 +61,8 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
 	public static Group grPath = new Group();
 	public static Group grSuper = new Group();
-//	public static Group grCamera = new Group();
-	
+	//	public static Group grCamera = new Group();
+
 	public static PerspectiveCamera camera;
 
 	public static void main(String[] args) {
@@ -82,6 +82,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 	public static long tms = System.currentTimeMillis();
 	public static long tmsLast = System.currentTimeMillis();
 	public static long dT = 0;
+	public static char[][] board = Board.getBoard();
 
 	@Override
 	public void start(Stage window) throws Exception {
@@ -96,8 +97,8 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 		board3d = Board3D.getBoard(Board.getBoard());
 
 		camera = Camera.createCamera();
-//		grCamera.getChildren().add(camera);
-		
+		//		grCamera.getChildren().add(camera);
+
 		//		board3d.getChildren().add(camera);
 
 		board3d.getChildren().addAll(grPath, grSuper);
@@ -122,18 +123,21 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 			;;;System.out.println("e.getPickResult().getIntersectedPoint(): " + e.getPickResult().getIntersectedPoint());
 			;;;System.out.println(e.getPickResult().getIntersectedNode().getOpacity());
 			;;;System.out.println(e.getPickResult().getIntersectedNode().getId());
+			;;;System.out.println("picked: " + picked);
 			if (picked != null) {
-				double scalar = 1.3;
-				if(picked.getScaleX() > 1) scalar = 1;
-				picked.setScaleX(scalar);
-				picked.setScaleY(scalar);
-				picked.setScaleZ(scalar);
+				double pScale = (picked.getScaleX() > 1 ) ? 1.0 : 1.1;
+				picked.setScaleX(pScale); picked.setScaleY(pScale);	picked.setScaleZ(pScale);
+				String id = picked.getId();
+				if (id != null) {
+					if (id.contains("*")) id = id.substring(0, id.length() - 2); else id += " *";
+				}
+				picked.setId(id);
 			}
 		});
 
 		scene.setOnKeyPressed(e -> {
 			KeyCode k = e.getCode();
-//			;;;System.out.println("key " + k);
+			//			;;;System.out.println("key " + k);
 			int dRot = (e.isShiftDown()) ? 10 : 1; 
 			if (k == KeyCode.LEFT) { camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(camera.getRotate() - dRot); }
 			if (k == KeyCode.RIGHT) { camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(camera.getRotate() + dRot); }
@@ -141,6 +145,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 			if (k == KeyCode.UP) { Camera.rotateX(-dRot); }
 			if (k == KeyCode.PAGE_DOWN) { Camera.distLookAt(-dRot); }
 			if (k == KeyCode.PAGE_UP) { Camera.distLookAt(dRot); }
+			if (k == KeyCode.A) Board3D.replaceSelectedWith(board3d, 'A');
+			if (k == KeyCode.B) Board3D.replaceSelectedWith(board3d, 'C');
+			if (k == KeyCode.C) Board3D.replaceSelectedWith(board3d, 'B');
 		});
 
 		//		;;;System.out.println("subScene.isDepthBuffer(): " + subScene.isDepthBuffer());
@@ -155,13 +162,13 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 				dT = tms - tmsLast;
 				tmsLast = tms;
 
-//				if (LeftButtonPanel.fBtnTmp1) {
-					//					thisBox.setTranslateX(random.nextInt(5) + 2);
-					//					System.out.println("camera.getRotationAxis() = " + camera.getRotationAxis());
-//					camera.setRotationAxis(new Point3D(0.0, 1.0, 0.0));
-//					camera.setRotate(System.currentTimeMillis() / 70.0);
-					thisBox.setRotate(System.currentTimeMillis() / 100.0);
-//				}
+				//				if (LeftButtonPanel.fBtnTmp1) {
+				//					thisBox.setTranslateX(random.nextInt(5) + 2);
+				//					System.out.println("camera.getRotationAxis() = " + camera.getRotationAxis());
+				//					camera.setRotationAxis(new Point3D(0.0, 1.0, 0.0));
+				//					camera.setRotate(System.currentTimeMillis() / 70.0);
+				thisBox.setRotate(System.currentTimeMillis() / 100.0);
+				//				}
 			}
 		};
 
