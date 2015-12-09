@@ -256,7 +256,7 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 			ShowBoard.rePaint();
 			break;
 		case "SuperNode":
-			VertexSuper[][] G = BruteForce.getGraphWithSuperNodesTmp(Board.getBoard());
+			VertexSuper[][] G = Super.getGraphWithSuperNodesTmp(Board.getBoard());
 			Graph.setGraph(G);
 			ShowBoard.rePaint();
 			Graph.fTogglePaint = !Graph.fTogglePaint;

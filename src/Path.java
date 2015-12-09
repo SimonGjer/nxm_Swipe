@@ -6,6 +6,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Cylinder;
+import javafx.scene.shape.Sphere;
+import javafx.scene.transform.Rotate;
+
 import javax.imageio.ImageIO;
 
 
@@ -32,7 +40,7 @@ public class Path {
 		paths = new int[1][0];
 		paths[0] = sInt;
 	}
-		
+
 	public static void setPath(int[][] s) {
 		paths = s;
 	}
@@ -106,6 +114,128 @@ public class Path {
 			}
 		}
 	}
+
+	public static final double SQRT2 = Math.sqrt(2);
+
+
+	public static void drawPath3d(ArrayList<Integer> s) { //Java can't see the difference between "ArrayList<Integer>" and "ArrayList<Integer[]>" - this is the reason for the "2" in the name "drawSwipe2"
+		int[] tmp = new int[s.size()];
+		for(int i = 0; i < s.size(); i++)
+			tmp[i]=s.get(i);
+		drawPath3d(tmp); 
+	}
+	public static void drawPath3d(int[] s) {
+		setPath(s);
+		drawPath3d(paths);
+	}
+
+	public static void drawPath3d(int[][] paths) {
+		drawPath3d(paths, null);
+	}
+
+	public static void drawPath3d(int[][] paths, Color cColor) {
+		System.out.println("drawSwipe3d()"); //**
+
+		Group board3d = Main.board3d;
+		//		;;;System.out.println("board3d.getChildren().size(): " + board3d.getChildren().size());
+		int rot; //angle of swipe
+		double lCyl; //Lenght of Cyl
+		PhongMaterial matCyl = new PhongMaterial();
+		PhongMaterial matApple = new PhongMaterial();
+		PhongMaterial matChestnut = new PhongMaterial();
+		PhongMaterial matBlueberry = new PhongMaterial();
+		PhongMaterial matAcorn = new PhongMaterial();
+		PhongMaterial mat = new PhongMaterial();
+
+		Color cApple = Color.RED; //new Color(0xBC, 0x18, 0x15, 0xFF);
+		Color cChestnut = Color.GREEN; // new Color(0xB4, 0x61, 0xC5, 0xAF);
+		Color cBlueberry = Color.BLUE; // new Color(0x40, 0x61, 0xC5, 0xAF);
+		Color cAcorn = Color.BROWN; // new Color(0x7F, 0x53, 0x33, 0xAF);
+
+		if (cColor != null) {
+			matCyl.setDiffuseColor(cColor);
+			matCyl.setSpecularColor(cColor.brighter());
+		}
+
+		matApple.setDiffuseColor(cApple);
+		matApple.setSpecularColor(cApple.brighter());
+		matChestnut.setDiffuseColor(cChestnut);
+		matChestnut.setSpecularColor(cChestnut.brighter());
+		matBlueberry.setDiffuseColor(cBlueberry);
+		matBlueberry.setSpecularColor(cBlueberry.brighter());
+		matAcorn.setDiffuseColor(cAcorn);
+		matAcorn.setSpecularColor(cAcorn.brighter());
+
+		PhongMaterial[] matCyls = new PhongMaterial[]{matApple, matChestnut, matBlueberry, matAcorn};
+		Rotate rotX90 = new Rotate(90, 0, 0, 0, Rotate.X_AXIS);
+
+		int nCol = Board.nCol, nRow = Board.nRow;
+		double xMid = nCol / 2.0, yMid = nRow / 2.0;
+
+		char[][] board = Board.getBoard();
+
+		Group grPath = Main.grPath;
+
+		grPath.getChildren().clear();
+
+		int x1, y1, x2 = 0, y2 = 0, dx, dy;
+		double xPos, yPos;
+
+		for(int iPaths = 0; iPaths < paths.length; iPaths++) {
+			path = paths[iPaths];
+			for(int iPath = 0; iPath < path.length - 2; iPath += 2) {
+
+				x1 = path[iPath];     y1 = path[iPath + 1];
+				x2 = path[iPath + 2]; y2 = path[iPath + 3];
+				dx = x2 - x1; dy = y2 - y1;
+				xPos = (x1 + x2) / 2.0; yPos = (y1 + y2) / 2.0;
+
+				if (dx == 0) rot = 0; else if (dy == 0) rot = 90; else if (dx + dy == 0) rot = 135;	else rot = 45;
+				if (rot == 0 || rot == 90) lCyl = 1; else lCyl = SQRT2;
+
+
+				if (cColor != null) { mat = matCyls[(board[x1][y1] - 'A') % matCyls.length];
+				} else { mat = matCyl; }
+
+				Sphere sphere = new Sphere(0.1);
+				Cylinder cyl = new Cylinder(0.1, lCyl);
+
+				sphere.setMaterial(mat);
+				sphere.setTranslateX(x1 - xMid + 0.5);
+				sphere.setTranslateZ(yMid - y1 - 0.5);
+
+				cyl.setMaterial(mat);
+				cyl.setTranslateX(xPos - xMid + 0.5);
+				cyl.setTranslateZ(yMid - yPos - 0.5);
+				//				cyl.setId("Path " + iPath);
+				Rotate rotZ = new Rotate(rot, 0, 0, 0, Rotate.Z_AXIS);
+				cyl.getTransforms().addAll(rotX90, rotZ);
+
+				grPath.getChildren().addAll(sphere, cyl);
+			}
+			Sphere sphere = new Sphere(0.1);
+			sphere.setMaterial(mat);
+			sphere.setTranslateX(x2 - xMid + 0.5);
+			sphere.setTranslateZ(yMid - y2 - 0.5);
+			grPath.getChildren().add(sphere);
+		}
+	}
+	
+	public static void resetPath3d() {
+		paths = new int[0][0];
+		drawPath3d(paths);
+	} 
+	
+	public static Group deleteNodes(Group gr, String txt) {
+		Group newGr = new Group();
+
+		for(Node node : gr.getChildren()) {
+			String id = node.getId();
+			//			if (id == null || !id.contains(txt)) newGr.getChildren().add(node);
+		}
+		return newGr;
+	}
+
 
 	//Only for test
 	;;;public static void rndPath() {

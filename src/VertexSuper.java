@@ -10,8 +10,8 @@ public class VertexSuper {
 
 	VertexSuper[] edgeToSimple = new VertexSuper[8];
 	ArrayList<VertexSuper> edgeTo = new ArrayList<VertexSuper>();
-	ArrayList<VertexSuper> absorbedVertex = new ArrayList<VertexSuper>();
-	double xPos, yPos;
+	ArrayList<VertexSuper> vCollapsed = new ArrayList<VertexSuper>(); //Collapsed ~ Consumed ~ Down 
+	double xPos, yPos, zPos;
 	int value;
 	char item; //??
 	boolean fDrawn = false;
@@ -49,7 +49,7 @@ public class VertexSuper {
 	
 
 	public void addAbsorbedEdge(VertexSuper vs) {
-		absorbedVertex.add(vs);
+		vCollapsed.add(vs);
 	}
 
 	public void setSuperNode(VertexSuper f) {
@@ -66,7 +66,7 @@ public class VertexSuper {
 		vCopy.edgeToSimple = new VertexSuper[8];
 		for (int i = 0; i < vCopy.edgeToSimple.length; i++) vCopy.edgeToSimple[i] = edgeToSimple[i];
 		vCopy.edgeTo = new ArrayList<VertexSuper>(edgeTo);
-		vCopy.absorbedVertex = new ArrayList<VertexSuper>(absorbedVertex);;
+		vCopy.vCollapsed = new ArrayList<VertexSuper>(vCollapsed);;
 		vCopy.item = item; //??
 		vCopy.fDrawn = fDrawn;
 		

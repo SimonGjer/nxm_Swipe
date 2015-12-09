@@ -2,6 +2,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
+import javafx.scene.Group;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Cylinder;
+import javafx.scene.shape.Sphere;
+import javafx.scene.transform.Rotate;
+
 
 public class Graph {
 
@@ -55,7 +61,7 @@ public class Graph {
 				char ch = v.item;
 
 				Image img = Item.getImage(ch);
-				if (v.absorbedVertex.size() > 0) {
+				if (v.vCollapsed.size() > 0) {
 					g2d.drawImage(imgRing, (int)(v.xPos * dI), (int)(v.yPos * dI), (int)((v.xPos + 1) * dI + 1), (int)((v.yPos + 1) * dI + 1), 0, 0, 90, 90, null);
 				}
 
@@ -64,6 +70,7 @@ public class Graph {
 			}
 		}
 	}
+	
 }
 
 

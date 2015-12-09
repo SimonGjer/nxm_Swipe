@@ -102,6 +102,7 @@ public class ShowBoard extends JPanel {
 
 		Graphics2D g2d = (Graphics2D) g;
 		this.g2d = g2d;
+		
 		board = Board.getBoard();
 
 		g2d.setColor(Color.BLACK);
@@ -123,10 +124,10 @@ public class ShowBoard extends JPanel {
 			if (i < bPaths.size()) {
 				Path.setPath(bPaths.get(i));
 				ShowBoard.rePaint();
-				try { Thread.sleep(250); } catch (InterruptedException ei) {	System.out.println("InterruptedException ei = " + ei); ei.printStackTrace(); }
+				try { Thread.sleep(250); } catch (InterruptedException ei) { System.out.println("InterruptedException ei = " + ei); ei.printStackTrace(); }
 				ButtonPanel.iBF_btn++;
 			} else {
-				Path.resetPath();
+//				Path.resetPath();
 				ButtonPanel.fBF_btn = false;
 			}
 		}
@@ -137,7 +138,7 @@ public class ShowBoard extends JPanel {
 			if (i < paths.size()) {
 				Path.setPath(paths.get(i));
 				ShowBoard.rePaint();
-				try { Thread.sleep(20); } catch (InterruptedException ei) {	System.out.println("InterruptedException ei = " + ei); ei.printStackTrace(); }
+				try { Thread.sleep(20); } catch (InterruptedException ei) { System.out.println("InterruptedException ei = " + ei); ei.printStackTrace(); }
 				ButtonPanel.iBFStep_btn++;
 			} else {
 				Path.resetPath();

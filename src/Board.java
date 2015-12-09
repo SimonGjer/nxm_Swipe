@@ -11,6 +11,7 @@ public class Board {
 	private static double[][] rnd; 
 	
 	public static char[][] getBoard() {
+		if (board == null) return newRndBoard();
 		return board;
 	}
 
@@ -19,10 +20,10 @@ public class Board {
 		for (int iRow = 0; iRow < nRow; iRow++)
 			for (int iCol = 0; iCol < nCol; iCol++)
 		rnd[iCol][iRow] = random.nextDouble();
-		return newRndBoard(nCol, nRow);
+		return newBoard(nCol, nRow);
 	}
 
-	public static char[][] newRndBoard(int n, int m) {
+	public static char[][] newBoard(int n, int m) {
 		nCol = n; nRow = m;
 		char[][] b = new char[n][m];
 		
