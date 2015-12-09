@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
 
@@ -132,7 +133,7 @@ public class LeftButtonPanel {
 	public static void doBigComp() {
 		boolean[][][] compBig1 = Component.getNBigestComponents(Board.getBoard(), 1);
 		int[][] sBigPath = Path.compToPath(compBig1);
-		Path.drawPath3d(sBigPath);
+		Path.drawPath3d(sBigPath, Color.WHITESMOKE);
 	}
 	public static void doBruteForce() {
 		VertexSimple[][] vertex = BruteForce.boardToGraph(Board.getBoard());

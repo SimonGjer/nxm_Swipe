@@ -194,7 +194,7 @@ public class Path {
 				if (rot == 0 || rot == 90) lCyl = 1; else lCyl = SQRT2;
 
 
-				if (cColor != null) { mat = matCyls[(board[x1][y1] - 'A') % matCyls.length];
+				if (cColor == null) { mat = matCyls[(board[x1][y1] - 'A') % matCyls.length];
 				} else { mat = matCyl; }
 
 				Sphere sphere = new Sphere(0.1);
