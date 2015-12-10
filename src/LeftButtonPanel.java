@@ -19,6 +19,7 @@ public class LeftButtonPanel {
 	public static boolean fBtn_BigComp = false;
 	public static boolean fBtn_BruteForce = false;
 	public static boolean fBtn_SuperNode = false;
+	public static boolean fBtn_Random = false;
 
 	public static VBox createPanel() {
 		VBox leftPanel = new VBox(5);
@@ -82,7 +83,9 @@ public class LeftButtonPanel {
 		btns.add(btn);
 		
 		btn = new Button("Random"); btn.setId("Random");
-		btn.setOnAction( e -> {	} );
+		btn.setOnAction( e -> {	fBtn_Random = !fBtn_Random;
+			if(fBtn_Random) { doRandom(); } else { Path.resetPath3d();}
+		} );
 		btns.add(btn);
 		
 		btn = new Button("Rnd Big Comp."); btn.setId("Rnd Big Comp.");
@@ -152,5 +155,9 @@ public class LeftButtonPanel {
 		VertexSuper[][] G = Super.getGraphWithSuperNodesTmp(Board.getBoard());
 		Graph.setGraph(G);
 		Super.draw3d(G);
+	}
+	public static void doRandom() {
+		int[] longestPath = RandomAlgorithm.random();
+		Path.drawPath3d(longestPath);
 	}
 }

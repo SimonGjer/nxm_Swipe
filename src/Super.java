@@ -47,7 +47,7 @@ public class Super {
 		return vs;
 	}
 
-	private static VertexSuper[][] buildInitialSuperGraph(char[][] board) {
+	public static VertexSuper[][] buildInitialSuperGraph(char[][] board) {
 		int nCol = board.length, nRow = board[0].length;
 
 		VertexSuper[][] vs = new VertexSuper[nCol][nRow];
