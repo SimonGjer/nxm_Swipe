@@ -80,6 +80,14 @@ public class LeftButtonPanel {
 		btn = new Button("Path Steps"); btn.setId("Path Steps");
 		btn.setOnAction( e -> {	} );
 		btns.add(btn);
+		
+		btn = new Button("Random"); btn.setId("Random");
+		btn.setOnAction( e -> {	} );
+		btns.add(btn);
+		
+		btn = new Button("Rnd Big Comp."); btn.setId("Rnd Big Comp.");
+		btn.setOnAction( e -> {	} );
+		btns.add(btn);
 
 		btn = new Button("Supernode"); btn.setId("Supernode");
 		btn.setOnAction( e -> {
