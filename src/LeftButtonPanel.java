@@ -40,16 +40,16 @@ public class LeftButtonPanel {
 
 
 		btn = new Button("Col -1"); btn.setId("Col -1");
-		btn.setOnAction( e -> {	} );
+		btn.setOnAction( e -> {	Board.colMinus(); Board3D.update(); doBtn_Actions(); } );
 		btns.add(btn);
 		btn = new Button("Col +1"); btn.setId("Col +1");
-		btn.setOnAction( e -> {	} );
+		btn.setOnAction( e -> {	Board.colPlus(); Board3D.update(); doBtn_Actions();	} );
 		btns.add(btn);
 		btn = new Button("Row -1"); btn.setId("Row -1");
-		btn.setOnAction( e -> {	} );
+		btn.setOnAction( e -> {	Board.rowMinus(); Board3D.update(); doBtn_Actions(); } );
 		btns.add(btn);
 		btn = new Button("Row +1"); btn.setId("Row +1");
-		btn.setOnAction( e -> {	} );
+		btn.setOnAction( e -> {	Board.rowPlus(); Board3D.update(); doBtn_Actions(); } );
 		btns.add(btn);
 
 		btn = new Button("Components"); btn.setId("Components");
@@ -103,19 +103,15 @@ public class LeftButtonPanel {
 		btn = new Button("Tmp 2"); btn.setId("Tmp 2");
 		btn.setOnAction( e -> {
 			fBtnTmp2 = !fBtnTmp2;
-			PerspectiveCamera camera = Main.camera;
-			camera.setRotationAxis(Rotate.X_AXIS);
-			if (fBtnTmp2) {
-				camera.setRotate(40);
-				camera.setTranslateZ(-2);
-			} else {
-				camera.setRotate(0);
-				camera.setTranslateZ(0);
-			}
-
+//			PerspectiveCamera camera = Main.camera;
+//			camera.setRotationAxis(Rotate.X_AXIS);
+//			if (fBtnTmp2) {	camera.setRotate(40); camera.setTranslateZ(-2);
+//			} else { camera.setRotate(0); camera.setTranslateZ(0); }
 		} );
 		btns.add(btn);
-		btn = new Button("Tmp 3"); btn.setId("Tmp 3"); btns.add(btn);
+		btn = new Button("Tmp 3"); btn.setId("Tmp 3");
+		btn.setOnAction( e -> {});
+		btns.add(btn);
 
 
 		for (int i = 0; i < btns.size(); i++) {

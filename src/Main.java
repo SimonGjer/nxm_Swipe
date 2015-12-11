@@ -61,6 +61,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
 	public static Group grPath = new Group();
 	public static Group grSuper = new Group();
+	public static Group grBoard = new Group();
 	//	public static Group grCamera = new Group();
 
 	public static PerspectiveCamera camera;
@@ -77,7 +78,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
 	;;;public static Box thisBox;
 
-	public static Group board3d;
+	public static Group board3d; //Should be renamed to graphics or similar
 
 	public static long tms = System.currentTimeMillis();
 	public static long tmsLast = System.currentTimeMillis();
@@ -94,14 +95,14 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 		BorderPane borderPane = new BorderPane();
 		MenuBar menuBar = MenuTopBar.createMenuBar();
 		VBox leftPanel = LeftButtonPanel.createPanel();
-		board3d = Board3D.getBoard(Board.getBoard());
+		board3d = Board3D.getBoard(); //Board3D.getBoard(Board.getBoard());
 
 		camera = Camera.createCamera();
 		//		grCamera.getChildren().add(camera);
 
 		//		board3d.getChildren().add(camera);
 
-		board3d.getChildren().addAll(grPath, grSuper);
+		board3d.getChildren().addAll(grPath, grSuper, grBoard);
 		SubScene subScene = new SubScene(board3d, 900, 750, true, SceneAntialiasing.BALANCED);
 		subScene.setFill(Color.WHITE);
 		subScene.setCamera(camera);

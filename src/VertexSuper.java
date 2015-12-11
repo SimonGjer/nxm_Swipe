@@ -1,9 +1,9 @@
 import java.util.ArrayList;
-
-
+import java.util.Random;
 
 public class VertexSuper {
-	//	static final int UP = 0, RIGTHUP = 1, RIGTH = 2, RIGTHDOWN = 3, DOWN =4, DOWNLEFT = 5, LEFT = 6, LEFTUP = 7;
+
+//	static final int UP = 0, RIGTHUP = 1, RIGTH = 2, RIGTHDOWN = 3, DOWN =4, DOWNLEFT = 5, LEFT = 6, LEFTUP = 7;
 
 //	static final int[] dCol = new int[]{0, 1, 1, 1, 0, -1, -1, -1 };
 //	static final int[] dRow = new int[]{-1, -1, 0, 1, 1, 1, 0, -1 };
@@ -72,5 +72,4 @@ public class VertexSuper {
 		
 		return vCopy;
 	}
-
 }

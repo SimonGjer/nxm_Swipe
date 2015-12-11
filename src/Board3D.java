@@ -19,23 +19,19 @@ public class Board3D {
 	private static PhongMaterial[] matItems;
 	private static Box[][] boxPics;
 
-	public static Group getBoard(char[][] board) {
-
-		Image[] imgs = new Image[4];
-		Image[] imgsGray = new Image[8];
-
-		String[] txtImgGray = new String[] {"AppleGrayBox.png", "AppleDarkGrayBox.png", "ChestnutGrayBox.png", "ChestnutDarkGrayBox.png", "BlueBerryGrayBox.png", "BlueBerryDarkGrayBox.png", "AcornGrayBox.png", "AcornDarkGrayBox.png"};
-		try {
-			//			imgFlower = new Image("http://sample.com/res/flower.png");
-			//			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-			//			InputStream input = classLoader.getResourceAsStream("images/Acorn.png");
-			imgs[0] = new Image("images/Apple.png");
-			imgs[1] = new Image("images/BlueBerry.png");
-			imgs[2] = new Image("images/Chestnut.png");
-			imgs[3] = new Image("images/Acorn.png");
-			for(int i = 0; i < txtImgGray.length; i++) 
-				imgsGray[i] = new Image("images/" + txtImgGray[i]);
-
+	public static Image[] imgs = new Image[4];
+	public static Image[] imgsGray = new Image[8];
+	public static String[] txtImgGray;
+	public static Box boxBoard;
+	;;;public static Box testBox;
+	public static Group grBoard = Main.grBoard;
+	
+	public static Group getBoard() {
+		txtImgGray = new String[] {"AppleGrayBox.png", "AppleDarkGrayBox.png", "ChestnutGrayBox.png", "ChestnutDarkGrayBox.png", "BlueBerryGrayBox.png", "BlueBerryDarkGrayBox.png", "AcornGrayBox.png", "AcornDarkGrayBox.png"};
+		try { //	imgFlower = new Image("http://sample.com/res/flower.png"); //ClassLoader classLoader = Thread.currentThread().getContextClassLoader();//InputStream input = classLoader.getResourceAsStream("images/Acorn.png");
+			imgs[0] = new Image("images/Apple.png"); imgs[1] = new Image("images/BlueBerry.png");
+			imgs[2] = new Image("images/Chestnut.png");	imgs[3] = new Image("images/Acorn.png");
+			for(int i = 0; i < txtImgGray.length; i++) imgsGray[i] = new Image("images/" + txtImgGray[i]);
 		} catch(Exception e) { System.out.println("Error Exception: " + e); }
 
 		matItems = new PhongMaterial[imgsGray.length];
@@ -44,74 +40,23 @@ public class Board3D {
 			matItems[i].setDiffuseMap(imgsGray[i]);
 		}
 
-
-		PhongMaterial matRed = new PhongMaterial(Color.RED);
-
-		//		char[][] board = Board.getBoard();
-
 		int nCol = Board.nCol, nRow = Board.nRow;
-		double xMid = nCol / 2.0, yMid = nRow / 2.0;
+	
+		PhongMaterial matRed = new PhongMaterial(Color.RED);
+		PhongMaterial matGray = new PhongMaterial(Color.GRAY); PhongMaterial matDarkGray = new PhongMaterial(Color.DARKGRAY);
+		;;;PhongMaterial matGreen = new PhongMaterial(Color.GREEN);	PhongMaterial matWhite = new PhongMaterial(Color.WHITE);
 
-		PhongMaterial matGray = new PhongMaterial(Color.GRAY);
-		PhongMaterial matDarkGray = new PhongMaterial(Color.DARKGRAY);
-		;;;PhongMaterial matGreen = new PhongMaterial(Color.GREEN);
-		PhongMaterial matWhite = new PhongMaterial(Color.WHITE);
+		
 
-		Box boxPic;
-		boxPics = new Box[nCol][nRow];
-		for (int iRow = 0; iRow < nRow; iRow++) {
-			for (int iCol = 0; iCol < nCol; iCol++) {
+		;;;testBox = new Box(.5, .9, .5); ;;;testBox.setMaterial(matRed); ;;;testBox.setDrawMode(DrawMode.FILL); //LINE
+		;;;testBox.setTranslateX(nCol / 2.0 + 0.5); ;;;testBox.setTranslateZ(nRow / 2.0 + 0.5); ;;;Main.thisBox = thisBox = testBox;
 
-				boxPic = new Box(0.97 ,0.01 , 0.97);
-				boxPic.setTranslateX(iCol - xMid + 0.5);
-				boxPic.setTranslateY(0.0);
-				boxPic.setTranslateZ(- iRow + yMid - 0.5);
-
-				boxPic.setId("Field " + iCol + ' ' + iRow);
-
-				int i = ((board[iCol][iRow] - 'A') % matItems.length) * 2 + ((((iCol + iRow) & 1) == 0) ? 1 : 0);
-				try { boxPic.setMaterial(matItems[i]); } catch(Exception e) { System.err.println("Error: " + e);  }
-				boxPics[iCol][iRow] = boxPic;
-			}
-		}
-
-		;;;Box testBox = new Box(.5, .9, .5);
-		;;;testBox.setMaterial(matRed);
-		;;;testBox.setDrawMode(DrawMode.FILL); //LINE
-		;;;testBox.setTranslateX(nCol / 2.0 + 0.5);
-		;;;testBox.setTranslateZ(nRow / 2.0 + 0.5);
-
-		//		Sphere testSphere = new Sphere(5);
-		//		Cylinder testCyl = new Cylinder(0.1, 1); //Radius, length
-		//
 		//		Image imgCyl = new Image("images/Swipe_0_80.png");
 		//		imgCyl = new Image("images/Apple.png");
 		//
-		//		PhongMaterial matCyl = new PhongMaterial();
-		//		matCyl.setDiffuseColor(Color.WHITESMOKE);
-		//		matCyl.setSpecularColor(Color.WHITE);
-		//
-		//		testCyl.setMaterial(matCyl);
-		//		//		testCyl.setBlendMode(BlendMode.MULTIPLY);
-		//		testCyl.setTranslateY(-0.3);
-		//		testCyl.setRotationAxis(Rotate.X_AXIS);
-		//		testCyl.setRotate(90);
-		//		//		testCyl.setOpacity(0.3);
-		//
-		//
 		//		//		AmbientLight light = new AmbientLight(Color.RED);
 		//		//		light.getScope().addAll(testCyl, boxsPic[1][1]);
-		//		Group cylGr = new Group();
-		//		cylGr.getChildren().add(testCyl);
-		//		//		
-		//		cylGr.setRotationAxis(Rotate.Y_AXIS);
-		//		cylGr.setRotate(45);
-		//		//				cylGr.setOpacity(.2);
-		//
-		//		//cylGr.getChildren().add(light);
-		//
-		//		testCyl.setId("Test Cylinder");
-		//
+
 		//		cylGr.setOnMouseEntered(e -> {
 		//			System.out.println("***");
 		//			Node entered = e.getPickResult().getIntersectedNode();
@@ -120,23 +65,10 @@ public class Board3D {
 		//			}
 		//		});
 
-
-
-		Rotate rotX90 = new Rotate(90, 0, 0, 0, Rotate.X_AXIS);
-		Rotate rotZ30 = new Rotate(30, 0, 0, 0, Rotate.Z_AXIS);
-
-		//		Cylinder testCyl2 = new Cylinder(0.1, 1);
-		//		testCyl2.setMaterial(matCyl);
-		//		testCyl2.setTranslateX(2);
-		//		testCyl2.getTransforms().addAll(rotX90, rotZ30);
-
-
-		Box boxBoard = new Box(nCol + 0.2 , 0.5, nRow + 0.2);
-		boxBoard.setMaterial(new PhongMaterial(Color.BLACK));
-		boxBoard.setTranslateY(0.25);
+		
 
 		//		Color.rgb(156,216,255)
-		;;;Main.thisBox = thisBox = testBox;
+		
 		//		Light light = new Light();
 		//		AmbientLight light = new AmbientLight();
 		//		light.setBlendMode(BlendMode.RED); // ???
@@ -155,24 +87,51 @@ public class Board3D {
 
 		//		Canvas canvas = new Canvas(400,400);
 
-		// Create and position camera
-		//		PerspectiveCamera camera = new PerspectiveCamera(true);
-		//		camera.getTransforms().addAll(new Rotate(0, Rotate.Y_AXIS), new Rotate(-90, Rotate.X_AXIS), new Translate(0, -0, -15));
 		board3d = new Group();
 
-		board3d.getChildren().addAll(boxBoard, testBox); //, cylGr, testCyl2);
-
-		for (int iRow = 0; iRow < nRow; iRow++) {
-			for (int iCol = 0; iCol < nCol; iCol++) {
-				board3d.getChildren().addAll(/*boxsGrey[iCol][iRow],*/ boxPics[iCol][iRow]);
-			}
-		}
-
-
+		update();
+		
 		return board3d;
 	}
 
 	public static void update() {
+		char[][] board = Board.getBoard();
+		int nCol = Board.nCol, nRow = Board.nRow;
+		double xMid = nCol / 2.0, yMid = nRow / 2.0;
+
+		boxBoard = new Box(nCol + 0.2 , 0.5, nRow + 0.2); //The big black box that every field is placed on
+		boxBoard.setMaterial(new PhongMaterial(Color.BLACK));
+		boxBoard.setTranslateY(0.25);
+		
+		Box boxPic;
+		boxPics = new Box[nCol][nRow];
+		for (int iRow = 0; iRow < nRow; iRow++) {
+			for (int iCol = 0; iCol < nCol; iCol++) {
+
+				boxPic = new Box(0.97 ,0.01 , 0.97);
+				boxPic.setTranslateX(iCol - xMid + 0.5);
+				boxPic.setTranslateY(0.0);
+				boxPic.setTranslateZ(- iRow + yMid - 0.5);
+				boxPic.setId("Field " + iCol + ' ' + iRow);
+
+				int i = ((board[iCol][iRow] - 'A') % matItems.length) * 2 + ((((iCol + iRow) & 1) == 0) ? 1 : 0);
+				boxPic.setMaterial(matItems[i]); // try { boxPic.setMaterial(matItems[i]); } catch(Exception e) { System.err.println("Error: " + e);  }
+				boxPics[iCol][iRow] = boxPic;
+			}
+		}
+		
+		grBoard.getChildren().clear();
+		grBoard.getChildren().addAll(boxBoard, testBox); //, cylGr, testCyl2);
+
+		for (int iRow = 0; iRow < nRow; iRow++) {
+			for (int iCol = 0; iCol < nCol; iCol++) {
+				grBoard.getChildren().addAll(/*boxsGrey[iCol][iRow],*/ boxPics[iCol][iRow]);
+			}
+		}
+			}
+	
+	
+	public static void updateGraphics() {
 		if (board3d == null) return;
 		update(board3d, Board.getBoard());
 	}
