@@ -6,17 +6,19 @@ import java.util.*;
 
 public class RandomAlgorithm {
 
-    static char[][] board = Board.getBoard();
-    static LinkedList<VertexSuper> longestPath = new LinkedList<>();
+    static char[][] board;
+    static ArrayList<Integer> longestPath;
 
-    public static int[] random() {
-        VertexSuper[][] vertex = Super.buildInitialSuperGraph(board);
+    public static ArrayList<Integer> random() {
+        board = Board.getBoard();
+        longestPath = new ArrayList<>();
+        VertexSuper[][] graph = Super.buildInitialSuperGraph(board);
 
         List<VertexSuper> list = new ArrayList<>();
 
         for (int col = 0; col < Board.nCol; col++) {
             for (int row = 0; row < Board.nRow; row++) {
-                list.add(vertex[col][row]);
+                list.add(graph[col][row]);
             }
         }
 
@@ -26,40 +28,35 @@ public class RandomAlgorithm {
             randomPath(v);
         }
 
-        int[] path = new int[longestPath.size()*2];
-
-        for (int i = 0; i < longestPath.size(); i++) {
-            path[i*2]   = (int)(longestPath.peek().xPos);
-            path[i*2+1] = (int)(longestPath.poll().yPos);
-        }
-
-        return path;
+        return longestPath;
     }
 
     public static void randomPath(VertexSuper v) {
 
-        LinkedList<VertexSuper> path = new LinkedList<>();
-        VertexSuper[][] vertex = Super.buildInitialSuperGraph(board);
-        VertexSuper vNew = vertex[(int)(v.xPos)][(int)(v.yPos)];
-        pickNeighbour(vNew, path);
+        ArrayList<Integer> path = new ArrayList<>();
+        VertexSuper[][] tempGraph = Super.buildInitialSuperGraph(board);
+        VertexSuper tempV = tempGraph[(int)(v.xPos)][(int)(v.yPos)];
+        pickNeighbour(tempV, path);
 
         if (path.size() > longestPath.size()) {
             longestPath = path;
         }
     }
 
-    private static LinkedList<VertexSuper> pickNeighbour (VertexSuper v, LinkedList<VertexSuper> path) {
-        path.add(v);
+    private static ArrayList<Integer> pickNeighbour (VertexSuper v, ArrayList<Integer> path) {
+        path.add((int)v.xPos);
+        path.add((int)v.yPos);
         if (v.edgeTo.size() > 0) {
             java.util.Random r = new java.util.Random();
             int randomInt = r.nextInt(v.edgeTo.size());
             VertexSuper nextV = v.edgeTo.get(randomInt);
 
-            Iterator<VertexSuper> neighbour = nextV.edgeTo.iterator();
+            Iterator<VertexSuper> iterateNeighbours = nextV.edgeTo.iterator();
 
-            while (neighbour.hasNext()) {
-                neighbour.next().removeEdge(nextV);
-                neighbour.remove();
+            while (iterateNeighbours.hasNext()) {
+                VertexSuper neighbour = iterateNeighbours.next();
+                neighbour.removeEdge(nextV);
+                iterateNeighbours.remove();
             }
 
             pickNeighbour(nextV, path);
