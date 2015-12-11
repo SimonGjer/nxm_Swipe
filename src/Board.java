@@ -7,9 +7,9 @@ public class Board {
 	public static int nCol = 7, nRow = 7; // n = x = columns , m = y = rows
 
 	public static Random random = new Random();
-	
+
 	private static double[][] rnd; 
-	
+
 	public static char[][] getBoard() {
 		if (board == null) return newRndBoard();
 		return board;
@@ -19,14 +19,14 @@ public class Board {
 		rnd = new double[nCol][nRow];
 		for (int iRow = 0; iRow < nRow; iRow++)
 			for (int iCol = 0; iCol < nCol; iCol++)
-		rnd[iCol][iRow] = random.nextDouble();
+				rnd[iCol][iRow] = random.nextDouble();
 		return newBoard(nCol, nRow);
 	}
 
 	public static char[][] newBoard(int n, int m) {
 		nCol = n; nRow = m;
 		char[][] b = new char[n][m];
-		
+
 		for (int r = 0; r < nRow; r++)
 			for (int c = 0; c < nCol; c++)
 				b[c][r] = pItem.getItem(rnd[c][r]);

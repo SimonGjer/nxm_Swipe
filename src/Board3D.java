@@ -156,7 +156,7 @@ public class Board3D {
 
 	public static void replaceSelectedWith(Group board3d, char ch) {
 		char[][] board = Board.getBoard();
-		for(Node node : board3d.getChildren()) {
+		for(Node node : grBoard.getChildren()) {
 			String id = node.getId();
 			if (id != null) {
 				if (id.contains("Field") && id.contains("*")) {

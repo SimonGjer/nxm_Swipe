@@ -20,7 +20,7 @@ public class Camera {
 		
 		camera.getTransforms().addAll(new Rotate(0, Rotate.Y_AXIS), new Rotate(-90, Rotate.X_AXIS), new Translate(0, -0, -15));
 		
-		
+		camera.setFarClip(1_000); //default 100
 //		placeCameraAndLookAt(0, -distToLookAt, 0, 0, 0, 0);
 		
 		return camera;

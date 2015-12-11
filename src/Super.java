@@ -1,11 +1,13 @@
 //import java.awt.Color;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
@@ -16,40 +18,118 @@ public class Super {
 	static final int UP = 0, RIGTHUP = 1, RIGTH = 2, RIGTHDOWN = 3, DOWN =4, DOWNLEFT = 5, LEFT = 6, LEFTUP = 7;
 	static final double PI_180 = Math.PI / 180.0;
 
+	private static VertexSuper[][] sg; // sg == superGraph
+	//	private static char[][] board = Board.getBoard();
+	private static int nCol, nRow;
+
 	public static VertexSuper[][] getGraphWithSuperNodesTmp(char[][] board) {
-		counter = 0;
-		int nCol = board.length, nRow = board[0].length;
+		nCol = board.length; nRow = board[0].length;
+		sg = buildInitialSuperGraph(board);
 
-		VertexSuper[][] vs = buildInitialSuperGraph(board);
-
+		;;;counter = 0;
+		
 		boolean fAllDone;
 		do {
 			fAllDone = true;
+			if(rule1()) fAllDone = false;
+			if(rule2()) fAllDone = false;
+		} while (!fAllDone);
+		System.out.println("SuperNode Done!");
+		return sg;
+	}
+
+
+	public static boolean rule1() {
+		int rule = 1;
+		;System.out.println("Rule " + rule + " called");
+		boolean fDone, fChange = false;
+		do {
+			fDone = true;
 			for(int iRow = 0; iRow < nRow; iRow++) {
 				for(int iCol = 0; iCol < nCol; iCol++) {
-					VertexSuper v = vs[iCol][iRow];
+					VertexSuper v = sg[iCol][iRow];
 					while(v.vSuper != null) v = v.vSuper;
-					//					if (v.getSuperNode() == null) {
 					if (v.edgeTo.size() <= 2 && v.edgeTo.size() >= 1) {
 						for (int i = 0; i < v.edgeTo.size(); i++) {
 							VertexSuper vAdd = v.edgeTo.get(i);
 							if (vAdd.edgeTo.size() <= 2 && vAdd.edgeTo.size() >= 1) {
-								createSuperNode(v, vAdd);
-								fAllDone = false;
+								createSuperNode(v, vAdd, rule);
+								fDone = false; fChange = true;
 								break;
 							}
 						}
 					}
 				}
 			}
-		} while (!fAllDone);
-		System.out.println("SuperNode Done!");
-		return vs;
+		} while (!fDone);
+		return fChange;
 	}
 
-	public static VertexSuper[][] buildInitialSuperGraph(char[][] board) {
-		int nCol = board.length, nRow = board[0].length;
+	public static boolean rule2() {
+		int rule = 2;
+		;System.out.println("Rule " + rule + " called");
+		boolean fDone, fChange = false;
+		do {
+			fDone = true;
+			for(int iRow = 0; iRow < nRow; iRow++) {
+				for(int iCol = 0; iCol < nCol; iCol++) {
+					VertexSuper v = sg[iCol][iRow];
+					while(v.vSuper != null) v = v.vSuper;
 
+					ArrayList<VertexSuper[]> ts = getTriangles(v);
+
+					for(VertexSuper[] t : ts) {
+						if (t[0].edgeTo.size() <= 3 && t[1].edgeTo.size() <= 3 && t[2].edgeTo.size() <= 3) {
+							createSuperNode(t, rule); break;
+						}
+					}
+				}
+			}
+		} while (!fDone);
+		return fChange;
+	}
+
+	public static boolean rule3() {
+		int rule = 3;
+		;System.out.println("Rule " + rule + " called");
+		boolean fDone, fChange = false;
+		do {
+			fDone = true;
+			for(int iRow = 0; iRow < nRow; iRow++) {
+				for(int iCol = 0; iCol < nCol; iCol++) {
+					VertexSuper v = sg[iCol][iRow];
+					while(v.vSuper != null) v = v.vSuper;
+
+				}
+			}
+		} while (!fDone);
+		return fChange;
+	}
+
+
+	public static ArrayList<VertexSuper[]> getTriangles(VertexSuper v) {
+		ArrayList<VertexSuper[]> triangles = new ArrayList<>();
+		for (VertexSuper v2 : v.edgeTo) {
+			for (VertexSuper v3 : v2.edgeTo) {
+				if (v3 != v) {
+					for (VertexSuper v4 : v3.edgeTo) {
+						if (v4 == v) {
+							VertexSuper[] triangel = new VertexSuper[3];
+							triangel[0] = v; triangel[1] = v2; triangel[2] = v3;
+							triangles.add(triangel);
+						}
+					}
+				}
+			}
+		}
+		return triangles;
+	}
+
+
+
+
+
+	public static VertexSuper[][] buildInitialSuperGraph(char[][] board) {
 		VertexSuper[][] vs = new VertexSuper[nCol][nRow];
 
 		for(int iRow = 0; iRow < nRow; iRow++) {
@@ -86,19 +166,17 @@ public class Super {
 		return vs;
 	}
 
-	private static int counter;
-
-	private static void createSuperNode(VertexSuper v, VertexSuper vAdd) {
-		System.out.println("Counter: " + (counter++));
-		int valueTotalSuper = v.value + vAdd.value;
-		double xSuper = (v.xPos * v.value + vAdd.xPos * vAdd.value) / valueTotalSuper;
-		double ySuper = (v.yPos * v.value + vAdd.yPos * vAdd.value) / valueTotalSuper;
+	private static void createSuperNode(VertexSuper v, VertexSuper vAdd, int rule) {
+		int valueSuper = v.value + vAdd.value;
+		double xSuper = (v.xPos * v.value + vAdd.xPos * vAdd.value) / valueSuper;
+		double ySuper = (v.yPos * v.value + vAdd.yPos * vAdd.value) / valueSuper;
 		double zSuper = Math.max(v.zPos, vAdd.zPos) + 1.0;
 		VertexSuper vSuper = new VertexSuper(xSuper , ySuper);
 		vSuper.addAbsorbedEdge(v); vSuper.addAbsorbedEdge(vAdd);
-		vSuper.value = valueTotalSuper;
+		vSuper.value = valueSuper;
 		vSuper.item = v.item;
 		vSuper.zPos = zSuper;
+		vSuper.sRuleUsed = rule;
 		v.setSuperNode(vSuper); vAdd.setSuperNode(vSuper);
 
 		VertexSuper vCopy = v.getCopyOfVertex();
@@ -106,21 +184,17 @@ public class Super {
 			if (vOut != vAdd) {
 				vSuper.addEdge(vOut);
 				v.removeEdge(vOut); //v.removeEdge(vOut);
-				v.addEdge(vSuper);//v.addEdge(vSuper);
+				v.addEdge(vSuper); //v.addEdge(vSuper);
 
 				VertexSuper vOutCopy = vOut.getCopyOfVertex();
 
-				for (int iOutOut = 0; iOutOut < vOutCopy.edgeTo.size(); iOutOut++) {
-					//					if (vOut.edgeTo.get(iOutOut) == v || vOut.edgeTo.get(iOutOut) == vAdd) {
+//				for (int iOutOut = 0; iOutOut < vOutCopy.edgeTo.size(); iOutOut++) {
 					vOut.removeEdge(v); vOut.removeEdge(vAdd); vOut.addEdge(vSuper);
-					//						vOut.edgeTo.set(iOutOut, vSuper);
-					System.out.println(iOutOut + ": " +xSuper + "," + ySuper);
-					//					}
-				}
+//					System.out.println(iOutOut + ": " +xSuper + "," + ySuper);
+//				}
 			}
 		}
 		VertexSuper vAddCopy = vAdd.getCopyOfVertex();
-
 
 		for (VertexSuper vAddOut : vAddCopy.edgeTo) {
 			if (vAddOut != v) {
@@ -130,15 +204,89 @@ public class Super {
 
 				VertexSuper vAddOutCopy = vAddOut.getCopyOfVertex();
 
-				for (int iAddOutOut = 0; iAddOutOut < vAddOutCopy.edgeTo.size(); iAddOutOut++) {
-					//					if (vAddOut.edgeTo.get(iAddOutOut) == vAdd || vAddOut.edgeTo.get(iAddOutOut) == v) {
-					//						vAddOut.edgeTo.set(iAddOutOut, vSuper);
+//				for (int iAddOutOut = 0; iAddOutOut < vAddOutCopy.edgeTo.size(); iAddOutOut++) {
 					vAddOut.removeEdge(v); vAddOut.removeEdge(vAdd); vAddOut.addEdge(vSuper);
-					//					
-					//					}
+//				}
+			}
+		}
+	}
+
+	private static int counter = 0;
+	
+	private static void createSuperNode(VertexSuper[] vs, int rule) {
+		System.out.println("vs-SuperNode created: " + ++counter);
+		
+		int valueSuper = 0;
+		double xSuper = 0, ySuper = 0, zSuper = 0;
+		//		int valueSuper = v.value + vAdd.value;
+		//		double xSuper = (v.xPos * v.value + vAdd.xPos * vAdd.value) / valueSuper;
+		//		double ySuper = (v.yPos * v.value + vAdd.yPos * vAdd.value) / valueSuper;
+		//		double zSuper = Math.max(v.zPos, vAdd.zPos) + 1.0;
+		for (VertexSuper v : vs) {
+			valueSuper += v.value;
+			xSuper += v.xPos * v.value;	ySuper += v.yPos * v.value;
+			if (zSuper < v.zPos) zSuper = v.zPos;
+		}
+		xSuper /= valueSuper; ySuper /= valueSuper;
+		zSuper += 1.0;
+
+		VertexSuper vSuper = new VertexSuper(xSuper , ySuper);
+		for (VertexSuper v : vs) { vSuper.addAbsorbedEdge(v); v.setSuperNode(vSuper); }
+		//		vSuper.addAbsorbedEdge(v); vSuper.addAbsorbedEdge(vAdd);
+		vSuper.value = valueSuper;
+		vSuper.item = vs[0].item;
+		vSuper.zPos = zSuper;
+		vSuper.sRuleUsed = rule;
+		//		v.setSuperNode(vSuper); vAdd.setSuperNode(vSuper);
+
+		for (VertexSuper v : vs) {
+			VertexSuper vCopy = v.getCopyOfVertex();
+			for (VertexSuper vOut : vCopy.edgeTo) {
+				v.addEdge(vSuper); //v.addEdge(vSuper);
+				boolean fEdgeIntern = false;
+				for (VertexSuper vCk : vs) if (vCk == vOut) fEdgeIntern = true;
+				if (!fEdgeIntern) {
+					vSuper.addEdge(vOut);
+					v.removeEdge(vOut); //v.removeEdge(vOut);
+//					v.addEdge(vSuper); //v.addEdge(vSuper);
+
+					VertexSuper vOutCopy = vOut.getCopyOfVertex();
+
+//					for (int iOutOut = 0; iOutOut < vOutCopy.edgeTo.size(); iOutOut++) {
+						for (VertexSuper vRm : vs) { vOut.removeEdge(vRm); }
+						vOut.addEdge(vSuper);
+//						System.out.println(iOutOut + ": " +xSuper + "," + ySuper);
+//					}
 				}
 			}
 		}
+	}
+
+	private static ArrayList<VertexSuper> vSurfaces;
+	private static HashMap<VertexSuper, Object> hmVisit;
+
+	public static ArrayList<VertexSuper> getSurface(VertexSuper[][] Graph) {
+		VertexSuper[][] G = Graph;
+		vSurfaces = new ArrayList<VertexSuper>();
+		hmVisit = new HashMap<VertexSuper, Object>();
+
+		for(int iRow = 0; iRow < nRow; iRow++) {
+			for(int iCol = 0; iCol < nCol; iCol++) {
+				VertexSuper v = G[iCol][iRow];
+				while(v.vSuper != null) v = v.vSuper; //Go to surface
+				if (!hmVisit.containsKey(v)) buildSurface(v);
+			}
+		}
+
+		return vSurfaces;
+	}
+	public static ArrayList<VertexSuper> buildSurface(VertexSuper v) {
+		vSurfaces.add(v);
+		hmVisit.put(v, null);
+		for(VertexSuper vv : v.edgeTo)
+			if (!hmVisit.containsKey(vv)) buildSurface(vv);
+
+		return vSurfaces;
 	}
 
 
@@ -176,8 +324,6 @@ public class Super {
 		matAcorn.setSpecularColor(cAcorn.brighter());
 
 		PhongMaterial[] matCyls = new PhongMaterial[]{matApple, matChestnut, matBlueberry, matAcorn};
-		//		Rotate rotX90 = new Rotate(90, 0, 0, 0, Rotate.X_AXIS);
-
 
 		char[][] board = Board.getBoard();
 		int nCol = Board.nCol, nRow = Board.nRow;
@@ -198,27 +344,24 @@ public class Super {
 
 		double xMid = nCol / 2.0, yMid = nRow / 2.0;
 		double xPos1, yPos1, zPos1, xPos2, yPos2, zPos2, xPosMid, yPosMid, zPosMid;
+		double dx, dy, dz;
+		double zMaxSuperPos = 0;
 		for(int iRow = 0; iRow < nRow; iRow++) {
 			for(int iCol = 0; iCol < nCol; iCol++) {
 				VertexSuper v = G[iCol][iRow];
 				while(v.vSuper != null) {
-//					VertexSuper vLast = v;
 					v = v.vSuper;
 					if (v.fDrawn) continue; //Perhaps => Break;
 
 					v.fDrawn = true;
 
-//					xPos1 = vLast.xPos; yPos1 = vLast.yPos;
 					xPos2 = v.xPos; yPos2 = v.yPos; zPos2 = v.zPos;
+					if (zPos2 > zMaxSuperPos) zMaxSuperPos = zPos2;
 
-//					xPosMid = (xPos2 - xPos1) / 2.0; yPosMid = (yPos2 - yPos1) / 2.0;
-
-					Sphere sphere = new Sphere(0.4);
+					Sphere sphere = new Sphere(0.3);
 					sphere.setTranslateX(xPos2 - xMid + 0.5);
 					sphere.setTranslateZ(yMid - yPos2 - 0.5);
 					sphere.setTranslateY(-zPos2); 
-					//					sphere.setRotationAxis(Rotate.Z_AXIS);
-					//					sphere.setRotate(90);
 					mat = matCyls[(board[iCol][iRow] - 'A') % matCyls.length];
 					sphere.setMaterial(mat);
 					grSuper.getChildren().add(sphere);
@@ -227,10 +370,10 @@ public class Super {
 					for(VertexSuper vDown : vCollapsed) {
 						xPos1 = vDown.xPos; yPos1 = vDown.yPos; zPos1 = vDown.zPos;
 						xPosMid = (xPos2 + xPos1) / 2.0; yPosMid = (yPos2 + yPos1) / 2.0; zPosMid = (zPos2 + zPos1) / 2.0;
-						double dx = xPos2 - xPos1, dy = yPos2 - yPos1, dz = zPos2 - zPos1;
-						Cylinder cyl = new Cylinder(0.1, Math.sqrt(dx * dx + dy * dy + dz * dz) + .1);
+						dx = xPos2 - xPos1; dy = yPos2 - yPos1; dz = zPos2 - zPos1;
+						Cylinder cyl = new Cylinder(0.05, Math.sqrt(dx * dx + dy * dy + dz * dz) + .1);
 						cyl.setTranslateX(xPosMid - xMid + 0.5); cyl.setTranslateY(-zPosMid); cyl.setTranslateZ(yMid - yPosMid - 0.5);
-						
+
 						double yRot = 0;
 						if (Math.abs(dx) < 1E-6) {
 							if (dy < 0 ) yRot = 180; else yRot = 0;
@@ -238,21 +381,51 @@ public class Super {
 							yRot = Math.atan(dy / dx) / PI_180 - 90; 
 							if (dx < 0) yRot += 180; //??
 						}
-						System.out.println("yRot = " + yRot);
-						
+						//						System.out.println("yRot = " + yRot);
+
 						double lBase = Math.sqrt(dx * dx + dy * dy);
 						double xRot = (lBase == 0) ? 0 : 90 - Math.atan(dz / lBase) / PI_180;
-						
+
 						cyl.getTransforms().addAll(new Rotate(yRot, Rotate.Y_AXIS), new Rotate(xRot, Rotate.X_AXIS));
 
 						cyl.setMaterial(mat);
 						grSuper.getChildren().add(cyl);
 					}
-
-					
-
 				}
 			}
+		}
+
+		//Draw Surface
+		double zSurface = zMaxSuperPos + 2.0;
+		ArrayList<VertexSuper> vSurface = getSurface(Graph);
+
+		for(VertexSuper v: vSurface) v.fDrawn = false;
+
+		for (VertexSuper v: vSurface) {
+			Sphere sphere = new Sphere(0.3);
+			sphere.setTranslateX(v.xPos - xMid + 0.5);
+			sphere.setTranslateY(-zSurface);
+			sphere.setTranslateZ(yMid - v.yPos - 0.5);
+
+			mat = matCyls[(v.item - 'A') % matCyls.length];
+			sphere.setMaterial(mat);
+			grSuper.getChildren().add(sphere);
+
+			for (VertexSuper vEdge: v.edgeTo) {
+				if (!vEdge.fDrawn) {
+					xPosMid = (v.xPos + vEdge.xPos) / 2; yPosMid = (v.yPos + vEdge.yPos) / 2;
+					dx = v.xPos - vEdge.xPos; dy = v.yPos - vEdge.yPos;
+					Cylinder cyl = new Cylinder(0.05, Math.sqrt(dx * dx + dy * dy) );
+					cyl.setTranslateX(xPosMid - xMid + 0.5); cyl.setTranslateY(-zSurface); cyl.setTranslateZ(yMid - yPosMid - 0.5);
+
+					double rot = (Math.abs(dx) < 1E-6) ? ((dy < 0) ? 180 : 0) : ((dx < 0) ? Math.atan(dy/dx)/PI_180 - 90 : Math.atan(dy/dx)/PI_180 + 90);
+					cyl.getTransforms().addAll(new Rotate(90, Rotate.X_AXIS), new Rotate(-rot, Rotate.Z_AXIS));
+
+					cyl.setMaterial(mat);
+					grSuper.getChildren().add(cyl);
+				}
+			}
+			v.fDrawn = true;
 		}
 	}
 }

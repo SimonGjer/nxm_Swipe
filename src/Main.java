@@ -53,9 +53,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
 	Random random = new Random();
 
-
 	static final double SQRT2 = Math.sqrt(2);
-
 
 	;;;public static Stage thisWindow;
 
@@ -98,10 +96,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 		board3d = Board3D.getBoard(); //Board3D.getBoard(Board.getBoard());
 
 		camera = Camera.createCamera();
-		//		grCamera.getChildren().add(camera);
-
-		//		board3d.getChildren().add(camera);
-
+//		System.out.println("camera.getFarClip(): " + camera.getFarClip());
 		board3d.getChildren().addAll(grPath, grSuper, grBoard);
 		SubScene subScene = new SubScene(board3d, 900, 750, true, SceneAntialiasing.BALANCED);
 		subScene.setFill(Color.WHITE);
@@ -110,11 +105,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
 		group.getChildren().add(subScene);
 
-
 		borderPane.setTop(menuBar);
 		borderPane.setLeft(leftPanel);
 		borderPane.setCenter(group);
-
 
 		Scene scene = new Scene(borderPane, 1000, 800);
 
@@ -228,5 +221,4 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 		if (e.getSource() == button) System.out.println("Button pressed");
 		if (e.getSource() == button2) System.out.println("Button 2 pressed");
 	}
-
 }
