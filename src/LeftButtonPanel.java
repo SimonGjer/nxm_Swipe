@@ -153,6 +153,7 @@ public class LeftButtonPanel {
 		Super.draw3d(G);
 	}
 	public static void doRandom() {
+		int[] longestPath = RandomAlgorithm.random();
 		ArrayList<Integer> longestPath = RandomAlgorithm.random();
 		Path.drawPath3d(longestPath);
 	}
