@@ -29,8 +29,8 @@ public class RandomAlgorithm {
         int[] path = new int[longestPath.size()*2];
 
         for (int i = 0; i < longestPath.size(); i++) {
-            path[i*2]   = (int)longestPath.peek().xPos;
-            path[i*2+1] = (int)longestPath.poll().yPos;
+            path[i*2]   = (int)(longestPath.peek().xPos);
+            path[i*2+1] = (int)(longestPath.poll().yPos);
         }
 
         return path;
@@ -40,22 +40,29 @@ public class RandomAlgorithm {
 
         LinkedList<VertexSuper> path = new LinkedList<>();
         VertexSuper[][] vertex = Super.buildInitialSuperGraph(board);
-
-        pickNeighbour(v, path, vertex);
+        VertexSuper vNew = vertex[(int)(v.xPos)][(int)(v.yPos)];
+        pickNeighbour(vNew, path);
 
         if (path.size() > longestPath.size()) {
             longestPath = path;
         }
     }
 
-    private static LinkedList<VertexSuper> pickNeighbour (VertexSuper v, LinkedList<VertexSuper> path, VertexSuper[][] vertex) {
+    private static LinkedList<VertexSuper> pickNeighbour (VertexSuper v, LinkedList<VertexSuper> path) {
         path.add(v);
         if (v.edgeTo.size() > 0) {
             java.util.Random r = new java.util.Random();
             int randomInt = r.nextInt(v.edgeTo.size());
             VertexSuper nextV = v.edgeTo.get(randomInt);
-            v.edgeTo.remove(randomInt);
-            pickNeighbour(nextV, path, vertex);
+
+            Iterator<VertexSuper> neighbour = nextV.edgeTo.iterator();
+
+            while (neighbour.hasNext()) {
+                neighbour.next().removeEdge(nextV);
+                neighbour.remove();
+            }
+
+            pickNeighbour(nextV, path);
         }
         return path;
     }
