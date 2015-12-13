@@ -23,7 +23,7 @@ public class Board3D {
 	public static Image[] imgsGray = new Image[8];
 	public static String[] txtImgGray;
 	public static Box boxBoard;
-	;;;public static Box testBox;
+//	;;;public static Box testBox;
 	public static Group grBoard = Main.grBoard;
 
 	public static Group getBoard() {
@@ -41,15 +41,15 @@ public class Board3D {
 		}
 
 		int nCol = Board.nCol, nRow = Board.nRow;
-
+//
 		PhongMaterial matRed = new PhongMaterial(Color.RED);
-		PhongMaterial matGray = new PhongMaterial(Color.GRAY); PhongMaterial matDarkGray = new PhongMaterial(Color.DARKGRAY);
-		;;;PhongMaterial matGreen = new PhongMaterial(Color.GREEN);	PhongMaterial matWhite = new PhongMaterial(Color.WHITE);
+//		PhongMaterial matGray = new PhongMaterial(Color.GRAY); PhongMaterial matDarkGray = new PhongMaterial(Color.DARKGRAY);
+//		;;;PhongMaterial matGreen = new PhongMaterial(Color.GREEN);	PhongMaterial matWhite = new PhongMaterial(Color.WHITE);
 
 
 
-		;;;testBox = new Box(.5, .9, .5); ;;;testBox.setMaterial(matRed); ;;;testBox.setDrawMode(DrawMode.FILL); //LINE
-		;;;testBox.setTranslateX(nCol / 2.0 + 0.5); ;;;testBox.setTranslateZ(nRow / 2.0 + 0.5); ;;;Main.thisBox = thisBox = testBox;
+//		;;;testBox = new Box(.5, .9, .5); ;;;testBox.setMaterial(matRed); ;;;testBox.setDrawMode(DrawMode.FILL); //LINE
+//		;;;testBox.setTranslateX(nCol / 2.0 + 0.5); ;;;testBox.setTranslateZ(nRow / 2.0 + 0.5); //;;;Main.thisBox = thisBox = testBox;
 
 		//		Image imgCyl = new Image("images/Swipe_0_80.png");
 		//		imgCyl = new Image("images/Apple.png");
@@ -121,11 +121,11 @@ public class Board3D {
 		}
 
 		grBoard.getChildren().clear();
-		grBoard.getChildren().addAll(boxBoard, testBox); //, cylGr, testCyl2);
+		grBoard.getChildren().add(boxBoard); //, cylGr, testCyl2);
 
 		for (int iRow = 0; iRow < nRow; iRow++) {
 			for (int iCol = 0; iCol < nCol; iCol++) {
-				grBoard.getChildren().addAll(/*boxsGrey[iCol][iRow],*/ boxPics[iCol][iRow]);
+				grBoard.getChildren().add(/*boxsGrey[iCol][iRow],*/ boxPics[iCol][iRow]);
 			}
 		}
 	}
@@ -175,6 +175,7 @@ public class Board3D {
 			}
 		}
 		Board3D.update();
+		LeftButtonPanel.resetOngoing();
 		LeftButtonPanel.doBtn_Actions();
 	}
 }

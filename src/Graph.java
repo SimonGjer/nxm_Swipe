@@ -34,7 +34,6 @@ public class Graph {
 	static boolean fTogglePaint = true;
 
 	public static void drawGraph(Graphics2D g2d) {
-
 		;;;System.out.println("G: " + G);
 		if (G == null) return;
 

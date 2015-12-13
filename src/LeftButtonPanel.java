@@ -22,23 +22,26 @@ public class LeftButtonPanel {
 	public static boolean fBtn_Random = false;
 
 	public static VBox createPanel() {
-		VBox leftPanel = new VBox(5);
 
-		ArrayList<Button> btns= new ArrayList<>();
+		int spacing = 5;
+
+		VBox leftPanel = new VBox(spacing);
+
+		ArrayList<Button> btns = new ArrayList<>();
 
 		Button btn;
 
 		btn = new Button("New Board"); btn.setId("New");
 		btn.setOnAction( e -> {
 			Board.newRndBoard(); Path.resetPath(); Graph.setGraph(null); Board3D.update();
-			doBtn_Actions();
+			doBtn_Actions(); resetOngoing();
 		});
 		btns.add(btn);
-		
+
 		btn = new Button("Open"); btn.setId("Open");
-		btn.setOnAction( e -> { Board.openFile(); Board3D.update(); doBtn_Actions(); });
+		btn.setOnAction( e -> { Board.openFile(); Board3D.update(); doBtn_Actions(); resetOngoing(); });
 		btns.add(btn);
-		
+
 		btn = new Button("Save"); btn.setId("Save");
 		btn.setOnAction( e -> { Board.saveFile(); Board3D.update(); doBtn_Actions(); });
 		btns.add(btn);
@@ -49,16 +52,16 @@ public class LeftButtonPanel {
 
 
 		btn = new Button("Col -1"); btn.setId("Col -1");
-		btn.setOnAction( e -> {	Board.colMinus(); Board3D.update(); doBtn_Actions(); } );
+		btn.setOnAction( e -> {	Board.colMinus(); Board3D.update(); doBtn_Actions(); resetOngoing(); } );
 		btns.add(btn);
 		btn = new Button("Col +1"); btn.setId("Col +1");
-		btn.setOnAction( e -> {	Board.colPlus(); Board3D.update(); doBtn_Actions();	} );
+		btn.setOnAction( e -> {	Board.colPlus(); Board3D.update(); doBtn_Actions();	resetOngoing(); } );
 		btns.add(btn);
 		btn = new Button("Row -1"); btn.setId("Row -1");
-		btn.setOnAction( e -> {	Board.rowMinus(); Board3D.update(); doBtn_Actions(); } );
+		btn.setOnAction( e -> {	Board.rowMinus(); Board3D.update(); doBtn_Actions(); resetOngoing(); } );
 		btns.add(btn);
 		btn = new Button("Row +1"); btn.setId("Row +1");
-		btn.setOnAction( e -> {	Board.rowPlus(); Board3D.update(); doBtn_Actions(); } );
+		btn.setOnAction( e -> {	Board.rowPlus(); Board3D.update(); doBtn_Actions(); resetOngoing(); } );
 		btns.add(btn);
 
 		btn = new Button("Components"); btn.setId("Components");
@@ -77,8 +80,9 @@ public class LeftButtonPanel {
 
 		btn = new Button("Brute Force"); btn.setId("Brute Force");
 		btn.setOnAction( e -> {
+			System.out.println("Button: Brute Force");
 			fBtn_BruteForce = !fBtn_BruteForce;
-			if(fBtn_BruteForce) { doBruteForce(); } else { Path.resetPath3d(); }
+			if(fBtn_BruteForce) { doBruteForce(); } else { resetOngoing(); Path.resetPath3d(); }
 		} );
 		btns.add(btn);
 
@@ -89,13 +93,13 @@ public class LeftButtonPanel {
 		btn = new Button("Path Steps"); btn.setId("Path Steps");
 		btn.setOnAction( e -> {	} );
 		btns.add(btn);
-		
+
 		btn = new Button("Random"); btn.setId("Random");
 		btn.setOnAction( e -> {	fBtn_Random = !fBtn_Random;
-			if(fBtn_Random) { doRandom(); } else { Path.resetPath3d(); }
+		if(fBtn_Random) { doRandom(); } else { resetOngoing(); Path.resetPath3d(); }
 		} );
 		btns.add(btn);
-		
+
 		btn = new Button("Rnd Big Comp."); btn.setId("Rnd Big Comp.");
 		btn.setOnAction( e -> {	} );
 		btns.add(btn);
@@ -114,10 +118,10 @@ public class LeftButtonPanel {
 		btn = new Button("Tmp 2"); btn.setId("Tmp 2");
 		btn.setOnAction( e -> {
 			fBtnTmp2 = !fBtnTmp2;
-//			PerspectiveCamera camera = Main.camera;
-//			camera.setRotationAxis(Rotate.X_AXIS);
-//			if (fBtnTmp2) {	camera.setRotate(40); camera.setTranslateZ(-2);
-//			} else { camera.setRotate(0); camera.setTranslateZ(0); }
+			//			PerspectiveCamera camera = Main.camera;
+			//			camera.setRotationAxis(Rotate.X_AXIS);
+			//			if (fBtnTmp2) {	camera.setRotate(40); camera.setTranslateZ(-2);
+			//			} else { camera.setRotate(0); camera.setTranslateZ(0); }
 		} );
 		btns.add(btn);
 		btn = new Button("Tmp 3"); btn.setId("Tmp 3");
@@ -132,14 +136,14 @@ public class LeftButtonPanel {
 
 		return leftPanel;
 	}
-	
+
 	public static void doBtn_Actions() {
 		if (fBtn_Comp) doComp();
 		if (fBtn_BigComp) doBigComp();
 		if (fBtn_BruteForce) doBruteForce();
 		if (fBtn_SuperNode) doSuperNode();
 	}
-	
+
 	public static void doComp() {
 		boolean[][][] components = Component.getComponents(Board.getBoard());
 		int[][] path = Path.compToPath(components);
@@ -151,9 +155,11 @@ public class LeftButtonPanel {
 		Path.drawPath3d(sBigPath, Color.WHITESMOKE);
 	}
 	public static void doBruteForce() {
-		VertexSimple[][] vertex = BruteForce.boardToGraph(Board.getBoard());
-		ArrayList<Integer> longestPath = BruteForce.findLongestPath(vertex);
-		Path.drawPath3d(longestPath);
+//		;;;System.out.println("LeftButtonPanel.doBruteForce()");
+		EventCalls.resetBruteForce();
+		//		VertexSimple[][] vertex = BruteForce.boardToGraph(Board.getBoard());
+		//		ArrayList<Integer> longestPath = BruteForce.findLongestPath(vertex);
+		//		Path.drawPath3d(longestPath);
 	}
 	public static void doSuperNode() {
 		VertexSuper[][] G = Super.getGraphWithSuperNodesTmp(Board.getBoard());
@@ -161,7 +167,23 @@ public class LeftButtonPanel {
 		Super.draw3d(G);
 	}
 	public static void doRandom() {
-		ArrayList<Integer> longestPath = RandomAlgorithm.random();
-		Path.drawPath3d(longestPath);
+		//		;;;System.out.println("doRandom()");
+		EventCalls.resetLongestRandomPath();
+		//		while(true){
+		//			ArrayList<Integer> currentLongestPath = new ArrayList<>();
+		//			ArrayList<Integer> longestPath = RandomAlgorithm.random();
+		//			Main.mainScene.requestLayout();
+		//			if(longestPath.size() > currentLongestPath.size()) {
+		//				currentLongestPath = longestPath;
+		//				Path.drawPath3d(longestPath);
+		//			}
+		//		}
+	}
+	public static void resetOngoing() {
+		EventCalls.resetBruteForce();
+		EventCalls.resetLongestRandomPath();
+		RightPanel.updateStopBtn();
+		if(fBtn_BruteForce) RightPanel.updateBruteForce();
+		else if(fBtn_Random) RightPanel.updateRandom();
 	}
 }

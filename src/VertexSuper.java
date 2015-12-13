@@ -9,7 +9,7 @@ public class VertexSuper {
 	double xPos, yPos, zPos;
 	int value;
 	char item;
-	boolean fDrawn = false;
+	boolean fUsed = false;
 	VertexSuper vSuper = null;
 	int sRuleUsed = 0;
 
@@ -58,7 +58,7 @@ public class VertexSuper {
 		vCopy.edgeTo = new ArrayList<VertexSuper>(edgeTo);
 		vCopy.vCollapsed = new ArrayList<VertexSuper>(vCollapsed);;
 		vCopy.item = item;
-		vCopy.fDrawn = fDrawn;
+		vCopy.fUsed = fUsed;
 		vCopy.vSuper = vSuper;
 		vCopy.sRuleUsed = sRuleUsed;
 

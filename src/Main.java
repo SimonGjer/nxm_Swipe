@@ -30,6 +30,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.Light;
 import javafx.scene.image.Image;
@@ -51,11 +52,7 @@ import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 
-public class Main extends Application implements EventHandler<ActionEvent> {
-
-	Label lblText;
-	Button btnClick;
-	Button button, button2, button3;
+public class Main extends Application {
 
 	private Timeline timeline;
 	private AnimationTimer timer;
@@ -69,21 +66,18 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 	public static Group grPath = new Group();
 	public static Group grSuper = new Group();
 	public static Group grBoard = new Group();
-	//	public static Group grCamera = new Group();
 
 	public static PerspectiveCamera camera;
 
 	public static void main(String[] args) {
-		myLaunch(args);
-	}
-
-	public static void myLaunch(String[] args) { // ?????
-		;;;System.out.println("Start");
 		launch(args);
-		;;;System.out.println("After: launch(args);");
 	}
 
-	;;;public static Box thisBox;
+//	public static void myLaunch(String[] args) { // ?????
+//		;;;System.out.println("Start");
+//		launch(args);
+//		;;;System.out.println("After: launch(args);");
+//	}
 
 	public static Group board3d; //Should be renamed to graphics or similar
 
@@ -102,12 +96,12 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 		BorderPane borderPane = new BorderPane();
 		MenuBar menuBar = MenuTopBar.createMenuBar();
 		VBox leftPanel = LeftButtonPanel.createPanel();
-		board3d = Board3D.getBoard(); //Board3D.getBoard(Board.getBoard());
-
+		VBox rightPanel = RightPanel.createPanel();
+		board3d = Board3D.getBoard();
+				
 		camera = Camera.createCamera();
-//		System.out.println("camera.getFarClip(): " + camera.getFarClip());
 		board3d.getChildren().addAll(grPath, grSuper, grBoard);
-		SubScene subScene = new SubScene(board3d, 900, 750, true, SceneAntialiasing.BALANCED);
+		SubScene subScene = new SubScene(board3d, 850, 750, true, SceneAntialiasing.BALANCED);
 		subScene.setFill(Color.WHITE);
 		subScene.setCamera(camera);
 		Group group = new Group();
@@ -117,8 +111,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 		borderPane.setTop(menuBar);
 		borderPane.setLeft(leftPanel);
 		borderPane.setCenter(group);
+		borderPane.setRight(rightPanel);
 
-		Scene scene = new Scene(borderPane, 1000, 800);
+		Scene scene = new Scene(borderPane, 1150, 800);
 
 		scene.setOnMouseClicked(e -> {
 			Node picked = e.getPickResult().getIntersectedNode();
@@ -127,7 +122,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 			;;;System.out.println(e.getPickResult().getIntersectedNode().getOpacity());
 			;;;System.out.println(e.getPickResult().getIntersectedNode().getId());
 			;;;System.out.println("picked: " + picked);
-			if (picked != null) {
+			if (picked != null && picked.getId() != null) {
 				double pScale = (picked.getScaleX() > 1 ) ? 1.0 : 1.1;
 				picked.setScaleX(pScale); picked.setScaleY(pScale);	picked.setScaleZ(pScale);
 				String id = picked.getId();
@@ -153,8 +148,6 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 			if (k == KeyCode.C) Board3D.replaceSelectedWith(board3d, 'B');
 		});
 
-		//		;;;System.out.println("subScene.isDepthBuffer(): " + subScene.isDepthBuffer());
-		//		;;;System.out.println("scene.isDepthBuffer(): " + scene.isDepthBuffer());
 		window.setScene(scene);
 
 
@@ -170,8 +163,10 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 				//					System.out.println("camera.getRotationAxis() = " + camera.getRotationAxis());
 				//					camera.setRotationAxis(new Point3D(0.0, 1.0, 0.0));
 				//					camera.setRotate(System.currentTimeMillis() / 70.0);
-				thisBox.setRotate(System.currentTimeMillis() / 100.0);
-				//				}
+//				thisBox.setRotate(System.currentTimeMillis() / 100.0);
+				
+				if (LeftButtonPanel.fBtn_Random) EventCalls.doRandom();
+				if (LeftButtonPanel.fBtn_BruteForce && !BruteForce.fDoneRe) EventCalls.doBruteForce();
 			}
 		};
 
@@ -182,7 +177,6 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
 		timer.start(); 
 
-		;;;System.out.println("After: window.show();");
 		//		if (false) { winAbout.popUp(); }
 		//		if (false) {//Test
 		//			lblText = new Label("Some text");
@@ -222,12 +216,5 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 		//			window.show();
 		//		} 
 
-	}
-
-	@Override
-	public void handle(ActionEvent e) {
-		lblText.setText("You clicked me!");
-		if (e.getSource() == button) System.out.println("Button pressed");
-		if (e.getSource() == button2) System.out.println("Button 2 pressed");
 	}
 }

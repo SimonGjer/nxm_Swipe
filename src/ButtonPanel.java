@@ -239,10 +239,10 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 		case "BruteForce":
 			//			Thread t = new Thread(new BruteForce());
 			//			t.run();
-			VertexSimple[][] vertex = BruteForce.boardToGraph(Board.getBoard());
-			ArrayList<Integer> longestPath = BruteForce.findLongestPath(vertex);
-			Path.drawPath2(longestPath);
-			ShowBoard.rePaint();
+//			VertexSimple[][] vertex = BruteForce.boardToGraph(Board.getBoard());
+//			ArrayList<Integer> longestPath = BruteForce.findLongestPath(vertex);
+//			Path.drawPath2(longestPath);
+//			ShowBoard.rePaint();
 			break;
 		case "Path Progress":
 			iBF_btn = 0;

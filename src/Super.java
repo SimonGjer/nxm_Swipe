@@ -20,14 +20,12 @@ public class Super {
 	static final int UP = 0, RIGTHUP = 1, RIGTH = 2, RIGTHDOWN = 3, DOWN =4, DOWNLEFT = 5, LEFT = 6, LEFTUP = 7;
 	static final double PI_180 = Math.PI / 180.0;
 
-	private static VertexSuper[][] sg; // sg == superGraph
-	//	private static char[][] board = Board.getBoard();
+	public static VertexSuper[][] sg; // sg == superGraph
 	private static int nCol, nRow;
 
 	public static VertexSuper[][] getGraphWithSuperNodesTmp(char[][] board) {
 		nCol = board.length; nRow = board[0].length;
 		sg = buildInitialSuperGraph(board);
-
 		;;;counter = 0;
 
 		boolean fAllDone;
@@ -36,7 +34,7 @@ public class Super {
 			if(rule1()) fAllDone = false;
 			if(rule2()) fAllDone = false;
 		} while (!fAllDone);
-		System.out.println("SuperNode Done!");
+		;;;System.out.println("SuperNode Done!");
 		return sg;
 	}
 
@@ -117,8 +115,12 @@ public class Super {
 					for (VertexSuper v4 : v3.edgeTo) {
 						if (v4 == v) {
 							VertexSuper[] triangel = new VertexSuper[3];
-							triangel[0] = v; triangel[1] = v2; triangel[2] = v3;
-							triangles.add(triangel);
+							boolean fDup = false;
+							for (VertexSuper[] t : triangles) if(t[1] == v2) { fDup = true; break; }
+							if (!fDup) {
+								triangel[0] = v; triangel[1] = v2; triangel[2] = v3;
+								triangles.add(triangel);
+							}
 						}
 					}
 				}
@@ -129,6 +131,7 @@ public class Super {
 
 
 	public static VertexSuper[][] buildInitialSuperGraph(char[][] board) {
+		nCol = board.length; nRow = board[0].length;
 		VertexSuper[][] vs = new VertexSuper[nCol][nRow];
 
 		for(int iRow = 0; iRow < nRow; iRow++) {
@@ -182,11 +185,8 @@ public class Super {
 		for (VertexSuper vOut : vCopy.edgeTo) {
 			if (vOut != vAdd) {
 				vSuper.addEdge(vOut);
-				v.removeEdge(vOut); //v.removeEdge(vOut);
-				v.addEdge(vSuper); //v.addEdge(vSuper);
-
-//				VertexSuper vOutCopy = vOut.getCopyOfVertex();
-
+				v.removeEdge(vOut);
+				v.addEdge(vSuper);
 				vOut.removeEdge(v); vOut.removeEdge(vAdd); vOut.addEdge(vSuper);
 			}
 		}
@@ -197,12 +197,7 @@ public class Super {
 				vSuper.addEdge(vAddOut);
 				v.removeEdge(vAddOut);
 				v.addEdge(vSuper);
-
-//				VertexSuper vAddOutCopy = vAddOut.getCopyOfVertex();
-
-				//				for (int iAddOutOut = 0; iAddOutOut < vAddOutCopy.edgeTo.size(); iAddOutOut++) {
 				vAddOut.removeEdge(v); vAddOut.removeEdge(vAdd); vAddOut.addEdge(vSuper);
-				//				}
 			}
 		}
 	}
@@ -224,7 +219,7 @@ public class Super {
 
 		VertexSuper vSuper = new VertexSuper(xSuper , ySuper);
 		for (VertexSuper v : vs)
-			{ vSuper.addAbsorbedEdge(v); v.setSuperNode(vSuper); }
+		{ vSuper.addAbsorbedEdge(v); v.setSuperNode(vSuper); }
 		vSuper.value = valueSuper;
 		vSuper.item = vs[0].item;
 		vSuper.zPos = zSuper;
@@ -233,13 +228,13 @@ public class Super {
 		for (VertexSuper v : vs) {
 			VertexSuper vCopy = v.getCopyOfVertex();
 			for (VertexSuper vOut : vCopy.edgeTo) {
-				v.addEdge(vSuper); //v.addEdge(vSuper);
+				v.addEdge(vSuper);
 				boolean fEdgeIntern = false;
 				for (VertexSuper vCk : vs) if (vCk == vOut) fEdgeIntern = true;
 				if (!fEdgeIntern) {
 					vSuper.addEdge(vOut);
-					v.removeEdge(vOut); //v.removeEdge(vOut);
-						for (VertexSuper vRm : vs) { vOut.removeEdge(vRm); }
+					v.removeEdge(vOut);
+					for (VertexSuper vRm : vs) { vOut.removeEdge(vRm); }
 					vOut.addEdge(vSuper);
 				}
 			}
@@ -272,12 +267,36 @@ public class Super {
 
 		return vSurfaces;
 	}
+	
+	public static void swimCoincidingVS(VertexSuper[][] Graph) {
+		ArrayList<VertexSuper> lGraph = new ArrayList<VertexSuper>();
+		
+		
+		
+	}
+	
+	public static void resetUsedVS(VertexSuper[][] Graph) {
+		for(int iRow = 0; iRow < nRow; iRow++) {
+			for(int iCol = 0; iCol < nCol; iCol++) {
+				VertexSuper v = Graph[iCol][iRow];
+				v.fUsed = false;
+				while(v.vSuper != null) {v.fUsed = false;}
+			}
+		}
+	}
 
 
 	public static void draw3d(VertexSuper[][] Graph) {
 
 		VertexSuper[][] G = Graph;
 
+		
+		
+		
+		
+		
+		
+		
 		//		String[] txtImgGray = new String[] {"AppleGrayBox.png", "AppleDarkGrayBox.png", "ChestnutGrayBox.png", "ChestnutDarkGrayBox.png", "BlueBerryGrayBox.png", "BlueBerryDarkGrayBox.png", "AcornGrayBox.png", "AcornDarkGrayBox.png"};
 		//		Image[] imgs = new Image[4];
 		//		Image[] imgsGray = new Image[txtImgGray.length];
@@ -318,10 +337,10 @@ public class Super {
 		for(int iRow = 0; iRow < nRow; iRow++) {
 			for(int iCol = 0; iCol < nCol; iCol++) {
 				VertexSuper v = G[iCol][iRow];
-				v.fDrawn = false;
+				v.fUsed = false;
 				while(v.vSuper != null) {
 					v = v.vSuper;
-					v.fDrawn = false;
+					v.fUsed = false;
 				}
 			}
 		}
@@ -335,19 +354,19 @@ public class Super {
 				VertexSuper v = G[iCol][iRow];
 				while(v.vSuper != null) {
 					v = v.vSuper;
-					if (v.fDrawn) continue; //Perhaps => Break;
+					if (v.fUsed) continue; //Perhaps => Break;
 
-					v.fDrawn = true;
+					v.fUsed = true;
 
 					xPos2 = v.xPos; yPos2 = v.yPos; zPos2 = v.zPos;
 					if (zPos2 > zMaxSuperPos) zMaxSuperPos = zPos2;
 
 					Shape3D shape3d;
 					switch(v.sRuleUsed) {
-						case 0: shape3d = new Sphere(0.3); break;
-						case 1: shape3d = new Box(0.6, 0.6, 0.6); break;
-						case 2: shape3d = new Cylinder(0.3, 0.6); break;
-						default: shape3d = new Sphere(0.3); break;
+					case 0: shape3d = new Sphere(0.3); break;
+					case 1: shape3d = new Box(0.6, 0.6, 0.6); break;
+					case 2: shape3d = new Cylinder(0.3, 0.6); break;
+					default: shape3d = new Sphere(0.3); break;
 					}
 					shape3d.setTranslateX(xPos2 - xMid + 0.5);
 					shape3d.setTranslateZ(yMid - yPos2 - 0.5);
@@ -388,7 +407,7 @@ public class Super {
 		double zSurface = zMaxSuperPos + 2.0;
 		ArrayList<VertexSuper> vSurface = getSurface(Graph);
 
-		for(VertexSuper v: vSurface) v.fDrawn = false;
+		for(VertexSuper v: vSurface) v.fUsed = false;
 
 		for (VertexSuper v: vSurface) {
 			Sphere sphere = new Sphere(0.3);
@@ -401,7 +420,7 @@ public class Super {
 			grSuper.getChildren().add(sphere);
 
 			for (VertexSuper vEdge: v.edgeTo) {
-				if (!vEdge.fDrawn) {
+				if (!vEdge.fUsed) {
 					xPosMid = (v.xPos + vEdge.xPos) / 2; yPosMid = (v.yPos + vEdge.yPos) / 2;
 					dx = v.xPos - vEdge.xPos; dy = v.yPos - vEdge.yPos;
 					Cylinder cyl = new Cylinder(0.05, Math.sqrt(dx * dx + dy * dy) );
@@ -414,7 +433,7 @@ public class Super {
 					grSuper.getChildren().add(cyl);
 				}
 			}
-			v.fDrawn = true;
+			v.fUsed = true;
 		}
 	}
 }

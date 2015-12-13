@@ -21,13 +21,8 @@ public class RandomAlgorithm {
                 list.add(graph[col][row]);
             }
         }
-
         Collections.shuffle(list);
-
-        for (VertexSuper v : list) {
-            randomPath(v);
-        }
-
+        for (VertexSuper v : list) randomPath(v);
         return longestPath;
     }
 
@@ -46,19 +41,18 @@ public class RandomAlgorithm {
     private static ArrayList<Integer> pickNeighbour (VertexSuper v, ArrayList<Integer> path) {
         path.add((int)v.xPos);
         path.add((int)v.yPos);
+        
+        Iterator<VertexSuper> iterateNeighbours = v.edgeTo.iterator();
+
+        while (iterateNeighbours.hasNext()) {
+            VertexSuper neighbour = iterateNeighbours.next();
+            neighbour.removeEdge(v);
+        }
+        
         if (v.edgeTo.size() > 0) {
             java.util.Random r = new java.util.Random();
             int randomInt = r.nextInt(v.edgeTo.size());
             VertexSuper nextV = v.edgeTo.get(randomInt);
-
-            Iterator<VertexSuper> iterateNeighbours = nextV.edgeTo.iterator();
-
-            while (iterateNeighbours.hasNext()) {
-                VertexSuper neighbour = iterateNeighbours.next();
-                neighbour.removeEdge(nextV);
-                iterateNeighbours.remove();
-            }
-
             pickNeighbour(nextV, path);
         }
         return path;

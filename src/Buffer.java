@@ -13,7 +13,7 @@ public class Buffer {
 
 
 	public static void addBestPath(ArrayList<Integer> path) {
-		if (bPath.size() > 1_000_000) return;
+		if (bPath.size() > 100_000) return;
 		Integer[] pathCopy = new Integer[path.size()];
 		for(int i = 0; i < pathCopy.length; i++) pathCopy[i] = path.get(i);
 		bPath.add(pathCopy);
@@ -23,7 +23,7 @@ public class Buffer {
 
 
 	public static void addEachPath(ArrayList<Integer> path) {
-		if (ePath.size() > 1_000_000) return;
+		if (ePath.size() > 100_000) return;
 		Integer[] pathCopy = new Integer[path.size()];
 		for(int i = 0; i < pathCopy.length; i++) pathCopy[i] = path.get(i);
 		ePath.add(pathCopy);
