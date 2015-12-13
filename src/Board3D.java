@@ -25,7 +25,7 @@ public class Board3D {
 	public static Box boxBoard;
 	;;;public static Box testBox;
 	public static Group grBoard = Main.grBoard;
-	
+
 	public static Group getBoard() {
 		txtImgGray = new String[] {"AppleGrayBox.png", "AppleDarkGrayBox.png", "ChestnutGrayBox.png", "ChestnutDarkGrayBox.png", "BlueBerryGrayBox.png", "BlueBerryDarkGrayBox.png", "AcornGrayBox.png", "AcornDarkGrayBox.png"};
 		try { //	imgFlower = new Image("http://sample.com/res/flower.png"); //ClassLoader classLoader = Thread.currentThread().getContextClassLoader();//InputStream input = classLoader.getResourceAsStream("images/Acorn.png");
@@ -41,12 +41,12 @@ public class Board3D {
 		}
 
 		int nCol = Board.nCol, nRow = Board.nRow;
-	
+
 		PhongMaterial matRed = new PhongMaterial(Color.RED);
 		PhongMaterial matGray = new PhongMaterial(Color.GRAY); PhongMaterial matDarkGray = new PhongMaterial(Color.DARKGRAY);
 		;;;PhongMaterial matGreen = new PhongMaterial(Color.GREEN);	PhongMaterial matWhite = new PhongMaterial(Color.WHITE);
 
-		
+
 
 		;;;testBox = new Box(.5, .9, .5); ;;;testBox.setMaterial(matRed); ;;;testBox.setDrawMode(DrawMode.FILL); //LINE
 		;;;testBox.setTranslateX(nCol / 2.0 + 0.5); ;;;testBox.setTranslateZ(nRow / 2.0 + 0.5); ;;;Main.thisBox = thisBox = testBox;
@@ -65,10 +65,10 @@ public class Board3D {
 		//			}
 		//		});
 
-		
+
 
 		//		Color.rgb(156,216,255)
-		
+
 		//		Light light = new Light();
 		//		AmbientLight light = new AmbientLight();
 		//		light.setBlendMode(BlendMode.RED); // ???
@@ -90,7 +90,7 @@ public class Board3D {
 		board3d = new Group();
 
 		update();
-		
+
 		return board3d;
 	}
 
@@ -102,7 +102,7 @@ public class Board3D {
 		boxBoard = new Box(nCol + 0.2 , 0.5, nRow + 0.2); //The big black box that every field is placed on
 		boxBoard.setMaterial(new PhongMaterial(Color.BLACK));
 		boxBoard.setTranslateY(0.25);
-		
+
 		Box boxPic;
 		boxPics = new Box[nCol][nRow];
 		for (int iRow = 0; iRow < nRow; iRow++) {
@@ -119,7 +119,7 @@ public class Board3D {
 				boxPics[iCol][iRow] = boxPic;
 			}
 		}
-		
+
 		grBoard.getChildren().clear();
 		grBoard.getChildren().addAll(boxBoard, testBox); //, cylGr, testCyl2);
 
@@ -128,9 +128,9 @@ public class Board3D {
 				grBoard.getChildren().addAll(/*boxsGrey[iCol][iRow],*/ boxPics[iCol][iRow]);
 			}
 		}
-			}
-	
-	
+	}
+
+
 	public static void updateGraphics() {
 		if (board3d == null) return;
 		update(board3d, Board.getBoard());

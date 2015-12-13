@@ -1,8 +1,17 @@
+////////////////////////////////////////////////////////////
+//         Longest Path Problem in Cute vs Evil
+// 
+//         Algorithm Design Project autumn 2015
+//
+//             Jens Ravn Jensen, jrje@itu.dk
+//              Peter Skovgaard, pnic@itu.dk 
+//               Simon Gjerløv, sgjc@itu.dk
+//                 Waqas Ali, @itu.dk
+////////////////////////////////////////////////////////////
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.Random;
-
-import com.sun.scenario.effect.Effect;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;

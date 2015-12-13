@@ -16,31 +16,14 @@ public class Camera {
 	
 	public static PerspectiveCamera createCamera() {
 		
-		camera = new PerspectiveCamera(true);
+		camera = new PerspectiveCamera(true); //ParallelCamera ?
 		
 		camera.getTransforms().addAll(new Rotate(0, Rotate.Y_AXIS), new Rotate(-90, Rotate.X_AXIS), new Translate(0, -0, -15));
 		
 		camera.setFarClip(1_000); //default 100
-//		placeCameraAndLookAt(0, -distToLookAt, 0, 0, 0, 0);
 		
 		return camera;
 	}
-	
-//	public static void placeCameraAndLookAt(double xCam, double yCam, double zCam, double xLookAt, double yLookAt, double zLookAt) {
-//		x = xCam; y = yCam; z = zCam;
-//		xLook = xLookAt; yLook = yLookAt; zLook = zLookAt;
-//
-//		camera.getTransforms().clear();
-//		
-//		
-//		if (x != xLook) camera.getTransforms().addAll(new Rotate(-90, Rotate.X_AXIS));
-//		
-//		if (y != yLook) camera.getTransforms().addAll(new Rotate(-90, Rotate.Y_AXIS));
-//		
-//		if (z != zLook) camera.getTransforms().addAll(new Rotate(-90, Rotate.Z_AXIS));
-//		
-//		camera.getTransforms().addAll(new Translate(x, y, z));
-//	}
 	
 	public static void rotateX(double dxRot) {
 		xRot += dxRot;

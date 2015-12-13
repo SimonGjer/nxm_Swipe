@@ -33,7 +33,15 @@ public class LeftButtonPanel {
 			Board.newRndBoard(); Path.resetPath(); Graph.setGraph(null); Board3D.update();
 			doBtn_Actions();
 		});
-		btns.add(btn);	
+		btns.add(btn);
+		
+		btn = new Button("Open"); btn.setId("Open");
+		btn.setOnAction( e -> { Board.openFile(); Board3D.update(); doBtn_Actions(); });
+		btns.add(btn);
+		
+		btn = new Button("Save"); btn.setId("Save");
+		btn.setOnAction( e -> { Board.saveFile(); Board3D.update(); doBtn_Actions(); });
+		btns.add(btn);
 
 		btn = new Button("Item Freq."); btn.setId("Item Freq");
 		btn.setOnAction( e -> {	} );
@@ -63,7 +71,7 @@ public class LeftButtonPanel {
 		btn = new Button("Big Comp."); btn.setId("Big Comp.");
 		btn.setOnAction( e -> {
 			fBtn_BigComp = !fBtn_BigComp;
-			if(fBtn_BigComp) { doBigComp(); } else {	Path.resetPath3d();	}
+			if(fBtn_BigComp) { doBigComp(); } else { Path.resetPath3d(); }
 		} );
 		btns.add(btn);
 
@@ -84,7 +92,7 @@ public class LeftButtonPanel {
 		
 		btn = new Button("Random"); btn.setId("Random");
 		btn.setOnAction( e -> {	fBtn_Random = !fBtn_Random;
-			if(fBtn_Random) { doRandom(); } else { Path.resetPath3d();}
+			if(fBtn_Random) { doRandom(); } else { Path.resetPath3d(); }
 		} );
 		btns.add(btn);
 		
