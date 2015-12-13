@@ -59,6 +59,10 @@ public class RightPanel {
 		RightPanel.setText(txt);
 	}
 
+	public static void updateBigComp() { RightPanel.setText(Component.txtBigComp); }
+	
+	public static void updateComponents() {	RightPanel.setText(Component.txtComps);	}
+	
 	public static void updateRandom() {
 		RightPanel.setText("Random:"
 				+ '\n' + "Longest Path Size: " + (EventCalls.currentLongestPath.size() / 2 - 1)

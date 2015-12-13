@@ -148,11 +148,13 @@ public class LeftButtonPanel {
 		boolean[][][] components = Component.getComponents(Board.getBoard());
 		int[][] path = Path.compToPath(components);
 		Path.drawPath3d(path);
+		RightPanel.updateComponents();
 	}
 	public static void doBigComp() {
 		boolean[][][] compBig1 = Component.getNBigestComponents(Board.getBoard(), 1);
 		int[][] sBigPath = Path.compToPath(compBig1);
 		Path.drawPath3d(sBigPath, Color.WHITESMOKE);
+		RightPanel.updateBigComp();
 	}
 	public static void doBruteForce() {
 //		;;;System.out.println("LeftButtonPanel.doBruteForce()");

@@ -11,7 +11,8 @@ public class Component {
 	private static char[][] b;
 	private static boolean[][] compRet;
 	private static Component cComp = new Component();
-
+	public static String txtBigComp = "";
+	public static String txtComps = "";
 
 	public static boolean[][][] getComponents(char[][] board) {
 		b = board;
@@ -20,15 +21,13 @@ public class Component {
 		ArrayList<boolean[][]> components = new ArrayList<boolean[][]>();
 		ArrayList<Integer> compSize = new ArrayList<Integer>();
 
-		for (int iRow = 0; iRow < nRow; iRow++)
+		for (int iRow = 0; iRow < nRow; iRow++) {
 			for (int iCol = 0; iCol < nCol; iCol++) {
 				if (compUsed[iCol][iRow]) continue;
 				components.add(DFS(iCol, iRow));
 				compSize.add(size);
-//				ShowBoard.rePaint();
-				//				;;;Swipe.drawSwipe(Swipe.transformComp(components)); ShowBoard.rePaint();
 			}
-
+		}
 		//Sorting...(not nice)
 		ComponentsForSort[] tmpSort = new ComponentsForSort[components.size()];
 		for(int i = 0; i < components.size(); i++) 
@@ -38,11 +37,14 @@ public class Component {
 
 		boolean[][][] compRet = new boolean[components.size()][0][0];
 
+		txtBigComp = "Components: " + tmpSort.length + "\n\nBiggest Comp. Size: " + tmpSort[0].getSize();
+		txtComps = "Components: " + tmpSort.length + '\n';
+
 		for(int i = 0; i < tmpSort.length; i++) {
 			compRet[i] = tmpSort[i].getBoard();
-			System.out.println("Component size: " + tmpSort[i].getSize());
+			txtComps += "\n" + (i + 1) + ". Component size: " + tmpSort[i].getSize();
+			//			System.out.println("Component size: " + tmpSort[i].getSize());
 		}
-
 		return compRet;
 	}
 
@@ -105,5 +107,4 @@ public class Component {
 			return comp.size - size;
 		}
 	}
-
 }

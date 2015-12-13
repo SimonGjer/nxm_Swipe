@@ -69,23 +69,17 @@ public class Main extends Application {
 
 	public static PerspectiveCamera camera;
 
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-//	public static void myLaunch(String[] args) { // ?????
-//		;;;System.out.println("Start");
-//		launch(args);
-//		;;;System.out.println("After: launch(args);");
-//	}
-
-	public static Group board3d; //Should be renamed to graphics or similar
+		public static Group board3d; //Should be renamed to graphics or similar
 
 	public static long tms = System.currentTimeMillis();
 	public static long tmsLast = System.currentTimeMillis();
 	public static long dT = 0;
 	public static char[][] board = Board.getBoard();
 
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
 	@Override
 	public void start(Stage window) throws Exception {
 		;;; System.out.println(System.getProperty("java.class.path"));
@@ -169,52 +163,8 @@ public class Main extends Application {
 				if (LeftButtonPanel.fBtn_BruteForce && !BruteForce.fDoneRe) EventCalls.doBruteForce();
 			}
 		};
-
-
-		thisWindow = window;
-
+		;;;thisWindow = window;
 		window.show();
-
 		timer.start(); 
-
-		//		if (false) { winAbout.popUp(); }
-		//		if (false) {//Test
-		//			lblText = new Label("Some text");
-		//			btnClick = new Button("Click it");
-		//			button = new Button();
-		//			button.setText("Click me too");
-		//			button.setOnAction(this);
-		//			button2 = new Button("Button 2");
-		//			button2.setOnAction(this);
-		//			button3 = new Button("Button 3");
-		//			button3.setOnAction(e -> System.out.println("Wow !!!"));
-		//
-		//			btnClick.setOnAction(new EventHandler<ActionEvent>() {
-		//				@Override
-		//				public void handle(ActionEvent e) {
-		//					lblText.setText("New Text");
-		//				}
-		//			});
-		//
-		//			VBox layout = new VBox(10);
-		//			layout.getChildren().addAll(lblText, btnClick, button, button2, button3); // root.getChildren().add(btnClick);
-		//
-		//			layout.setAlignment(Pos.CENTER);
-		//
-		//			Scene scene = new Scene(layout, 300, 250);
-		//
-		//			window.setScene(scene);
-		//
-		//			window.setTitle("Cow movie");
-		//
-		//			window.setOnCloseRequest(e -> {
-		//				e.consume();
-		//				System.out.println("Øv Bøv - Farvel");
-		//				window.close();
-		//			} );
-		//			
-		//			window.show();
-		//		} 
-
 	}
 }
