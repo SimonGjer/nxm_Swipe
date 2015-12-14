@@ -45,7 +45,7 @@ public class ProbItem {
 		chs = new char[n];
 		chs[0] = 'A'; fqs[0] = 1; //Initial frequency
 		chs[1] = 'B'; fqs[1] = 1;
-		chs[2] = 'C'; fqs[2] = 1;
+		chs[2] = 'C'; fqs[2] = 0;
 		chs[3] = 'D'; fqs[3] = 0;
 		chs[4] = 'E'; fqs[4] = 0;
 		chs[5] = 'F'; fqs[5] = 0;

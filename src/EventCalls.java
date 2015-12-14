@@ -34,7 +34,7 @@ public class EventCalls {
 		;;;System.out.println("resetLongestRandomPath()");
 		currentLongestPath = new ArrayList<>();
 		iCalls = 0;
-		RightPanel.setText("");
+		RightPanel.setTextGen("");
 	}
 
 	public static void doBruteForce() {
@@ -74,7 +74,7 @@ public class EventCalls {
 		currentLongestPath = new ArrayList<>();
 		iCalls = 0;
 		BruteForce.iniLongestPath();
-		RightPanel.setText("");
+		RightPanel.setTextGen("");
 	}
 
 //	public static String getNumWithDecades(int num) { return getNumWithDecades(num + ""); }

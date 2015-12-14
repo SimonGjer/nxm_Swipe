@@ -4,6 +4,7 @@ import java.util.Random;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
@@ -21,118 +22,139 @@ public class LeftButtonPanel {
 	public static boolean fBtn_SuperNode = false;
 	public static boolean fBtn_Random = false;
 
+	public static CheckBox cBoxSuper, cBoxR1, cBoxR2, cBoxR3, cBoxR4, cBoxR5;
+	
 	public static VBox createPanel() {
 
-		int spacing = 5;
+		int spacing = 5; VBox leftPanel = new VBox(spacing);
 
-		VBox leftPanel = new VBox(spacing);
-
-		ArrayList<Button> btns = new ArrayList<>();
+//		ArrayList<Button> btns = new ArrayList<>();
 
 		Button btn;
-
+		CheckBox cBox;
+		
 		btn = new Button("New Board"); btn.setId("New");
 		btn.setOnAction( e -> {
 			Board.newRndBoard(); Path.resetPath(); Graph.setGraph(null); Board3D.update();
 			doBtn_Actions(); resetOngoing();
 		});
-		btns.add(btn);
+		leftPanel.getChildren().add(btn);
 
-		btn = new Button("Open"); btn.setId("Open");
+		btn = new Button("Open..."); btn.setId("Open");
 		btn.setOnAction( e -> { Board.openFile(); Board3D.update(); doBtn_Actions(); resetOngoing(); });
-		btns.add(btn);
+		leftPanel.getChildren().add(btn);
 
-		btn = new Button("Save"); btn.setId("Save");
+		btn = new Button("Save..."); btn.setId("Save");
 		btn.setOnAction( e -> { Board.saveFile(); Board3D.update(); doBtn_Actions(); });
-		btns.add(btn);
+		leftPanel.getChildren().add(btn);
 
-		btn = new Button("Item Freq."); btn.setId("Item Freq");
+		btn = new Button("Item Freq..."); btn.setId("Item Freq");
 		btn.setOnAction( e -> {	} );
-		btns.add(btn);
+		leftPanel.getChildren().add(btn);
 
 
 		btn = new Button("Col -1"); btn.setId("Col -1");
 		btn.setOnAction( e -> {	Board.colMinus(); Board3D.update(); doBtn_Actions(); resetOngoing(); } );
-		btns.add(btn);
+		leftPanel.getChildren().add(btn);
 		btn = new Button("Col +1"); btn.setId("Col +1");
 		btn.setOnAction( e -> {	Board.colPlus(); Board3D.update(); doBtn_Actions();	resetOngoing(); } );
-		btns.add(btn);
+		leftPanel.getChildren().add(btn);
 		btn = new Button("Row -1"); btn.setId("Row -1");
 		btn.setOnAction( e -> {	Board.rowMinus(); Board3D.update(); doBtn_Actions(); resetOngoing(); } );
-		btns.add(btn);
+		leftPanel.getChildren().add(btn);
 		btn = new Button("Row +1"); btn.setId("Row +1");
 		btn.setOnAction( e -> {	Board.rowPlus(); Board3D.update(); doBtn_Actions(); resetOngoing(); } );
-		btns.add(btn);
+		leftPanel.getChildren().add(btn);
 
-		btn = new Button("Components"); btn.setId("Components");
-		btn.setOnAction( e -> {
+		cBox = new CheckBox("Components"); cBox.setId("Components");
+//		btn = new Button("Components"); btn.setId("Components");
+		cBox.setOnAction( e -> {
 			fBtn_Comp = !fBtn_Comp;
 			if(fBtn_Comp) {	doComp(); } else { Path.resetPath3d(); }
 		} );
-		btns.add(btn);
+		leftPanel.getChildren().add(cBox);
 
-		btn = new Button("Big Comp."); btn.setId("Big Comp.");
-		btn.setOnAction( e -> {
+		cBox = new CheckBox("Big Comp."); cBox.setId("Big Comp.");
+		cBox.setOnAction( e -> {
 			fBtn_BigComp = !fBtn_BigComp;
 			if(fBtn_BigComp) { doBigComp(); } else { Path.resetPath3d(); }
 		} );
-		btns.add(btn);
+		leftPanel.getChildren().add(cBox);
 
-		btn = new Button("Brute Force"); btn.setId("Brute Force");
-		btn.setOnAction( e -> {
+		cBox = new CheckBox("Brute Force"); cBox.setId("Brute Force");
+				cBox.setOnAction( e -> {
 			System.out.println("Button: Brute Force");
 			fBtn_BruteForce = !fBtn_BruteForce;
 			if(fBtn_BruteForce) { doBruteForce(); } else { resetOngoing(); Path.resetPath3d(); }
 		} );
-		btns.add(btn);
+		leftPanel.getChildren().add(cBox);
 
 		btn = new Button("Path Progress"); btn.setId("Path Progress");
 		btn.setOnAction( e -> {	} );
-		btns.add(btn);
+		leftPanel.getChildren().add(btn);
 
 		btn = new Button("Path Steps"); btn.setId("Path Steps");
 		btn.setOnAction( e -> {	} );
-		btns.add(btn);
+		leftPanel.getChildren().add(btn);
 
-		btn = new Button("Random"); btn.setId("Random");
-		btn.setOnAction( e -> {	fBtn_Random = !fBtn_Random;
+		cBox = new CheckBox("Random"); cBox.setId("Random");
+		cBox.setOnAction( e -> {	fBtn_Random = !fBtn_Random;
 		if(fBtn_Random) { doRandom(); } else { resetOngoing(); Path.resetPath3d(); }
 		} );
-		btns.add(btn);
+		leftPanel.getChildren().add(cBox);
 
 		btn = new Button("Rnd Big Comp."); btn.setId("Rnd Big Comp.");
 		btn.setOnAction( e -> {	} );
-		btns.add(btn);
+		leftPanel.getChildren().add(btn);
 
-		btn = new Button("Supernode"); btn.setId("Supernode");
-		btn.setOnAction( e -> {
+		cBoxSuper = new CheckBox("Supernode"); cBoxSuper.setId("Supernode");
+		cBoxSuper.setOnAction( e -> {
 			fBtn_SuperNode = !fBtn_SuperNode;
 			if(fBtn_SuperNode) { doSuperNode(); } else { Main.grSuper.getChildren().clear(); Camera.update(); }
 		} );
-		btns.add(btn);
+		leftPanel.getChildren().add(cBoxSuper);
 
+		
+		cBoxR1 = new CheckBox("R1: Chain"); cBoxR1.setId("R1");
+		cBoxR1.setSelected(Super.fRule[0]);
+		cBoxR1.setOnAction( e -> { Super.fRule[0] = cBoxR1.isSelected();
+		if (cBoxSuper.isSelected()) { Main.grSuper.getChildren().clear(); doSuperNode(); } 
+		} );
+		leftPanel.getChildren().add(cBoxR1);
+		
+		cBoxR2 = new CheckBox("R2: Col. Tri."); cBoxR2.setId("R2");
+		cBoxR2.setSelected(Super.fRule[1]);
+		cBoxR2.setOnAction( e -> { Super.fRule[1] = cBoxR2.isSelected();
+		if (cBoxSuper.isSelected()) { Main.grSuper.getChildren().clear(); doSuperNode(); }
+		} );
+		leftPanel.getChildren().add(cBoxR2);
+		
+		cBoxR3 = new CheckBox("R3: Tri del edge"); cBoxR3.setId("R3");
+		cBoxR3.setSelected(Super.fRule[2]);
+		cBoxR3.setOnAction( e -> { Super.fRule[2] = cBoxR3.isSelected();
+		if (cBoxSuper.isSelected()) { Main.grSuper.getChildren().clear(); doSuperNode(); }
+		} );
+		leftPanel.getChildren().add(cBoxR3);
+		
+		cBoxR4 = new CheckBox("R4: W3 del edge"); cBoxR4.setId("R4");
+		cBoxR4.setSelected(Super.fRule[3]);
+		cBoxR4.setOnAction( e -> { Super.fRule[3] = cBoxR4.isSelected();
+		if (cBoxSuper.isSelected()) { Main.grSuper.getChildren().clear(); doSuperNode(); }
+		} );
+		leftPanel.getChildren().add(cBoxR4);
+		
+		cBoxR5 = new CheckBox("R5: Col K4"); cBoxR5.setId("R5");
+		cBoxR5.setSelected(Super.fRule[4]);
+		cBoxR5.setOnAction( e -> { Super.fRule[4] = cBoxR5.isSelected();
+		if (cBoxSuper.isSelected()) { Main.grSuper.getChildren().clear(); doSuperNode(); }
+		} );
+		leftPanel.getChildren().add(cBoxR5);
+		
+		
+		
 		btn = new Button("Tmp 1"); btn.setId("Tmp 1");
 		btn.setOnAction( e -> { fBtnTmp1 = !fBtnTmp1; } );
-		btns.add(btn);
-
-		btn = new Button("Tmp 2"); btn.setId("Tmp 2");
-		btn.setOnAction( e -> {
-			fBtnTmp2 = !fBtnTmp2;
-			//			PerspectiveCamera camera = Main.camera;
-			//			camera.setRotationAxis(Rotate.X_AXIS);
-			//			if (fBtnTmp2) {	camera.setRotate(40); camera.setTranslateZ(-2);
-			//			} else { camera.setRotate(0); camera.setTranslateZ(0); }
-		} );
-		btns.add(btn);
-		btn = new Button("Tmp 3"); btn.setId("Tmp 3");
-		btn.setOnAction( e -> {});
-		btns.add(btn);
-
-
-		for (int i = 0; i < btns.size(); i++) {
-			btn = btns.get(i);
-			leftPanel.getChildren().addAll(btn);
-		}
+		leftPanel.getChildren().add(btn);
 
 		return leftPanel;
 	}

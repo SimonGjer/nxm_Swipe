@@ -12,7 +12,7 @@ import javafx.scene.text.TextAlignment;
 public class RightPanel {
 
 
-	public static Text text;
+	public static Text textGen, textBoardSize;
 	public static Group grStopBtn;
 	public static Button btnStop;
 
@@ -20,16 +20,27 @@ public class RightPanel {
 		VBox rightPanel = new VBox(5);
 
 		rightPanel.setMinWidth(200);
-
-		text = new Text();
-		text.setText("");
+		
+		rightPanel.setStyle("-fx-border-color: black;");
+		
 		Font font = Font.font(null, FontWeight.BOLD, 14);
-		text.setFont(font);
+		
+		textBoardSize = new Text();
+		updateTextBoardSize();
+		
+		textBoardSize.setFont(font);
+
+//		textBoardSize.setStyle("-fx-border-color: black;");
+		
+		textGen = new Text();
+		textGen.setText("");
+//		Font font = Font.font(null, FontWeight.BOLD, 14);
+		textGen.setFont(font);
 
 		grStopBtn = new Group();
 		grStopBtn.setTranslateX(50); //Could not find a better solution
 
-		rightPanel.getChildren().addAll(text, grStopBtn);
+		rightPanel.getChildren().addAll(textBoardSize, textGen, grStopBtn);
 
 		btnStop = new Button("STOP");
 
@@ -46,8 +57,13 @@ public class RightPanel {
 		return rightPanel;
 	}
 
-	public static void setText(String txt) {
-		text.setText(txt);
+	public static void setTextGen(String txt) {
+		textGen.setText(txt);
+	}
+	
+	public static void updateTextBoardSize() {
+				textBoardSize.setText("Board Size: " + Board.nCol + " x " + Board.nRow +
+						"\nVertices: " + Board.nCol * Board.nRow);
 	}
 
 	public static void updateBruteForce() {
@@ -56,15 +72,15 @@ public class RightPanel {
 				+ '\n' + "Found at step: " + getNumWithDecades(BruteForce.iStepAtLongPath)
 				+ '\n' + "Steps: " + getNumWithDecades(BruteForce.iStep)
 				+ '\n' + getTxtRunning(!BruteForce.fDoneRe);
-		RightPanel.setText(txt);
+		RightPanel.setTextGen(txt);
 	}
 
-	public static void updateBigComp() { RightPanel.setText(Component.txtBigComp); }
+	public static void updateBigComp() { RightPanel.setTextGen(Component.txtBigComp); }
 	
-	public static void updateComponents() {	RightPanel.setText(Component.txtComps);	}
+	public static void updateComponents() {	RightPanel.setTextGen(Component.txtComps);	}
 	
 	public static void updateRandom() {
-		RightPanel.setText("Random:"
+		RightPanel.setTextGen("Random:"
 				+ '\n' + "Longest Path Size: " + (EventCalls.currentLongestPath.size() / 2 - 1)
 				+ '\n' + "runs: " + getNumWithDecades(EventCalls.iCalls)
 				+ '\n' + getTxtRunning(true));

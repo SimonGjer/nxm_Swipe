@@ -44,6 +44,11 @@ public class VertexSuper {
 	public void removeEdge(VertexSuper vs) {
 		for (int i = 0; i < edgeTo.size(); i++) if (edgeTo.get(i) == vs) edgeTo.remove(i);
 	}
+	
+	public boolean hasEdge(VertexSuper vs) {
+		for (VertexSuper v : edgeTo) if (vs == v) return true;
+		return false;
+	}
 
 
 	public void addAbsorbedEdge(VertexSuper vs) { vCollapsed.add(vs); }

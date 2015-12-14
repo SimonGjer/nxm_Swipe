@@ -16,13 +16,15 @@ import javafx.scene.transform.Rotate;
 
 
 public class Super {
-
+	public static boolean[] fRule = new boolean[]{true, true, true, true, true};
+	
 	static final int UP = 0, RIGTHUP = 1, RIGTH = 2, RIGTHDOWN = 3, DOWN =4, DOWNLEFT = 5, LEFT = 6, LEFTUP = 7;
 	static final double PI_180 = Math.PI / 180.0;
 
 	public static VertexSuper[][] sg; // sg == superGraph
 	private static int nCol, nRow;
 	private static double zMax;
+	
 
 	public static VertexSuper[][] getGraphWithSuperNodesTmp(char[][] board) {
 		nCol = board.length; nRow = board[0].length;
@@ -32,9 +34,14 @@ public class Super {
 		boolean fAllDone;
 		do {
 			fAllDone = true;
-			if(rule1()) fAllDone = false;
-			if(rule2()) fAllDone = false;
-			if(rule3()) fAllDone = false;
+			if(fRule[0] && rule1()) fAllDone = false; // Chain shortening
+			if(fRule[1] && rule2()) fAllDone = false; // Triangle collapse with most one outgoing endge for each vertex
+			if(fRule[2] && rule3()) fAllDone = false; // Remove edge opposite of vertex with no outgoing edge in triangle //Perhaps continue;
+			if(fRule[3] && rule4()) fAllDone = false; // Find W3 and delete an edge in the rim.
+			if(fRule[4] && rule5()) fAllDone = false; // Collapse K4 with most one outgoing edge
+			
+			
+//			if(rule6()) fAllDone = false;
 		} while (!fAllDone);
 		;;;System.out.println("SuperNode Done!");
 		return sg;
@@ -42,7 +49,7 @@ public class Super {
 
 
 	public static boolean rule1() {
-		int rule = 1;
+		int rule = 1; // Chain shortening
 		;System.out.println("Rule " + rule + " called");
 		boolean fDone, fChange = false;
 		do {
@@ -68,7 +75,7 @@ public class Super {
 	}
 
 	public static boolean rule2() {
-		int rule = 2;
+		int rule = 2; // Triangle collapse with most one outgoing endge for each vertex
 		;System.out.println("Rule " + rule + " called");
 		boolean fDone, fChange = false;
 		do {
@@ -82,7 +89,7 @@ public class Super {
 
 					for(VertexSuper[] t : ts) {
 						if (t[0].edgeTo.size() <= 3 && t[1].edgeTo.size() <= 3 && t[2].edgeTo.size() <= 3) {
-							createSuperNode(t, rule); break;
+							createSuperNode(t, rule); fChange = true; break;
 						}
 					}
 				}
@@ -92,7 +99,67 @@ public class Super {
 	}
 
 	public static boolean rule3() {
-		int rule = 3;
+		int rule = 3; //Remove edge opposite of vertex with no outgoing edge in triangle
+		;System.out.println("Rule " + rule + " called");
+		boolean fDone, fChange = false;
+		do {
+			fDone = true;
+			for(int iRow = 0; iRow < nRow; iRow++) {
+				for(int iCol = 0; iCol < nCol; iCol++) {
+					VertexSuper v = sg[iCol][iRow];
+					while(v.vSuper != null) v = v.vSuper; // go to surface
+
+					ArrayList<VertexSuper[]> ts = getTriangles(v);
+
+					for (VertexSuper[] t : ts) {
+						VertexSuper vNoOut = null; //Edge with no edge out of triangle
+
+						for(VertexSuper vt : t) {
+							if(vt.edgeTo.size() == 2) { vNoOut = vt; break; }
+						}
+
+						if (vNoOut != null) {
+							VertexSuper vOut1 = vNoOut.edgeTo.get(0); VertexSuper vOut2 = vNoOut.edgeTo.get(1);
+
+							vOut1.removeEdge(vOut2); vOut2.removeEdge(vOut1);
+
+							createSuperNode(new VertexSuper[]{vNoOut} , rule);
+							fChange = true;
+						}
+					}
+				}
+			}
+		} while (!fDone);
+		return fChange;
+	}
+
+	public static boolean rule4() {
+		int rule = 4; //Find W3 and delete an edge in the rim.
+		;System.out.println("Rule " + rule + " called");
+		boolean fDone, fChange = false;
+		do {
+			fDone = true;
+			for(int iRow = 0; iRow < nRow; iRow++) {
+				for(int iCol = 0; iCol < nCol; iCol++) {
+					VertexSuper v = sg[iCol][iRow];
+					while(v.vSuper != null) v = v.vSuper; // go to surface
+
+					if (v.edgeTo.size() == 3) {
+						VertexSuper v0 = v.edgeTo.get(0), v1 = v.edgeTo.get(1), v2 = v.edgeTo.get(2);
+
+						if (v0.hasEdge(v1) && v0.hasEdge(v2) && v1.hasEdge(v2)) {
+							v0.removeEdge(v1); v1.removeEdge(v0);
+							createSuperNode(new VertexSuper[]{v} , rule);
+						}
+					}
+				}
+			}
+		} while (!fDone);
+		return fChange;
+	}
+
+	public static boolean rule5() {
+		int rule = 5; //Collapse K4 with most one outgoing edge
 		;System.out.println("Rule " + rule + " called");
 		boolean fDone, fChange = false;
 		do {
@@ -112,7 +179,6 @@ public class Super {
 						for(VertexSuper vCorner : k4) {
 							int nLonely = 0;
 							for(VertexSuper vOut : vCorner.edgeTo) {
-
 								boolean fTriangle = false;
 								for(VertexSuper vOutOut : vOut.edgeTo) {
 									if (vOutOut == vCorner) continue;
@@ -126,21 +192,61 @@ public class Super {
 							}
 							if (nLonely > 1) { fMax1LonelyEdge = false; break; }
 						}
-						if (fMax1LonelyEdge) k4sOK.add(k4);
+						if (fMax1LonelyEdge) { k4sOK.add(k4); break; }
 					}
-					
-					if (k4sOK.size() >= 1) {
-						VertexSuper[] k4OK = k4sOK.get(0);
-						createSuperNode(k4OK, rule);
-						fChange = true;
-					}
-					
+					if (k4sOK.size() >= 1) { createSuperNode(k4sOK.get(0), rule); fChange = true; } //Perhaps it should break so that rule4 will always be used before rule3
 				}
 			}
 		} while (!fDone);
 		return fChange;
 	}
 
+
+	public static boolean rule6() {
+		int rule = 6; //Partly collapse two triangles with shared sides and no outgoing edges from shared vertices
+		;System.out.println("Rule " + rule + " called");
+		boolean fDone, fChange = false;
+		do {
+			fDone = true;
+			for(int iRow = 0; iRow < nRow; iRow++) {
+				for(int iCol = 0; iCol < nCol; iCol++) {
+					VertexSuper v = sg[iCol][iRow];
+					while(v.vSuper != null) v = v.vSuper; // go to surface
+
+					ArrayList<VertexSuper[]> ts = getTriangles(v);
+
+					/*
+					 * 
+					 * TO-DO
+					 * 
+					 */
+				}
+			}
+		} while (!fDone);
+		return fChange;
+	}
+
+
+
+
+
+
+
+	public static boolean rule1000() {
+		int rule = 1000;
+		;System.out.println("Rule " + rule + " called");
+		boolean fDone, fChange = false;
+		do {
+			fDone = true;
+			for(int iRow = 0; iRow < nRow; iRow++) {
+				for(int iCol = 0; iCol < nCol; iCol++) {
+					VertexSuper v = sg[iCol][iRow];
+					while(v.vSuper != null) v = v.vSuper; // go to surface
+				}
+			}
+		} while (!fDone);
+		return fChange;
+	}
 
 	public static ArrayList<VertexSuper[]> getTriangles(VertexSuper v) {
 		ArrayList<VertexSuper[]> triangles = new ArrayList<>();
@@ -489,7 +595,9 @@ public class Super {
 					case 0: shape3d = new Sphere(0.3); break;
 					case 1: shape3d = new Sphere(0.3); break;
 					case 2: shape3d = new Cylinder(0.3, 0.6); break;
-					case 3: shape3d = new Box(0.6, 0.6, 0.6); break;
+					case 3: shape3d = new Cylinder(0.4, 0.3); break;
+					case 4: shape3d = new Box(0.6, 0.3, 0.6); break;
+					case 5: shape3d = new Box(0.6, 0.6, 0.6); break;
 					default: shape3d = new Sphere(0.3); break;
 					}
 					shape3d.setTranslateX(xPos2 - xMid + 0.5);

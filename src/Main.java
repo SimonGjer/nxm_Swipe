@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Random;
 
+
 import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -44,6 +45,7 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.DrawMode;
+import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -130,6 +132,21 @@ public class Main extends Application {
 		scene.setOnKeyPressed(e -> {
 			KeyCode k = e.getCode();
 			//			;;;System.out.println("key " + k);
+			boolean fControl = e.isControlDown();
+			if (fControl) {
+				if (k == KeyCode.A) {
+					for (Node node : grBoard.getChildren()) {
+						String id = node.getId();
+						if(id != null && id.contains("Field")) {
+							double pScale = (node.getScaleX() > 1 ) ? 1.0 : 1.1;
+							node.setScaleX(pScale); node.setScaleY(pScale);	node.setScaleZ(pScale);
+							if (id.contains("*")) id = id.substring(0, id.length() - 2); else id += " *";
+							node.setId(id);
+						}
+					}
+				}
+			} else {
+			
 			int dRot = (e.isShiftDown()) ? 10 : 1; 
 			if (k == KeyCode.LEFT) { camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(camera.getRotate() - dRot); }
 			if (k == KeyCode.RIGHT) { camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(camera.getRotate() + dRot); }
@@ -140,6 +157,8 @@ public class Main extends Application {
 			if (k == KeyCode.A) Board3D.replaceSelectedWith(board3d, 'A');
 			if (k == KeyCode.B) Board3D.replaceSelectedWith(board3d, 'C');
 			if (k == KeyCode.C) Board3D.replaceSelectedWith(board3d, 'B');
+			if (k == KeyCode.D) Board3D.replaceSelectedWith(board3d, 'D');
+			}
 		});
 
 		window.setScene(scene);
