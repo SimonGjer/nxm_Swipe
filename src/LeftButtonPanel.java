@@ -23,7 +23,8 @@ public class LeftButtonPanel {
 	public static boolean fBtn_Random = false;
 
 	public static CheckBox cBoxSuper, cBoxR1, cBoxR2, cBoxR3, cBoxR4, cBoxR5;
-
+	public static CheckBox cBoxApple, cBoxBlueberry, cBoxChestnut, cBoxAcorn;
+	
 	public static VBox createPanel() {
 
 		int spacing = 5; VBox leftPanel = new VBox(spacing);
@@ -66,6 +67,37 @@ public class LeftButtonPanel {
 		btn.setOnAction( e -> {	Board.rowPlus(); Board3D.update(); doBtn_Actions(); resetOngoing(); } );
 		leftPanel.getChildren().add(btn);
 
+		
+		cBoxApple = new CheckBox("Apple"); cBoxApple.setId("Apple"); cBoxApple.setSelected(Item.fSelcApple);
+		cBoxApple.setOnAction( e -> {
+			Item.fSelcApple = cBoxApple.isSelected(); doBtn_Actions();
+//				if(cBoxApple.isSelected()) {} else {  }
+		} );
+		leftPanel.getChildren().add(cBoxApple);
+		
+		cBoxBlueberry = new CheckBox("Blueberry"); cBoxBlueberry.setId("Blueberry"); cBoxBlueberry.setSelected(Item.fSelcBlueberry);
+		cBoxBlueberry.setOnAction( e -> {
+			Item.fSelcBlueberry = cBoxBlueberry.isSelected(); doBtn_Actions();
+				if(cBoxBlueberry.isSelected()) {} else {  }
+		} );
+		leftPanel.getChildren().add(cBoxBlueberry);
+		
+		cBoxChestnut = new CheckBox("Chestnut"); cBoxChestnut.setId("Chestnut"); cBoxChestnut.setSelected(Item.fSelcChestnut);
+		cBoxChestnut.setOnAction( e -> {
+			Item.fSelcChestnut = cBoxChestnut.isSelected(); doBtn_Actions();
+				if(cBoxChestnut.isSelected()) {} else {  }
+		} );
+		leftPanel.getChildren().add(cBoxChestnut);
+		
+		cBoxAcorn = new CheckBox("Acorn"); cBoxAcorn.setId("Acorn"); cBoxAcorn.setSelected(Item.fSelcAcorn);
+		cBoxAcorn.setOnAction( e -> {
+			Item.fSelcAcorn = cBoxAcorn.isSelected(); doBtn_Actions();
+				if(cBoxAcorn.isSelected()) {} else {  }
+		} );
+		leftPanel.getChildren().add(cBoxAcorn);
+		
+		
+		
 		cBox = new CheckBox("Components"); cBox.setId("Components");
 		cBox.setOnAction( e -> {
 			fBtn_Comp = !fBtn_Comp;
@@ -97,7 +129,7 @@ public class LeftButtonPanel {
 		leftPanel.getChildren().add(btn);
 
 		cBox = new CheckBox("Random"); cBox.setId("Random");
-		cBox.setOnAction( e -> {	fBtn_Random = !fBtn_Random;
+		cBox.setOnAction( e -> { fBtn_Random = !fBtn_Random;
 		if(fBtn_Random) { doRandom(); } else { resetOngoing(); Path.resetPath3d(); }
 		} );
 		leftPanel.getChildren().add(cBox);

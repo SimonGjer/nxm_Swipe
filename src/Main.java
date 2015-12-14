@@ -65,19 +65,19 @@ public class Main extends Application {
 
 	;;;public static Stage thisWindow;
 
-//	public static Group grPath = new Group();
-	
+	//	public static Group grPath = new Group();
+
 	public static Group grPathComp = new Group();
 	public static Group grPathBigComp = new Group();
 	public static Group grPathBruteForce = new Group();
 	public static Group grPathRnd = new Group();
-	
+
 	public static Group grSuper = new Group();
 	public static Group grBoard = new Group();
 
 	public static PerspectiveCamera camera;
 
-		public static Group board3d; //Should be renamed to graphics or similar
+	public static Group board3d; //Should be renamed to graphics or similar
 
 	public static long tms = System.currentTimeMillis();
 	public static long tmsLast = System.currentTimeMillis();
@@ -87,7 +87,7 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+
 	@Override
 	public void start(Stage window) throws Exception {
 		;;; System.out.println(System.getProperty("java.class.path"));
@@ -100,14 +100,14 @@ public class Main extends Application {
 		VBox leftPanel = LeftButtonPanel.createPanel();
 		VBox rightPanel = RightPanel.createPanel();
 		board3d = Board3D.getBoard();
-				
+
 		camera = Camera.createCamera();
-		
+
 		grPathComp.setTranslateY(-0.2);
 		grPathBigComp.setTranslateY(-0.4);
 		grPathBruteForce.setTranslateY(-0.6);
 		grPathRnd.setTranslateY(-0.8);
-		
+
 		board3d.getChildren().addAll(grPathComp, grPathBigComp, grPathBruteForce, grPathRnd, grSuper, grBoard);
 		SubScene subScene = new SubScene(board3d, 850, 750, true, SceneAntialiasing.BALANCED);
 		subScene.setFill(Color.WHITE);
@@ -143,7 +143,7 @@ public class Main extends Application {
 
 		scene.setOnKeyPressed(e -> {
 			KeyCode k = e.getCode();
-//						;;;System.out.println("key " + k);
+			//						;;;System.out.println("key " + k);
 			boolean fControl = e.isControlDown();
 			if (fControl) {
 				if (k == KeyCode.A) {
@@ -158,29 +158,29 @@ public class Main extends Application {
 					}
 				}
 			} else {
-			
-			int dRot = (e.isShiftDown()) ? 10 : 1; 
-			if (k == KeyCode.LEFT) { camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(camera.getRotate() - dRot); }
-			else if (k == KeyCode.RIGHT) { camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(camera.getRotate() + dRot); }
-			else if (k == KeyCode.DOWN) { Camera.rotateX(dRot); }
-			else if (k == KeyCode.UP) { Camera.rotateX(-dRot); }
-			else if (k == KeyCode.PAGE_DOWN) { Camera.distLookAt(-dRot); }
-			else if (k == KeyCode.PAGE_UP) { Camera.distLookAt(dRot); }
-			else if (k == KeyCode.A) Board3D.replaceSelectedWith(board3d, 'A');
-			else if (k == KeyCode.B) Board3D.replaceSelectedWith(board3d, 'C');
-			else if (k == KeyCode.C) Board3D.replaceSelectedWith(board3d, 'B');
-			else if (k == KeyCode.D) Board3D.replaceSelectedWith(board3d, 'D');
-			else if (k == KeyCode.NUMPAD4 || k == KeyCode.DIGIT4) Camera.dMoveX(-0.25 * dRot);
-			else if (k == KeyCode.NUMPAD6 || k == KeyCode.DIGIT6) Camera.dMoveX(0.25 * dRot);
-			else if (k == KeyCode.NUMPAD2 || k == KeyCode.DIGIT2) Camera.dMoveY(-0.25 * dRot);
-			else if (k == KeyCode.NUMPAD8 || k == KeyCode.DIGIT8) Camera.dMoveY(0.25 * dRot);
-			else if (k == KeyCode.NUMPAD7 || k == KeyCode.DIGIT7) Camera.dMoveXY(-0.25 * dRot, 0.25 * dRot);
-			else if (k == KeyCode.NUMPAD9 || k == KeyCode.DIGIT9) Camera.dMoveXY(0.25 * dRot, 0.25 * dRot);
-			else if (k == KeyCode.NUMPAD1 || k == KeyCode.DIGIT1) Camera.dMoveXY(-0.25 * dRot, -0.25 * dRot);
-			else if (k == KeyCode.NUMPAD3 || k == KeyCode.DIGIT3) Camera.dMoveXY(0.25 * dRot, -0.25 * dRot);
-			else if (k == KeyCode.SUBTRACT || k == KeyCode.MINUS) Camera.dMoveZ(0.25 * dRot);
-			else if (k == KeyCode.ADD || k == KeyCode.PLUS) Camera.dMoveZ(-0.25 * dRot);
-			else if (k == KeyCode.NUMPAD5 || k == KeyCode.DIGIT5) Camera.resetMove();
+
+				int dRot = (e.isShiftDown()) ? 10 : 1; 
+				if (k == KeyCode.LEFT) { camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(camera.getRotate() - dRot); }
+				else if (k == KeyCode.RIGHT) { camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(camera.getRotate() + dRot); }
+				else if (k == KeyCode.DOWN) { Camera.rotateX(dRot); }
+				else if (k == KeyCode.UP) { Camera.rotateX(-dRot); }
+				else if (k == KeyCode.PAGE_DOWN) { Camera.distLookAt(-dRot); }
+				else if (k == KeyCode.PAGE_UP) { Camera.distLookAt(dRot); }
+				else if (k == KeyCode.A) Board3D.replaceSelectedWith(board3d, 'A');
+				else if (k == KeyCode.B) Board3D.replaceSelectedWith(board3d, 'C');
+				else if (k == KeyCode.C) Board3D.replaceSelectedWith(board3d, 'B');
+				else if (k == KeyCode.D) Board3D.replaceSelectedWith(board3d, 'D');
+				else if (k == KeyCode.NUMPAD4 || k == KeyCode.DIGIT4) Camera.dMoveX(-0.25 * dRot);
+				else if (k == KeyCode.NUMPAD6 || k == KeyCode.DIGIT6) Camera.dMoveX(0.25 * dRot);
+				else if (k == KeyCode.NUMPAD2 || k == KeyCode.DIGIT2) Camera.dMoveY(-0.25 * dRot);
+				else if (k == KeyCode.NUMPAD8 || k == KeyCode.DIGIT8) Camera.dMoveY(0.25 * dRot);
+				else if (k == KeyCode.NUMPAD7 || k == KeyCode.DIGIT7) Camera.dMoveXY(-0.25 * dRot, 0.25 * dRot);
+				else if (k == KeyCode.NUMPAD9 || k == KeyCode.DIGIT9) Camera.dMoveXY(0.25 * dRot, 0.25 * dRot);
+				else if (k == KeyCode.NUMPAD1 || k == KeyCode.DIGIT1) Camera.dMoveXY(-0.25 * dRot, -0.25 * dRot);
+				else if (k == KeyCode.NUMPAD3 || k == KeyCode.DIGIT3) Camera.dMoveXY(0.25 * dRot, -0.25 * dRot);
+				else if (k == KeyCode.SUBTRACT || k == KeyCode.MINUS) Camera.dMoveZ(0.25 * dRot);
+				else if (k == KeyCode.ADD || k == KeyCode.PLUS) Camera.dMoveZ(-0.25 * dRot);
+				else if (k == KeyCode.NUMPAD5 || k == KeyCode.DIGIT5) Camera.resetMove();
 			}
 		});
 
@@ -199,8 +199,8 @@ public class Main extends Application {
 				//					System.out.println("camera.getRotationAxis() = " + camera.getRotationAxis());
 				//					camera.setRotationAxis(new Point3D(0.0, 1.0, 0.0));
 				//					camera.setRotate(System.currentTimeMillis() / 70.0);
-//				thisBox.setRotate(System.currentTimeMillis() / 100.0);
-				
+				//				thisBox.setRotate(System.currentTimeMillis() / 100.0);
+
 				if (LeftButtonPanel.fBtn_Random) EventCalls.doRandom();
 				if (LeftButtonPanel.fBtn_BruteForce && !BruteForce.fDoneRe) EventCalls.doBruteForce();
 			}

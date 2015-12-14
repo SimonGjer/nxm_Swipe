@@ -6,12 +6,12 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-
 public class Item {
 
 //	public static final Color cBROWN = new Color(Color.YELLOW.getRed() / 3, Color.YELLOW.getGreen() / 3, Color.YELLOW.getBlue() / 3);
 //	public static final Color cVIOLET = new Color((Color.RED.getRed() + Color.BLUE.getRed()) / 2, 0, (Color.RED.getBlue() + Color.BLUE.getRed()) / 2);
-
+	public static boolean fSelcApple = true, fSelcBlueberry = true, fSelcChestnut = true, fSelcAcorn = true;
+	
 	public static final File file = new File("." + "\\imgs\\Acorn.png");
 	
 	public static int nImage = 8; 
@@ -45,9 +45,7 @@ public class Item {
 		char ch = '\\';
 		if (!new File("." + ch + "imgs" + ch + "Acorn.png").exists()) {
 			ch = '/';
-			if (!new File("." + ch + "imgs" + ch + "Acorn.png").exists()) {
-				System.out.println("Can't find files!"); return;
-			}
+			if (!new File("." + ch + "imgs" + ch + "Acorn.png").exists()) {	System.err.println("Can't find files!"); return; }
 		}
 		try {
 			imgs[0] = ImageIO.read(new File("." + ch + "imgs" + ch + "Acorn.png"));
@@ -72,5 +70,13 @@ public class Item {
 			System.out.println("can't read file");
 		}
 		return null;
+	}
+	
+	public static boolean visible(char item) {
+		if (item == 'A') return fSelcApple;
+		if (item == 'B') return fSelcChestnut;
+		if (item == 'C') return fSelcBlueberry;
+		if (item == 'D') return fSelcAcorn;
+		return true;
 	}
 }

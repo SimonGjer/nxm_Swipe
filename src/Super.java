@@ -536,10 +536,8 @@ public class Super {
 		//			for(int i = 0; i < txtImgGray.length; i++) imgsGray[i] = new Image("images/" + txtImgGray[i]);
 		//		} catch(Exception e) { System.out.println("Error Exception: " + e); }
 
-		PhongMaterial matApple = new PhongMaterial();
-		PhongMaterial matChestnut = new PhongMaterial();
-		PhongMaterial matBlueberry = new PhongMaterial();
-		PhongMaterial matAcorn = new PhongMaterial();
+		PhongMaterial matApple = new PhongMaterial(), matChestnut = new PhongMaterial();
+		PhongMaterial matBlueberry = new PhongMaterial(), matAcorn = new PhongMaterial();
 		PhongMaterial mat = new PhongMaterial();
 
 		Color cApple = Color.RED; //new Color(0xBC, 0x18, 0x15, 0xFF);
@@ -557,7 +555,7 @@ public class Super {
 		matAcorn.setDiffuseColor(cAcorn);
 		matAcorn.setSpecularColor(cAcorn.brighter());
 
-		PhongMaterial[] matCyls = new PhongMaterial[]{matApple, matChestnut, matBlueberry, matAcorn};
+		PhongMaterial[] matCyls = new PhongMaterial[]{ matApple, matChestnut, matBlueberry, matAcorn };
 
 		char[][] board = Board.getBoard();
 		int nCol = Board.nCol, nRow = Board.nRow;
@@ -583,6 +581,8 @@ public class Super {
 		for(int iRow = 0; iRow < nRow; iRow++) {
 			for(int iCol = 0; iCol < nCol; iCol++) {
 				VertexSuper v = G[iCol][iRow];
+//				char chItem = v.item;
+				if (!Item.visible(v.item)) continue;
 				while(v.vSuper != null) {
 					v = v.vSuper;
 					if (v.fUsed) continue; //Perhaps => Break;
@@ -647,6 +647,7 @@ public class Super {
 			for(VertexSuper v: vSurface) v.fUsed = false;
 
 			for (VertexSuper v: vSurface) {
+				if (!Item.visible(v.item)) continue;
 				Sphere sphere = new Sphere(0.3);
 				sphere.setTranslateX(v.xPos - xMid + 0.5);
 				sphere.setTranslateY(-zSurface);
