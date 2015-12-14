@@ -107,7 +107,7 @@ public class LeftButtonPanel {
 		btn = new Button("Supernode"); btn.setId("Supernode");
 		btn.setOnAction( e -> {
 			fBtn_SuperNode = !fBtn_SuperNode;
-			if(fBtn_SuperNode) { doSuperNode(); } else { Main.grSuper.getChildren().clear(); }
+			if(fBtn_SuperNode) { doSuperNode(); } else { Main.grSuper.getChildren().clear(); Camera.update(); }
 		} );
 		btns.add(btn);
 
@@ -167,6 +167,7 @@ public class LeftButtonPanel {
 		VertexSuper[][] G = Super.getGraphWithSuperNodesTmp(Board.getBoard());
 		Graph.setGraph(G);
 		Super.draw3d(G);
+		Camera.update();
 	}
 	public static void doRandom() {
 		//		;;;System.out.println("doRandom()");

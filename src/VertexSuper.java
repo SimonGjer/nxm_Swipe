@@ -3,6 +3,8 @@ import java.util.Random;
 
 public class VertexSuper {
 
+	private static int indexId;
+	int id;
 	VertexSuper[] edgeToSimple = new VertexSuper[8];
 	ArrayList<VertexSuper> edgeTo = new ArrayList<VertexSuper>();
 	ArrayList<VertexSuper> vCollapsed = new ArrayList<VertexSuper>(); //Collapsed ~ Consumed ~ Down 
@@ -20,6 +22,7 @@ public class VertexSuper {
 	public VertexSuper(double xPos, double yPos, int value) {
 		this.xPos = xPos; this.yPos = yPos;
 		this.value = value;
+		id = ++indexId;
 	}
 
 	public void createEdge(VertexSuper[][] vs, int col, int row, int d) {

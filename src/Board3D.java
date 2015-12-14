@@ -23,7 +23,6 @@ public class Board3D {
 	public static Image[] imgsGray = new Image[8];
 	public static String[] txtImgGray;
 	public static Box boxBoard;
-//	;;;public static Box testBox;
 	public static Group grBoard = Main.grBoard;
 
 	public static Group getBoard() {
@@ -40,16 +39,16 @@ public class Board3D {
 			matItems[i].setDiffuseMap(imgsGray[i]);
 		}
 
-		int nCol = Board.nCol, nRow = Board.nRow;
-//
-		PhongMaterial matRed = new PhongMaterial(Color.RED);
-//		PhongMaterial matGray = new PhongMaterial(Color.GRAY); PhongMaterial matDarkGray = new PhongMaterial(Color.DARKGRAY);
-//		;;;PhongMaterial matGreen = new PhongMaterial(Color.GREEN);	PhongMaterial matWhite = new PhongMaterial(Color.WHITE);
+		//		int nCol = Board.nCol, nRow = Board.nRow;
+		//
+		//		PhongMaterial matRed = new PhongMaterial(Color.RED);
+		//		PhongMaterial matGray = new PhongMaterial(Color.GRAY); PhongMaterial matDarkGray = new PhongMaterial(Color.DARKGRAY);
+		//		;;;PhongMaterial matGreen = new PhongMaterial(Color.GREEN);	PhongMaterial matWhite = new PhongMaterial(Color.WHITE);
 
 
 
-//		;;;testBox = new Box(.5, .9, .5); ;;;testBox.setMaterial(matRed); ;;;testBox.setDrawMode(DrawMode.FILL); //LINE
-//		;;;testBox.setTranslateX(nCol / 2.0 + 0.5); ;;;testBox.setTranslateZ(nRow / 2.0 + 0.5); //;;;Main.thisBox = thisBox = testBox;
+		//		;;;testBox = new Box(.5, .9, .5); ;;;testBox.setMaterial(matRed); ;;;testBox.setDrawMode(DrawMode.FILL); //LINE
+		//		;;;testBox.setTranslateX(nCol / 2.0 + 0.5); ;;;testBox.setTranslateZ(nRow / 2.0 + 0.5); //;;;Main.thisBox = thisBox = testBox;
 
 		//		Image imgCyl = new Image("images/Swipe_0_80.png");
 		//		imgCyl = new Image("images/Apple.png");
@@ -128,6 +127,7 @@ public class Board3D {
 				grBoard.getChildren().add(/*boxsGrey[iCol][iRow],*/ boxPics[iCol][iRow]);
 			}
 		}
+		Camera.update();
 	}
 
 
@@ -152,6 +152,7 @@ public class Board3D {
 		//			String txt = iNode.getId();
 		//			if (txt != null && txt.contains("Field")) {}
 		//		}
+		Camera.update();
 	}
 
 	public static void replaceSelectedWith(Group board3d, char ch) {

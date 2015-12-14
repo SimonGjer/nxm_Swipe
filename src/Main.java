@@ -85,7 +85,7 @@ public class Main extends Application {
 		;;; System.out.println(System.getProperty("java.class.path"));
 		;;; System.out.println(this.getClass());
 
-		window.setTitle(Board.nCol + " x " + Board.nRow + " Swipe");
+		window.setTitle("Longest Path Problem in \'Cute vs Evil\'");
 
 		BorderPane borderPane = new BorderPane();
 		MenuBar menuBar = MenuTopBar.createMenuBar();

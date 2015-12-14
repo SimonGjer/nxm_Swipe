@@ -22,6 +22,7 @@ public class Super {
 
 	public static VertexSuper[][] sg; // sg == superGraph
 	private static int nCol, nRow;
+	private static double zMax;
 
 	public static VertexSuper[][] getGraphWithSuperNodesTmp(char[][] board) {
 		nCol = board.length; nRow = board[0].length;
@@ -33,6 +34,7 @@ public class Super {
 			fAllDone = true;
 			if(rule1()) fAllDone = false;
 			if(rule2()) fAllDone = false;
+			if(rule3()) fAllDone = false;
 		} while (!fAllDone);
 		;;;System.out.println("SuperNode Done!");
 		return sg;
@@ -98,8 +100,41 @@ public class Super {
 			for(int iRow = 0; iRow < nRow; iRow++) {
 				for(int iCol = 0; iCol < nCol; iCol++) {
 					VertexSuper v = sg[iCol][iRow];
-					while(v.vSuper != null) v = v.vSuper;
+					while(v.vSuper != null) v = v.vSuper; // go to surface
 
+					System.out.println();
+					ArrayList<VertexSuper[]> k4s = getK4s(v);
+					System.out.println("k4s.size(): " + k4s.size());
+					//Find K4's with most 1 lonely-vertex for each corner in K4. A lonely-vertex is a vertex that can't be reached from another edge in K4.  
+					ArrayList<VertexSuper[]> k4sOK = new ArrayList<>();
+					for(VertexSuper[] k4 : k4s) {
+						boolean fMax1LonelyEdge = true;
+						for(VertexSuper vCorner : k4) {
+							int nLonely = 0;
+							for(VertexSuper vOut : vCorner.edgeTo) {
+
+								boolean fTriangle = false;
+								for(VertexSuper vOutOut : vOut.edgeTo) {
+									if (vOutOut == vCorner) continue;
+									for (VertexSuper vCornerCheck : k4) {
+										if (vOutOut == vCornerCheck) {
+											fTriangle = true; break;
+										}
+									}
+								}
+								if (!fTriangle) nLonely++;
+							}
+							if (nLonely > 1) { fMax1LonelyEdge = false; break; }
+						}
+						if (fMax1LonelyEdge) k4sOK.add(k4);
+					}
+					
+					if (k4sOK.size() >= 1) {
+						VertexSuper[] k4OK = k4sOK.get(0);
+						createSuperNode(k4OK, rule);
+						fChange = true;
+					}
+					
 				}
 			}
 		} while (!fDone);
@@ -116,7 +151,12 @@ public class Super {
 						if (v4 == v) {
 							VertexSuper[] triangel = new VertexSuper[3];
 							boolean fDup = false;
-							for (VertexSuper[] t : triangles) if(t[1] == v2) { fDup = true; break; }
+							//							for (VertexSuper[] t : triangles) if(t[1] == v2) { fDup = true; break; }
+
+							for (VertexSuper[] t : triangles) {
+								if ((t[1] == v2 && t[2] == v3) || (t[1] == v3 && t[2] == v2)) { fDup = true; break; }
+							}
+
 							if (!fDup) {
 								triangel[0] = v; triangel[1] = v2; triangel[2] = v3;
 								triangles.add(triangel);
@@ -127,6 +167,61 @@ public class Super {
 			}
 		}
 		return triangles;
+	}
+
+	public static ArrayList<VertexSuper[]> getK4s(VertexSuper v) {
+		ArrayList<VertexSuper[]> k4s = new ArrayList<>(); 
+		ArrayList<VertexSuper[]> ts = getTriangles(v);
+		VertexSuper tmp;
+		for (VertexSuper[] t : ts) {
+			ArrayList<VertexSuper> vOuts = new ArrayList<>();
+			for (VertexSuper vIn : t) {
+				for (VertexSuper vOut : vIn.edgeTo) {
+					boolean fOut = true;
+					for (VertexSuper vInCheck : t) {
+						if (vInCheck == vOut) { fOut = false; break; }
+					}
+					if (fOut) {
+						boolean fExist = false;
+						for (VertexSuper vOutCheck : vOuts) if (vOutCheck == vOut) { fExist = true; break; }
+						if (!fExist) vOuts.add(vOut);
+					}
+				}
+			}
+
+			for(VertexSuper vOut : vOuts) {
+				boolean fAllTriToOut = true;
+				for(VertexSuper vIn : t) {
+					boolean fTriToOut = false;
+					for(VertexSuper vCheck : vOut.edgeTo) {
+						if (vCheck == vIn) { fTriToOut = true; break; }
+					}
+					if (!fTriToOut) fAllTriToOut = false;
+				}
+				if (fAllTriToOut) {
+					VertexSuper[] k4 = new VertexSuper[4];
+					k4[0] = t[0]; k4[1] = t[1]; k4[2] = t[2]; k4[3] = vOut;
+
+					for(int i = 0; i < k4.length - 1; i++) { //Sort vertices in K4 (makes it easier to exclude duplicates)
+						for(int j = i + 1; j < k4.length; j++) {
+							if (k4[i].id >  k4[j].id) {
+								tmp = k4[i]; k4[i] = k4[j]; k4[j] = tmp;
+							}
+						}
+					}
+					boolean fDup = false;
+					for (VertexSuper[] k4si : k4s) {
+						boolean fEqual = true;
+						for(int i = 0; i < k4.length; i++) {
+							if (k4[i] != k4si[i]) { fEqual = false; break; }
+						}
+						if (fEqual) { fDup = true; break; }
+					}
+					if (!fDup) k4s.add(k4);
+				}
+			}
+		}
+		return k4s;
 	}
 
 
@@ -267,20 +362,48 @@ public class Super {
 
 		return vSurfaces;
 	}
-	
+
 	public static void swimCoincidingVS(VertexSuper[][] Graph) {
+		resetUsedVS(Graph);
 		ArrayList<VertexSuper> lGraph = new ArrayList<VertexSuper>();
-		
-		
-		
+		for(int iRow = 0; iRow < nRow; iRow++) {
+			for(int iCol = 0; iCol < nCol; iCol++) {
+				VertexSuper v = Graph[iCol][iRow];
+				while(v.vSuper != null) {
+					v = v.vSuper;
+					if(!v.fUsed) {
+						lGraph.add(v); v.fUsed = true;
+					}
+				}
+			}
+		}
+		double dx, dy, dz;
+		boolean fDone = true;
+		while (fDone) {
+			fDone = false;
+			for(int i = 0; i < lGraph.size(); i++) {
+				VertexSuper v1 = lGraph.get(i);
+				if (zMax < v1.zPos) zMax = v1.zPos;
+				for(int j = i + 1; j < lGraph.size(); j++) {
+					VertexSuper v2 = lGraph.get(j);
+					if(Math.abs(dx = (v1.xPos - v2.xPos)) < 0.5) {
+						if(Math.abs(dy = (v1.yPos - v2.yPos)) < 0.5) {
+							if(Math.abs(dz = (v1.zPos - v2.zPos)) < 0.5) {
+								if (Math.sqrt(dx * dx + dy * dy + dz * dz) < 0.5) { v2.zPos += 1.0; fDone = false; }
+							}
+						}
+					}
+				}
+			}
+		}
 	}
-	
+
 	public static void resetUsedVS(VertexSuper[][] Graph) {
 		for(int iRow = 0; iRow < nRow; iRow++) {
 			for(int iCol = 0; iCol < nCol; iCol++) {
 				VertexSuper v = Graph[iCol][iRow];
 				v.fUsed = false;
-				while(v.vSuper != null) {v.fUsed = false;}
+				while(v.vSuper != null) { v = v.vSuper; v.fUsed = false; }
 			}
 		}
 	}
@@ -289,14 +412,14 @@ public class Super {
 	public static void draw3d(VertexSuper[][] Graph) {
 
 		VertexSuper[][] G = Graph;
+		zMax = 0;
 
-		
-		
-		
-		
-		
-		
-		
+
+		swimCoincidingVS(Graph);
+
+
+
+
 		//		String[] txtImgGray = new String[] {"AppleGrayBox.png", "AppleDarkGrayBox.png", "ChestnutGrayBox.png", "ChestnutDarkGrayBox.png", "BlueBerryGrayBox.png", "BlueBerryDarkGrayBox.png", "AcornGrayBox.png", "AcornDarkGrayBox.png"};
 		//		Image[] imgs = new Image[4];
 		//		Image[] imgsGray = new Image[txtImgGray.length];
@@ -364,8 +487,9 @@ public class Super {
 					Shape3D shape3d;
 					switch(v.sRuleUsed) {
 					case 0: shape3d = new Sphere(0.3); break;
-					case 1: shape3d = new Box(0.6, 0.6, 0.6); break;
+					case 1: shape3d = new Sphere(0.3); break;
 					case 2: shape3d = new Cylinder(0.3, 0.6); break;
+					case 3: shape3d = new Box(0.6, 0.6, 0.6); break;
 					default: shape3d = new Sphere(0.3); break;
 					}
 					shape3d.setTranslateX(xPos2 - xMid + 0.5);
@@ -405,6 +529,7 @@ public class Super {
 
 		//Draw Surface
 		double zSurface = zMaxSuperPos + 2.0;
+		if (zMax < zSurface) zMax = zSurface;
 		ArrayList<VertexSuper> vSurface = getSurface(Graph);
 
 		for(VertexSuper v: vSurface) v.fUsed = false;
@@ -436,4 +561,17 @@ public class Super {
 			v.fUsed = true;
 		}
 	}
+
+	public static double getXYZMax() {
+		double xyMax = Math.max(Board.nCol, Board.nRow);
+		if (!LeftButtonPanel.fBtn_SuperNode) return xyMax;
+		double xyzMax = Math.max(xyMax, zMax);
+		return xyzMax;
+	}
+
+	public static double getZMax() {
+		if (!LeftButtonPanel.fBtn_SuperNode) return 1.0;
+		return zMax;
+	}
+
 }
