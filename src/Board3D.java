@@ -178,5 +178,6 @@ public class Board3D {
 		Board3D.update();
 		LeftButtonPanel.resetOngoing();
 		LeftButtonPanel.doBtn_Actions();
+		RightPanel.updateTextBoardInfo();
 	}
 }

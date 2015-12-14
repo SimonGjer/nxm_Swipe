@@ -3,33 +3,33 @@ import java.util.Random;
 
 public class ProbItem {
 
-	public static void main(String[] args) { //Unit Testing
-
-		ProbItem pi = new ProbItem();
-
-		for(int i = 0; i < 20; i++)
-			System.out.println("Random Item: " + pi.getRndItem());
-
-		System.out.println();
-
-		int[] frequencies = new int[] {10, 4, 3, 1, 2};
-		char[] chs = new char[] {'A', 'Z', 'D', 'B', 'C'};
-
-		int[] nFreq = new int[chs.length];
-		pi = new ProbItem(frequencies, chs);
-		int n = 10_000;
-		for(int i = 0; i < n; i++) {
-			char ch = pi.getRndItem();
-			for (int iCh = 0; iCh < nFreq.length; iCh++) {
-				if (chs[iCh] == ch) {nFreq[iCh]++; break;}
-			}
-		}
-		for (int i = 0; i < nFreq.length; i++) {
-			System.out.println("Char: " + chs[i] + 
-					" Frequency: " + (double) nFreq[i] / n * 100 + '%' + 
-					"   Expected frequncy: " + (double) frequencies[i] / pi.sumFre * 100 + '%');
-		}
-	}
+//	public static void main(String[] args) { //Unit Testing
+//
+//		ProbItem pi = new ProbItem();
+//
+//		for(int i = 0; i < 20; i++)
+//			System.out.println("Random Item: " + pi.getRndItem());
+//
+//		System.out.println();
+//
+//		int[] frequencies = new int[] {10, 4, 3, 1, 2};
+//		char[] chs = new char[] {'A', 'Z', 'D', 'B', 'C'};
+//
+//		int[] nFreq = new int[chs.length];
+//		pi = new ProbItem(frequencies, chs);
+//		int n = 10_000;
+//		for(int i = 0; i < n; i++) {
+//			char ch = pi.getRndItem();
+//			for (int iCh = 0; iCh < nFreq.length; iCh++) {
+//				if (chs[iCh] == ch) {nFreq[iCh]++; break;}
+//			}
+//		}
+//		for (int i = 0; i < nFreq.length; i++) {
+//			System.out.println("Char: " + chs[i] + 
+//					" Frequency: " + (double) nFreq[i] / n * 100 + '%' + 
+//					"   Expected frequncy: " + (double) frequencies[i] / pi.sumFre * 100 + '%');
+//		}
+//	}
 
 	static int n;
 	static int[] fqs;
@@ -45,7 +45,7 @@ public class ProbItem {
 		chs = new char[n];
 		chs[0] = 'A'; fqs[0] = 1; //Initial frequency
 		chs[1] = 'B'; fqs[1] = 1;
-		chs[2] = 'C'; fqs[2] = 0;
+		chs[2] = 'C'; fqs[2] = 1;
 		chs[3] = 'D'; fqs[3] = 0;
 		chs[4] = 'E'; fqs[4] = 0;
 		chs[5] = 'F'; fqs[5] = 0;

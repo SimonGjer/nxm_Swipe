@@ -19,20 +19,20 @@ public class LeftButtonPanel {
 	public static boolean fBtn_Comp = false;
 	public static boolean fBtn_BigComp = false;
 	public static boolean fBtn_BruteForce = false;
-	public static boolean fBtn_SuperNode = false;
+//	public static boolean fBtn_SuperNode = false;
 	public static boolean fBtn_Random = false;
 
 	public static CheckBox cBoxSuper, cBoxR1, cBoxR2, cBoxR3, cBoxR4, cBoxR5;
-	
+
 	public static VBox createPanel() {
 
 		int spacing = 5; VBox leftPanel = new VBox(spacing);
 
-//		ArrayList<Button> btns = new ArrayList<>();
+		//		ArrayList<Button> btns = new ArrayList<>();
 
 		Button btn;
 		CheckBox cBox;
-		
+
 		btn = new Button("New Board"); btn.setId("New");
 		btn.setOnAction( e -> {
 			Board.newRndBoard(); Path.resetPath(); Graph.setGraph(null); Board3D.update();
@@ -67,25 +67,24 @@ public class LeftButtonPanel {
 		leftPanel.getChildren().add(btn);
 
 		cBox = new CheckBox("Components"); cBox.setId("Components");
-//		btn = new Button("Components"); btn.setId("Components");
 		cBox.setOnAction( e -> {
 			fBtn_Comp = !fBtn_Comp;
-			if(fBtn_Comp) {	doComp(); } else { Path.resetPath3d(); }
+			if(fBtn_Comp) {	doComp(); } else { Main.grPathComp.getChildren().clear(); }
 		} );
 		leftPanel.getChildren().add(cBox);
 
 		cBox = new CheckBox("Big Comp."); cBox.setId("Big Comp.");
 		cBox.setOnAction( e -> {
 			fBtn_BigComp = !fBtn_BigComp;
-			if(fBtn_BigComp) { doBigComp(); } else { Path.resetPath3d(); }
+			if(fBtn_BigComp) { doBigComp(); } else { Main.grPathBigComp.getChildren().clear(); }
 		} );
 		leftPanel.getChildren().add(cBox);
 
 		cBox = new CheckBox("Brute Force"); cBox.setId("Brute Force");
-				cBox.setOnAction( e -> {
+		cBox.setOnAction( e -> {
 			System.out.println("Button: Brute Force");
 			fBtn_BruteForce = !fBtn_BruteForce;
-			if(fBtn_BruteForce) { doBruteForce(); } else { resetOngoing(); Path.resetPath3d(); }
+			if(fBtn_BruteForce) { doBruteForce(); } else { resetOngoing(); Main.grPathBruteForce.getChildren().clear(); }
 		} );
 		leftPanel.getChildren().add(cBox);
 
@@ -108,50 +107,50 @@ public class LeftButtonPanel {
 		leftPanel.getChildren().add(btn);
 
 		cBoxSuper = new CheckBox("Supernode"); cBoxSuper.setId("Supernode");
-		cBoxSuper.setOnAction( e -> {
-			fBtn_SuperNode = !fBtn_SuperNode;
-			if(fBtn_SuperNode) { doSuperNode(); } else { Main.grSuper.getChildren().clear(); Camera.update(); }
+		cBoxSuper.setSelected(Super.fDrawSurface);
+		cBoxSuper.setOnAction( e -> { Super.fDrawSurface = cBoxSuper.isSelected();
+		if(cBoxSuper.isSelected()) { Main.grSuper.getChildren().clear(); doSuperNode(); } else { Main.grSuper.getChildren().clear(); Camera.update(); }
 		} );
 		leftPanel.getChildren().add(cBoxSuper);
 
-		
+
 		cBoxR1 = new CheckBox("R1: Chain"); cBoxR1.setId("R1");
 		cBoxR1.setSelected(Super.fRule[0]);
 		cBoxR1.setOnAction( e -> { Super.fRule[0] = cBoxR1.isSelected();
 		if (cBoxSuper.isSelected()) { Main.grSuper.getChildren().clear(); doSuperNode(); } 
 		} );
 		leftPanel.getChildren().add(cBoxR1);
-		
+
 		cBoxR2 = new CheckBox("R2: Col. Tri."); cBoxR2.setId("R2");
 		cBoxR2.setSelected(Super.fRule[1]);
 		cBoxR2.setOnAction( e -> { Super.fRule[1] = cBoxR2.isSelected();
 		if (cBoxSuper.isSelected()) { Main.grSuper.getChildren().clear(); doSuperNode(); }
 		} );
 		leftPanel.getChildren().add(cBoxR2);
-		
+
 		cBoxR3 = new CheckBox("R3: Tri del edge"); cBoxR3.setId("R3");
 		cBoxR3.setSelected(Super.fRule[2]);
 		cBoxR3.setOnAction( e -> { Super.fRule[2] = cBoxR3.isSelected();
 		if (cBoxSuper.isSelected()) { Main.grSuper.getChildren().clear(); doSuperNode(); }
 		} );
 		leftPanel.getChildren().add(cBoxR3);
-		
+
 		cBoxR4 = new CheckBox("R4: W3 del edge"); cBoxR4.setId("R4");
 		cBoxR4.setSelected(Super.fRule[3]);
 		cBoxR4.setOnAction( e -> { Super.fRule[3] = cBoxR4.isSelected();
 		if (cBoxSuper.isSelected()) { Main.grSuper.getChildren().clear(); doSuperNode(); }
 		} );
 		leftPanel.getChildren().add(cBoxR4);
-		
+
 		cBoxR5 = new CheckBox("R5: Col K4"); cBoxR5.setId("R5");
 		cBoxR5.setSelected(Super.fRule[4]);
 		cBoxR5.setOnAction( e -> { Super.fRule[4] = cBoxR5.isSelected();
 		if (cBoxSuper.isSelected()) { Main.grSuper.getChildren().clear(); doSuperNode(); }
 		} );
 		leftPanel.getChildren().add(cBoxR5);
-		
-		
-		
+
+
+
 		btn = new Button("Tmp 1"); btn.setId("Tmp 1");
 		btn.setOnAction( e -> { fBtnTmp1 = !fBtnTmp1; } );
 		leftPanel.getChildren().add(btn);
@@ -163,23 +162,23 @@ public class LeftButtonPanel {
 		if (fBtn_Comp) doComp();
 		if (fBtn_BigComp) doBigComp();
 		if (fBtn_BruteForce) doBruteForce();
-		if (fBtn_SuperNode) doSuperNode();
+		if (cBoxSuper.isSelected()) doSuperNode();
 	}
 
 	public static void doComp() {
 		boolean[][][] components = Component.getComponents(Board.getBoard());
 		int[][] path = Path.compToPath(components);
-		Path.drawPath3d(path);
+		Path.drawPath3d(path, Main.grPathComp);
 		RightPanel.updateComponents();
 	}
 	public static void doBigComp() {
 		boolean[][][] compBig1 = Component.getNBigestComponents(Board.getBoard(), 1);
 		int[][] sBigPath = Path.compToPath(compBig1);
-		Path.drawPath3d(sBigPath, Color.WHITESMOKE);
+		Path.drawPath3d(sBigPath,Main.grPathBigComp ,Color.WHITESMOKE);
 		RightPanel.updateBigComp();
 	}
 	public static void doBruteForce() {
-//		;;;System.out.println("LeftButtonPanel.doBruteForce()");
+		//		;;;System.out.println("LeftButtonPanel.doBruteForce()");
 		EventCalls.resetBruteForce();
 		//		VertexSimple[][] vertex = BruteForce.boardToGraph(Board.getBoard());
 		//		ArrayList<Integer> longestPath = BruteForce.findLongestPath(vertex);

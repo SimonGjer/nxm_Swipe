@@ -16,7 +16,7 @@ public class EventCalls {
 			if(longestPath.size() > currentLongestPath.size()) {
 				fUpdatePath = true;
 				currentLongestPath = longestPath;
-				Path.drawPath3d(longestPath);
+				Path.drawPath3d(longestPath, Main.grPathRnd);
 			}
 		}
 		RightPanel.updateRandom();
@@ -48,7 +48,7 @@ public class EventCalls {
 			if(longestPath.size() > currentLongestPath.size()) {
 				fUpdatePath = true;
 				currentLongestPath = longestPath;
-				Path.drawPath3d(longestPath);
+				Path.drawPath3d(longestPath, Main.grPathBruteForce);
 			}
 		}
 		RightPanel.updateBruteForce();

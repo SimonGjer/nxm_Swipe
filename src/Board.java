@@ -51,7 +51,7 @@ public class Board {
 		buildBoard();
 		for (int c = 0; c < nCol; c++)
 			board[c][nRow - 1] = pItem.getItem(rnd[c][nRow - 1] = random.nextDouble());
-		RightPanel.updateTextBoardSize();
+		RightPanel.updateTextBoardInfo();
 	}
 
 	public static void colPlus() {
@@ -59,17 +59,17 @@ public class Board {
 		buildBoard();
 		for (int r = 0; r < nRow; r++)
 			board[nCol - 1][r] = pItem.getItem(rnd[nCol - 1][r] = random.nextDouble());
-		RightPanel.updateTextBoardSize();
+		RightPanel.updateTextBoardInfo();
 	}
 
 	public static void rowMinus() {
 		if (nRow > 1) { nRow--;	buildBoard(); }
-		RightPanel.updateTextBoardSize();
+		RightPanel.updateTextBoardInfo();
 	}
 
 	public static void colMinus() {
 		if (nCol > 1) { nCol--;	buildBoard(); }
-		RightPanel.updateTextBoardSize();
+		RightPanel.updateTextBoardInfo();
 	}
 
 	public static void buildBoard() {
@@ -139,7 +139,7 @@ public class Board {
 				Board3D.update();
 			}
 		}
-		RightPanel.updateTextBoardSize();
+		RightPanel.updateTextBoardInfo();
 	}
 
 	private static PrintWriter writer;

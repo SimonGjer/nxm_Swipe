@@ -17,14 +17,16 @@ import javafx.scene.transform.Rotate;
 
 public class Super {
 	public static boolean[] fRule = new boolean[]{true, true, true, true, true};
-	
+
+	public static boolean fDrawSurface = false;
+
 	static final int UP = 0, RIGTHUP = 1, RIGTH = 2, RIGTHDOWN = 3, DOWN =4, DOWNLEFT = 5, LEFT = 6, LEFTUP = 7;
 	static final double PI_180 = Math.PI / 180.0;
 
 	public static VertexSuper[][] sg; // sg == superGraph
 	private static int nCol, nRow;
 	private static double zMax;
-	
+
 
 	public static VertexSuper[][] getGraphWithSuperNodesTmp(char[][] board) {
 		nCol = board.length; nRow = board[0].length;
@@ -39,9 +41,9 @@ public class Super {
 			if(fRule[2] && rule3()) fAllDone = false; // Remove edge opposite of vertex with no outgoing edge in triangle //Perhaps continue;
 			if(fRule[3] && rule4()) fAllDone = false; // Find W3 and delete an edge in the rim.
 			if(fRule[4] && rule5()) fAllDone = false; // Collapse K4 with most one outgoing edge
-			
-			
-//			if(rule6()) fAllDone = false;
+
+
+			//			if(rule6()) fAllDone = false;
 		} while (!fAllDone);
 		;;;System.out.println("SuperNode Done!");
 		return sg;
@@ -589,6 +591,7 @@ public class Super {
 
 					xPos2 = v.xPos; yPos2 = v.yPos; zPos2 = v.zPos;
 					if (zPos2 > zMaxSuperPos) zMaxSuperPos = zPos2;
+					if (zMax < zPos2) zMax = zPos2; 
 
 					Shape3D shape3d;
 					switch(v.sRuleUsed) {
@@ -636,49 +639,51 @@ public class Super {
 		}
 
 		//Draw Surface
-		double zSurface = zMaxSuperPos + 2.0;
-		if (zMax < zSurface) zMax = zSurface;
-		ArrayList<VertexSuper> vSurface = getSurface(Graph);
+		if (fDrawSurface) {
+			double zSurface = zMaxSuperPos + 2.0;
+			if (zMax < zSurface) zMax = zSurface;
+			ArrayList<VertexSuper> vSurface = getSurface(Graph);
 
-		for(VertexSuper v: vSurface) v.fUsed = false;
+			for(VertexSuper v: vSurface) v.fUsed = false;
 
-		for (VertexSuper v: vSurface) {
-			Sphere sphere = new Sphere(0.3);
-			sphere.setTranslateX(v.xPos - xMid + 0.5);
-			sphere.setTranslateY(-zSurface);
-			sphere.setTranslateZ(yMid - v.yPos - 0.5);
+			for (VertexSuper v: vSurface) {
+				Sphere sphere = new Sphere(0.3);
+				sphere.setTranslateX(v.xPos - xMid + 0.5);
+				sphere.setTranslateY(-zSurface);
+				sphere.setTranslateZ(yMid - v.yPos - 0.5);
 
-			mat = matCyls[(v.item - 'A') % matCyls.length];
-			sphere.setMaterial(mat);
-			grSuper.getChildren().add(sphere);
+				mat = matCyls[(v.item - 'A') % matCyls.length];
+				sphere.setMaterial(mat);
+				grSuper.getChildren().add(sphere);
 
-			for (VertexSuper vEdge: v.edgeTo) {
-				if (!vEdge.fUsed) {
-					xPosMid = (v.xPos + vEdge.xPos) / 2; yPosMid = (v.yPos + vEdge.yPos) / 2;
-					dx = v.xPos - vEdge.xPos; dy = v.yPos - vEdge.yPos;
-					Cylinder cyl = new Cylinder(0.05, Math.sqrt(dx * dx + dy * dy) );
-					cyl.setTranslateX(xPosMid - xMid + 0.5); cyl.setTranslateY(-zSurface); cyl.setTranslateZ(yMid - yPosMid - 0.5);
+				for (VertexSuper vEdge: v.edgeTo) {
+					if (!vEdge.fUsed) {
+						xPosMid = (v.xPos + vEdge.xPos) / 2; yPosMid = (v.yPos + vEdge.yPos) / 2;
+						dx = v.xPos - vEdge.xPos; dy = v.yPos - vEdge.yPos;
+						Cylinder cyl = new Cylinder(0.05, Math.sqrt(dx * dx + dy * dy) );
+						cyl.setTranslateX(xPosMid - xMid + 0.5); cyl.setTranslateY(-zSurface); cyl.setTranslateZ(yMid - yPosMid - 0.5);
 
-					double rot = (Math.abs(dx) < 1E-6) ? ((dy < 0) ? 180 : 0) : ((dx < 0) ? Math.atan(dy/dx)/PI_180 - 90 : Math.atan(dy/dx)/PI_180 + 90);
-					cyl.getTransforms().addAll(new Rotate(90, Rotate.X_AXIS), new Rotate(-rot, Rotate.Z_AXIS));
+						double rot = (Math.abs(dx) < 1E-6) ? ((dy < 0) ? 180 : 0) : ((dx < 0) ? Math.atan(dy/dx)/PI_180 - 90 : Math.atan(dy/dx)/PI_180 + 90);
+						cyl.getTransforms().addAll(new Rotate(90, Rotate.X_AXIS), new Rotate(-rot, Rotate.Z_AXIS));
 
-					cyl.setMaterial(mat);
-					grSuper.getChildren().add(cyl);
+						cyl.setMaterial(mat);
+						grSuper.getChildren().add(cyl);
+					}
 				}
+				v.fUsed = true;
 			}
-			v.fUsed = true;
 		}
 	}
 
 	public static double getXYZMax() {
 		double xyMax = Math.max(Board.nCol, Board.nRow);
-		if (!LeftButtonPanel.fBtn_SuperNode) return xyMax;
+//		if (!LeftButtonPanel.fBtn_SuperNode) return xyMax;
 		double xyzMax = Math.max(xyMax, zMax);
 		return xyzMax;
 	}
 
 	public static double getZMax() {
-		if (!LeftButtonPanel.fBtn_SuperNode) return 1.0;
+//		if (!LeftButtonPanel.fBtn_SuperNode) return 1.0;
 		return zMax;
 	}
 

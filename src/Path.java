@@ -118,22 +118,22 @@ public class Path {
 	public static final double SQRT2 = Math.sqrt(2);
 
 
-	public static void drawPath3d(ArrayList<Integer> s) { //Java can't see the difference between "ArrayList<Integer>" and "ArrayList<Integer[]>" - this is the reason for the "2" in the name "drawSwipe2"
+	public static void drawPath3d(ArrayList<Integer> s, Group grPath) { //Java can't see the difference between "ArrayList<Integer>" and "ArrayList<Integer[]>" - this is the reason for the "2" in the name "drawSwipe2"
 		int[] tmp = new int[s.size()];
 		for(int i = 0; i < s.size(); i++)
 			tmp[i]=s.get(i);
-		drawPath3d(tmp); 
+		drawPath3d(tmp, grPath); 
 	}
-	public static void drawPath3d(int[] s) {
+	public static void drawPath3d(int[] s, Group grPath) {
 		setPath(s);
-		drawPath3d(paths);
+		drawPath3d(paths, grPath);
 	}
 
-	public static void drawPath3d(int[][] paths) {
-		drawPath3d(paths, null);
+	public static void drawPath3d(int[][] paths, Group grPath) {
+		drawPath3d(paths, grPath, null);
 	}
 
-	public static void drawPath3d(int[][] paths, Color cColor) {
+	public static void drawPath3d(int[][] paths, Group grPath, Color cColor) {
 		System.out.println("drawSwipe3d()"); //**
 
 		Group board3d = Main.board3d;
@@ -174,7 +174,7 @@ public class Path {
 
 		char[][] board = Board.getBoard();
 
-		Group grPath = Main.grPath;
+//		Group grPath = Main.grPath;
 
 		grPath.getChildren().clear();
 
@@ -223,7 +223,12 @@ public class Path {
 	
 	public static void resetPath3d() {
 		paths = new int[0][0];
-		drawPath3d(paths);
+		Main.grPathComp.getChildren().clear();
+				Main.grPathBigComp.getChildren().clear();
+		Main.grPathBruteForce.getChildren().clear();
+		Main.grPathRnd.getChildren().clear();
+		
+//		drawPath3d(paths);
 	} 
 	
 	public static Group deleteNodes(Group gr, String txt) {

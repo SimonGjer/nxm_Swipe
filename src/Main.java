@@ -65,7 +65,13 @@ public class Main extends Application {
 
 	;;;public static Stage thisWindow;
 
-	public static Group grPath = new Group();
+//	public static Group grPath = new Group();
+	
+	public static Group grPathComp = new Group();
+	public static Group grPathBigComp = new Group();
+	public static Group grPathBruteForce = new Group();
+	public static Group grPathRnd = new Group();
+	
 	public static Group grSuper = new Group();
 	public static Group grBoard = new Group();
 
@@ -96,7 +102,13 @@ public class Main extends Application {
 		board3d = Board3D.getBoard();
 				
 		camera = Camera.createCamera();
-		board3d.getChildren().addAll(grPath, grSuper, grBoard);
+		
+		grPathComp.setTranslateY(-0.2);
+		grPathBigComp.setTranslateY(-0.4);
+		grPathBruteForce.setTranslateY(-0.6);
+		grPathRnd.setTranslateY(-0.8);
+		
+		board3d.getChildren().addAll(grPathComp, grPathBigComp, grPathBruteForce, grPathRnd, grSuper, grBoard);
 		SubScene subScene = new SubScene(board3d, 850, 750, true, SceneAntialiasing.BALANCED);
 		subScene.setFill(Color.WHITE);
 		subScene.setCamera(camera);

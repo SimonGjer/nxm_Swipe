@@ -13,6 +13,7 @@ public class Component {
 	private static Component cComp = new Component();
 	public static String txtBigComp = "";
 	public static String txtComps = "";
+	public static int nComp, nBigComp;
 
 	public static boolean[][][] getComponents(char[][] board) {
 		b = board;
@@ -37,6 +38,9 @@ public class Component {
 
 		boolean[][][] compRet = new boolean[components.size()][0][0];
 
+		nComp = tmpSort.length;
+		nBigComp = tmpSort[0].getSize();
+		
 		txtBigComp = "Components: " + tmpSort.length + "\n\nBiggest Comp. Size: " + tmpSort[0].getSize();
 		txtComps = "Components: " + tmpSort.length + '\n';
 

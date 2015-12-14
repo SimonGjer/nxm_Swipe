@@ -12,7 +12,7 @@ import javafx.scene.text.TextAlignment;
 public class RightPanel {
 
 
-	public static Text textGen, textBoardSize;
+	public static Text textGen, textBoardSize, textLegend;
 	public static Group grStopBtn;
 	public static Button btnStop;
 
@@ -20,27 +20,32 @@ public class RightPanel {
 		VBox rightPanel = new VBox(5);
 
 		rightPanel.setMinWidth(200);
-		
+
 		rightPanel.setStyle("-fx-border-color: black;");
-		
+
 		Font font = Font.font(null, FontWeight.BOLD, 14);
-		
+
 		textBoardSize = new Text();
-		updateTextBoardSize();
-		
+		updateTextBoardInfo();
 		textBoardSize.setFont(font);
 
-//		textBoardSize.setStyle("-fx-border-color: black;");
-		
+		//		textBoardSize.setStyle("-fx-border-color: black;");
+
 		textGen = new Text();
 		textGen.setText("");
-//		Font font = Font.font(null, FontWeight.BOLD, 14);
 		textGen.setFont(font);
+
+		textLegend = new Text();
+		textLegend.setText(" Arrow keys: Rotate"
+				+ "\n PgUp / PgDn: Zoom"
+				+ "\n Left Click: Select"
+				+ "\n A, B, C, D: Change sel.");
+		textLegend.setFont(font);
 
 		grStopBtn = new Group();
 		grStopBtn.setTranslateX(50); //Could not find a better solution
 
-		rightPanel.getChildren().addAll(textBoardSize, textGen, grStopBtn);
+		rightPanel.getChildren().addAll(textBoardSize, textGen, grStopBtn, textLegend);
 
 		btnStop = new Button("STOP");
 
@@ -60,10 +65,15 @@ public class RightPanel {
 	public static void setTextGen(String txt) {
 		textGen.setText(txt);
 	}
-	
-	public static void updateTextBoardSize() {
-				textBoardSize.setText("Board Size: " + Board.nCol + " x " + Board.nRow +
-						"\nVertices: " + Board.nCol * Board.nRow);
+
+	public static void updateTextBoardInfo() {
+		Component.getComponents(Board.getBoard());
+		int nComp = Component.nComp;
+		int nBigComp = Component.nBigComp;
+		textBoardSize.setText(" Board Size: " + Board.nCol + " x " + Board.nRow +
+				"\n Vertices: " + Board.nCol * Board.nRow + 
+				"\n No of Components: " + nComp + 
+				"\n Biggest Component: " + nBigComp);
 	}
 
 	public static void updateBruteForce() {
@@ -71,14 +81,14 @@ public class RightPanel {
 				+ '\n' + "Longest Path Size: " + (EventCalls.currentLongestPath.size() / 2 - 1)
 				+ '\n' + "Found at step: " + getNumWithDecades(BruteForce.iStepAtLongPath)
 				+ '\n' + "Steps: " + getNumWithDecades(BruteForce.iStep)
-				+ '\n' + getTxtRunning(!BruteForce.fDoneRe);
+				+ '\n' + getTxtRunning(!BruteForce.fDoneRe) + '\n';
 		RightPanel.setTextGen(txt);
 	}
 
 	public static void updateBigComp() { RightPanel.setTextGen(Component.txtBigComp); }
-	
+
 	public static void updateComponents() {	RightPanel.setTextGen(Component.txtComps);	}
-	
+
 	public static void updateRandom() {
 		RightPanel.setTextGen("Random:"
 				+ '\n' + "Longest Path Size: " + (EventCalls.currentLongestPath.size() / 2 - 1)
