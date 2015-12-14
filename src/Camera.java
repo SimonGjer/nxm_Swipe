@@ -10,18 +10,16 @@ public class Camera {
 	public static double distToLookAt = 15;
 	public static double x, y, z;
 	public static double xLook, yLook, zLook;
+	public static double xMove, yMove, zMove;
 
 	public static double xRot, yRot, zRot;
 
 	public static final double pi_180 = Math.PI / 180.0;
 
 	public static PerspectiveCamera createCamera() {
-
 		camera = new PerspectiveCamera(true); //ParallelCamera ?
 		camera.getTransforms().addAll(new Rotate(0, Rotate.Y_AXIS), new Rotate(-90, Rotate.X_AXIS), new Translate(0, -0, -15));
-
 		camera.setFarClip(1_000); //default 100
-
 		return camera;
 	}
 
@@ -38,19 +36,29 @@ public class Camera {
 		update();
 	}
 
-	//	public static void rotateY(double dyRot) {
-	//		yRot += dyRot;
-	//		if (yRot < 0) yRot += 360;
-	//		else if (yRot > 360) yRot -= 360;
-	//		update();
-	//	}
+	public static void dMoveX(double dx) {
+		xMove += dx; update();
+	}
+	public static void dMoveY(double dy) {
+		zMove += dy; update();
+	}
+	public static void dMoveZ(double dz) {
+		yMove += dz; if (yMove < -3) yMove = -3; update();
+	}
+	public static void dMoveXY(double dx, double dy) {
+		xMove += dx; zMove += dy; update();
+	}
+	public static void resetMove() {
+		xMove = 0; yMove = 0; zMove = 0; update();
+	}
+
 
 	public static void update() {
 		if (camera == null) return;
 		distToLookAt = distToLookAtIni * Super.getXYZMax() / 7;
 
-//		;;;System.out.println("Super.getXYZMax(): " + Super.getXYZMax());
-//		;;;System.out.println("distToLookAt: " + distToLookAt);
+		//		;;;System.out.println("Super.getXYZMax(): " + Super.getXYZMax());
+		//		;;;System.out.println("distToLookAt: " + distToLookAt);
 
 		z = zLook + distToLookAt * Math.sin(xRot * pi_180);
 		y = yLook + distToLookAt * Math.cos(xRot * pi_180);
@@ -62,6 +70,6 @@ public class Camera {
 		//		System.out.println("x, y, z " + x + "," + y + "," + z);
 
 		camera.getTransforms().clear();
-		camera.getTransforms().addAll(new Translate(-x, -y - Super.getZMax() / 2.0, -z), new Rotate(xRot - 90, Rotate.X_AXIS), new Rotate(yRot, Rotate.Y_AXIS));
+		camera.getTransforms().addAll(new Translate(-x + xMove, -y - yMove - Super.getZMax() / 2.0, -z + zMove), new Rotate(xRot - 90, Rotate.X_AXIS), new Rotate(yRot, Rotate.Y_AXIS));
 	}
 }

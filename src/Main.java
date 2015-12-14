@@ -143,7 +143,7 @@ public class Main extends Application {
 
 		scene.setOnKeyPressed(e -> {
 			KeyCode k = e.getCode();
-			//			;;;System.out.println("key " + k);
+//						;;;System.out.println("key " + k);
 			boolean fControl = e.isControlDown();
 			if (fControl) {
 				if (k == KeyCode.A) {
@@ -161,15 +161,26 @@ public class Main extends Application {
 			
 			int dRot = (e.isShiftDown()) ? 10 : 1; 
 			if (k == KeyCode.LEFT) { camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(camera.getRotate() - dRot); }
-			if (k == KeyCode.RIGHT) { camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(camera.getRotate() + dRot); }
-			if (k == KeyCode.DOWN) { Camera.rotateX(dRot); }
-			if (k == KeyCode.UP) { Camera.rotateX(-dRot); }
-			if (k == KeyCode.PAGE_DOWN) { Camera.distLookAt(-dRot); }
-			if (k == KeyCode.PAGE_UP) { Camera.distLookAt(dRot); }
-			if (k == KeyCode.A) Board3D.replaceSelectedWith(board3d, 'A');
-			if (k == KeyCode.B) Board3D.replaceSelectedWith(board3d, 'C');
-			if (k == KeyCode.C) Board3D.replaceSelectedWith(board3d, 'B');
-			if (k == KeyCode.D) Board3D.replaceSelectedWith(board3d, 'D');
+			else if (k == KeyCode.RIGHT) { camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(camera.getRotate() + dRot); }
+			else if (k == KeyCode.DOWN) { Camera.rotateX(dRot); }
+			else if (k == KeyCode.UP) { Camera.rotateX(-dRot); }
+			else if (k == KeyCode.PAGE_DOWN) { Camera.distLookAt(-dRot); }
+			else if (k == KeyCode.PAGE_UP) { Camera.distLookAt(dRot); }
+			else if (k == KeyCode.A) Board3D.replaceSelectedWith(board3d, 'A');
+			else if (k == KeyCode.B) Board3D.replaceSelectedWith(board3d, 'C');
+			else if (k == KeyCode.C) Board3D.replaceSelectedWith(board3d, 'B');
+			else if (k == KeyCode.D) Board3D.replaceSelectedWith(board3d, 'D');
+			else if (k == KeyCode.NUMPAD4 || k == KeyCode.DIGIT4) Camera.dMoveX(-0.25 * dRot);
+			else if (k == KeyCode.NUMPAD6 || k == KeyCode.DIGIT6) Camera.dMoveX(0.25 * dRot);
+			else if (k == KeyCode.NUMPAD2 || k == KeyCode.DIGIT2) Camera.dMoveY(-0.25 * dRot);
+			else if (k == KeyCode.NUMPAD8 || k == KeyCode.DIGIT8) Camera.dMoveY(0.25 * dRot);
+			else if (k == KeyCode.NUMPAD7 || k == KeyCode.DIGIT7) Camera.dMoveXY(-0.25 * dRot, 0.25 * dRot);
+			else if (k == KeyCode.NUMPAD9 || k == KeyCode.DIGIT9) Camera.dMoveXY(0.25 * dRot, 0.25 * dRot);
+			else if (k == KeyCode.NUMPAD1 || k == KeyCode.DIGIT1) Camera.dMoveXY(-0.25 * dRot, -0.25 * dRot);
+			else if (k == KeyCode.NUMPAD3 || k == KeyCode.DIGIT3) Camera.dMoveXY(0.25 * dRot, -0.25 * dRot);
+			else if (k == KeyCode.SUBTRACT || k == KeyCode.MINUS) Camera.dMoveZ(0.25 * dRot);
+			else if (k == KeyCode.ADD || k == KeyCode.PLUS) Camera.dMoveZ(-0.25 * dRot);
+			else if (k == KeyCode.NUMPAD5 || k == KeyCode.DIGIT5) Camera.resetMove();
 			}
 		});
 

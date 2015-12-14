@@ -39,7 +39,8 @@ public class RightPanel {
 		textLegend.setText(" Arrow keys: Rotate"
 				+ "\n PgUp / PgDn: Zoom"
 				+ "\n Left Click: Select"
-				+ "\n A, B, C, D: Change sel.");
+				+ "\n A, B, C, D: Change sel."
+				+ "\n Numpad: Move focus");
 		textLegend.setFont(font);
 
 		grStopBtn = new Group();
