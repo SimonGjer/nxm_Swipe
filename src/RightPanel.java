@@ -1,5 +1,7 @@
 import javax.swing.GroupLayout.Alignment;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -8,11 +10,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-
 public class RightPanel {
 
-
-	public static Text textGen, textBoardSize, textLegend;
+	public static Text textGen, textBoardSize, textHelp;
 	public static Group grStopBtn;
 	public static Button btnStop;
 
@@ -22,31 +22,31 @@ public class RightPanel {
 		rightPanel.setMinWidth(200);
 
 		rightPanel.setStyle("-fx-border-color: black;");
-
+		rightPanel.setPadding(new Insets(5));
+//		rightPanel.setAlignment(Pos.TOP_CENTER);
 		Font font = Font.font(null, FontWeight.BOLD, 14);
 
 		textBoardSize = new Text();
 		updateTextBoardInfo();
 		textBoardSize.setFont(font);
 
-		//		textBoardSize.setStyle("-fx-border-color: black;");
-
 		textGen = new Text();
 		textGen.setText("");
 		textGen.setFont(font);
 
-		textLegend = new Text();
-		textLegend.setText(" Arrow keys: Rotate"
+		textHelp = new Text();
+		textHelp.setText("Help:"
+				+ "\n Arrow keys: Rotate"
 				+ "\n PgUp / PgDn: Zoom"
-				+ "\n Left Click: Select"
+				+ "\n Click: Select"
 				+ "\n A, B, C, D: Change sel."
-				+ "\n Numpad: Move focus");
-		textLegend.setFont(font);
+				+ "\n Numpad: Move cam. focus");
+		textHelp.setFont(font);
 
 		grStopBtn = new Group();
 		grStopBtn.setTranslateX(50); //Could not find a better solution
 
-		rightPanel.getChildren().addAll(textBoardSize, textGen, grStopBtn, textLegend);
+		rightPanel.getChildren().addAll(textBoardSize, textGen, grStopBtn, textHelp);
 
 		btnStop = new Button("STOP");
 
@@ -71,10 +71,11 @@ public class RightPanel {
 		Component.getComponents(Board.getBoard());
 		int nComp = Component.nComp;
 		int nBigComp = Component.nBigComp;
-		textBoardSize.setText(" Board Size: " + Board.nCol + " x " + Board.nRow +
-				"\n Vertices: " + Board.nCol * Board.nRow + 
-				"\n No of Components: " + nComp + 
-				"\n Biggest Component: " + nBigComp);
+		textBoardSize.setText("Info.:"
+				+ "\n Board Size: " + Board.nCol + " x " + Board.nRow
+				+ "\n Vertices: " + Board.nCol * Board.nRow
+				+ "\n No of Components: " + nComp
+				+ "\n Biggest Component: " + nBigComp);
 	}
 
 	public static void updateBruteForce() {

@@ -51,7 +51,10 @@ public class Camera {
 	public static void resetMove() {
 		xMove = 0; yMove = 0; zMove = 0; update();
 	}
-
+	
+	public static void resetRot() {
+		xRot = 0; yRot = 0; zRot = 0; update(); camera.setRotationAxis(Rotate.Y_AXIS); camera.setRotate(0);
+	}
 
 	public static void update() {
 		if (camera == null) return;

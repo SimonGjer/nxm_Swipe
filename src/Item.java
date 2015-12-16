@@ -1,4 +1,4 @@
-import java.awt.Color;
+import javafx.scene.paint.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,6 +17,21 @@ public class Item {
 	public static int nImage = 8; 
 	public static BufferedImage[] imgs = new BufferedImage[nImage];
 
+	public static Color cApple = Color.rgb(0xBC, 0x18, 0x15);
+	public static Color cChestnut = Color.rgb(0x76, 0x9A, 0x0A);
+	public static Color cBlueberry = Color.rgb(0x40, 0x61, 0xE5);
+	public static Color cAcorn = Color.rgb(0x7F, 0x53, 0x33);
+	
+	public static javafx.scene.image.Image iconApple = new javafx.scene.image.Image("images/Apple_24px.png");
+	public static javafx.scene.image.Image iconBlueberry = new javafx.scene.image.Image("images/BlueBerry_24px.png");
+	public static javafx.scene.image.Image iconChestnut = new javafx.scene.image.Image("images/Chestnut_24px.png");
+	public static javafx.scene.image.Image iconAcorn = new javafx.scene.image.Image("images/Acorn_24px.png");
+	
+	
+//	Color cApple = Color.RED; //new Color(0xBC, 0x18, 0x15, 0xFF);
+//	Color cChestnut = Color.GREEN; // new Color(0xB4, 0x61, 0xC5, 0xAF);
+//	Color cBlueberry = Color.BLUE; // new Color(0x40, 0x61, 0xC5, 0xAF);
+//	Color cAcorn = Color.BROWN; // new Color(0x7F, 0x53, 0x33, 0xAF);
 //	public static Color getColor(char ch) {
 //
 //		switch ((int) ch % 8) {

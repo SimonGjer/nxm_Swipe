@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.util.Random;
 
 
+
 import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -38,6 +39,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Material;
@@ -99,6 +101,7 @@ public class Main extends Application {
 		MenuBar menuBar = MenuTopBar.createMenuBar();
 		VBox leftPanel = LeftButtonPanel.createPanel();
 		VBox rightPanel = RightPanel.createPanel();
+		HBox bottomPanel = BottomPanel.greateBottomPanel();
 		board3d = Board3D.getBoard();
 
 		camera = Camera.createCamera();
@@ -109,7 +112,7 @@ public class Main extends Application {
 		grPathRnd.setTranslateY(-0.8);
 
 		board3d.getChildren().addAll(grPathComp, grPathBigComp, grPathBruteForce, grPathRnd, grSuper, grBoard);
-		SubScene subScene = new SubScene(board3d, 850, 750, true, SceneAntialiasing.BALANCED);
+		SubScene subScene = new SubScene(board3d, 750, 750, true, SceneAntialiasing.BALANCED);
 		subScene.setFill(Color.WHITE);
 		subScene.setCamera(camera);
 		Group group = new Group();
@@ -120,8 +123,10 @@ public class Main extends Application {
 		borderPane.setLeft(leftPanel);
 		borderPane.setCenter(group);
 		borderPane.setRight(rightPanel);
+		borderPane.setBottom(bottomPanel);
+		
 
-		Scene scene = new Scene(borderPane, 1150, 800);
+		Scene scene = new Scene(borderPane, 1100, 800);
 
 		scene.setOnMouseClicked(e -> {
 			Node picked = e.getPickResult().getIntersectedNode();
@@ -178,6 +183,7 @@ public class Main extends Application {
 				else if (k == KeyCode.NUMPAD9 || k == KeyCode.DIGIT9) Camera.dMoveXY(0.25 * dRot, 0.25 * dRot);
 				else if (k == KeyCode.NUMPAD1 || k == KeyCode.DIGIT1) Camera.dMoveXY(-0.25 * dRot, -0.25 * dRot);
 				else if (k == KeyCode.NUMPAD3 || k == KeyCode.DIGIT3) Camera.dMoveXY(0.25 * dRot, -0.25 * dRot);
+				else if (k == KeyCode.NUMPAD0 || k == KeyCode.DIGIT0) Camera.resetRot();
 				else if (k == KeyCode.SUBTRACT || k == KeyCode.MINUS) Camera.dMoveZ(0.25 * dRot);
 				else if (k == KeyCode.ADD || k == KeyCode.PLUS) Camera.dMoveZ(-0.25 * dRot);
 				else if (k == KeyCode.NUMPAD5 || k == KeyCode.DIGIT5) Camera.resetMove();
@@ -186,6 +192,7 @@ public class Main extends Application {
 
 		window.setScene(scene);
 
+	
 
 		timer = new AnimationTimer() { //https://docs.oracle.com/javafx/2/animations/basics.htm#CJAFADFJ
 			@Override

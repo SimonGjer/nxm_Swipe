@@ -26,6 +26,11 @@ public class Board {
 		return board;
 	}
 
+	public static char[][] newRndBoard(int nCol, int nRow) {
+		Board.nCol = nCol; Board.nRow = nRow;
+		return newRndBoard();
+	}
+	
 	public static char[][] newRndBoard() {
 		rnd = new double[nCol][nRow];
 		for (int iRow = 0; iRow < nRow; iRow++)
@@ -34,13 +39,13 @@ public class Board {
 		return newBoard(nCol, nRow);
 	}
 
-	public static char[][] newBoard(int n, int m) {
-		nCol = n; nRow = m;
-		char[][] b = new char[n][m];
+	private static char[][] newBoard(int nCol, int nRow) {
+		Board.nCol = nCol; Board.nRow = nRow;
+		char[][] b = new char[nCol][nRow];
 
-		for (int r = 0; r < nRow; r++)
-			for (int c = 0; c < nCol; c++)
-				b[c][r] = pItem.getItem(rnd[c][r]);
+		for (int iRow = 0; iRow < nRow; iRow++)
+			for (int iCol = 0; iCol < nCol; iCol++)
+				b[iCol][iRow] = pItem.getItem(rnd[iCol][iRow]);
 
 		board = b;
 		return board;

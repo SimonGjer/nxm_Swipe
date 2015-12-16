@@ -1,5 +1,3 @@
-//import java.awt.Color;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,17 +14,16 @@ import javafx.scene.transform.Rotate;
 
 
 public class Super {
-	public static boolean[] fRule = new boolean[]{true, true, true, true, true};
+	public static boolean[] fRule = new boolean[]{ true, true, true, true, true };
 
 	public static boolean fDrawSurface = false;
 
-	static final int UP = 0, RIGTHUP = 1, RIGTH = 2, RIGTHDOWN = 3, DOWN =4, DOWNLEFT = 5, LEFT = 6, LEFTUP = 7;
-	static final double PI_180 = Math.PI / 180.0;
+	public static final int UP = 0, RIGTHUP = 1, RIGTH = 2, RIGTHDOWN = 3, DOWN = 4, DOWNLEFT = 5, LEFT = 6, LEFTUP = 7;
+	public static final double PI_180 = Math.PI / 180.0;
 
 	public static VertexSuper[][] sg; // sg == superGraph
 	private static int nCol, nRow;
 	private static double zMax;
-
 
 	public static VertexSuper[][] getGraphWithSuperNodesTmp(char[][] board) {
 		nCol = board.length; nRow = board[0].length;
@@ -43,16 +40,12 @@ public class Super {
 			if(fRule[4] && rule5()) fAllDone = false; // Collapse K4 with most one outgoing edge
 
 
-			//			if(rule6()) fAllDone = false;
 		} while (!fAllDone);
-		;;;System.out.println("SuperNode Done!");
 		return sg;
 	}
 
-
 	public static boolean rule1() {
 		int rule = 1; // Chain shortening
-		;System.out.println("Rule " + rule + " called");
 		boolean fDone, fChange = false;
 		do {
 			fDone = true;
@@ -78,7 +71,6 @@ public class Super {
 
 	public static boolean rule2() {
 		int rule = 2; // Triangle collapse with most one outgoing endge for each vertex
-		;System.out.println("Rule " + rule + " called");
 		boolean fDone, fChange = false;
 		do {
 			fDone = true;
@@ -102,7 +94,6 @@ public class Super {
 
 	public static boolean rule3() {
 		int rule = 3; //Remove edge opposite of vertex with no outgoing edge in triangle
-		;System.out.println("Rule " + rule + " called");
 		boolean fDone, fChange = false;
 		do {
 			fDone = true;
@@ -136,8 +127,7 @@ public class Super {
 	}
 
 	public static boolean rule4() {
-		int rule = 4; //Find W3 and delete an edge in the rim.
-		;System.out.println("Rule " + rule + " called");
+		int rule = 4; //Find W3 and delete an edge at the rim.
 		boolean fDone, fChange = false;
 		do {
 			fDone = true;
@@ -152,6 +142,7 @@ public class Super {
 						if (v0.hasEdge(v1) && v0.hasEdge(v2) && v1.hasEdge(v2)) {
 							v0.removeEdge(v1); v1.removeEdge(v0);
 							createSuperNode(new VertexSuper[]{v} , rule);
+							fChange = true;
 						}
 					}
 				}
@@ -161,8 +152,7 @@ public class Super {
 	}
 
 	public static boolean rule5() {
-		int rule = 5; //Collapse K4 with most one outgoing edge
-		;System.out.println("Rule " + rule + " called");
+		int rule = 5; //Collapse K4 with most one outgoing edge for each vertex
 		boolean fDone, fChange = false;
 		do {
 			fDone = true;
@@ -170,10 +160,7 @@ public class Super {
 				for(int iCol = 0; iCol < nCol; iCol++) {
 					VertexSuper v = sg[iCol][iRow];
 					while(v.vSuper != null) v = v.vSuper; // go to surface
-
-					System.out.println();
 					ArrayList<VertexSuper[]> k4s = getK4s(v);
-					System.out.println("k4s.size(): " + k4s.size());
 					//Find K4's with most 1 lonely-vertex for each corner in K4. A lonely-vertex is a vertex that can't be reached from another edge in K4.  
 					ArrayList<VertexSuper[]> k4sOK = new ArrayList<>();
 					for(VertexSuper[] k4 : k4s) {
@@ -203,10 +190,8 @@ public class Super {
 		return fChange;
 	}
 
-
 	public static boolean rule6() {
 		int rule = 6; //Partly collapse two triangles with shared sides and no outgoing edges from shared vertices
-		;System.out.println("Rule " + rule + " called");
 		boolean fDone, fChange = false;
 		do {
 			fDone = true;
@@ -227,9 +212,6 @@ public class Super {
 		} while (!fDone);
 		return fChange;
 	}
-
-
-
 
 
 
@@ -259,12 +241,9 @@ public class Super {
 						if (v4 == v) {
 							VertexSuper[] triangel = new VertexSuper[3];
 							boolean fDup = false;
-							//							for (VertexSuper[] t : triangles) if(t[1] == v2) { fDup = true; break; }
-
-							for (VertexSuper[] t : triangles) {
+										for (VertexSuper[] t : triangles) {
 								if ((t[1] == v2 && t[2] == v3) || (t[1] == v3 && t[2] == v2)) { fDup = true; break; }
 							}
-
 							if (!fDup) {
 								triangel[0] = v; triangel[1] = v2; triangel[2] = v3;
 								triangles.add(triangel);
@@ -518,16 +497,9 @@ public class Super {
 
 
 	public static void draw3d(VertexSuper[][] Graph) {
-
 		VertexSuper[][] G = Graph;
 		zMax = 0;
-
-
 		swimCoincidingVS(Graph);
-
-
-
-
 		//		String[] txtImgGray = new String[] {"AppleGrayBox.png", "AppleDarkGrayBox.png", "ChestnutGrayBox.png", "ChestnutDarkGrayBox.png", "BlueBerryGrayBox.png", "BlueBerryDarkGrayBox.png", "AcornGrayBox.png", "AcornDarkGrayBox.png"};
 		//		Image[] imgs = new Image[4];
 		//		Image[] imgsGray = new Image[txtImgGray.length];
@@ -540,10 +512,10 @@ public class Super {
 		PhongMaterial matBlueberry = new PhongMaterial(), matAcorn = new PhongMaterial();
 		PhongMaterial mat = new PhongMaterial();
 
-		Color cApple = Color.RED; //new Color(0xBC, 0x18, 0x15, 0xFF);
-		Color cChestnut = Color.GREEN; // new Color(0xB4, 0x61, 0xC5, 0xAF);
-		Color cBlueberry = Color.BLUE; // new Color(0x40, 0x61, 0xC5, 0xAF);
-		Color cAcorn = Color.BROWN; // new Color(0x7F, 0x53, 0x33, 0xAF);
+		Color cApple = Item.cApple;
+		Color cChestnut = Item.cChestnut;
+		Color cBlueberry = Item.cBlueberry;
+		Color cAcorn = Item.cAcorn;
 
 		//		matApple.setDiffuseMap(imgsGray[0]);
 		matApple.setDiffuseColor(cApple);
@@ -581,7 +553,6 @@ public class Super {
 		for(int iRow = 0; iRow < nRow; iRow++) {
 			for(int iCol = 0; iCol < nCol; iCol++) {
 				VertexSuper v = G[iCol][iRow];
-//				char chItem = v.item;
 				if (!Item.visible(v.item)) continue;
 				while(v.vSuper != null) {
 					v = v.vSuper;
@@ -623,7 +594,7 @@ public class Super {
 							if (dy < 0 ) yRot = 180; else yRot = 0;
 						} else {
 							yRot = Math.atan(dy / dx) / PI_180 - 90; 
-							if (dx < 0) yRot += 180; //??
+							if (dx < 0) yRot += 180;
 						}
 
 						double lBase = Math.sqrt(dx * dx + dy * dy);
@@ -678,13 +649,11 @@ public class Super {
 
 	public static double getXYZMax() {
 		double xyMax = Math.max(Board.nCol, Board.nRow);
-//		if (!LeftButtonPanel.fBtn_SuperNode) return xyMax;
 		double xyzMax = Math.max(xyMax, zMax);
 		return xyzMax;
 	}
 
 	public static double getZMax() {
-//		if (!LeftButtonPanel.fBtn_SuperNode) return 1.0;
 		return zMax;
 	}
 

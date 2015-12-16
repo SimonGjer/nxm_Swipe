@@ -14,20 +14,7 @@ public class Graph {
 
 	public static VertexSuper[][] G;
 
-	//	public static void drawGraph(VertexSuper[][] G) {
-	//
-	//		;;;System.out.println("G[0][0].xPos: " + G[0][0].xPos + "   G[0][0].yPos: " + G[0][0].yPos);
-	//
-	//		int nCol = G.length, nRow = G[0].length;
-	//
-	//		for(int iRow = 0; iRow < nRow; iRow++) {
-	//			for(int iCol = 0; iCol < nCol; iCol++) { 
-	//
-	//			}
-	//		}
-	//	}
-
-	public static void setGraph(VertexSuper[][] Graph) {
+		public static void setGraph(VertexSuper[][] Graph) {
 		G = Graph;
 	}
 
