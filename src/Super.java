@@ -12,10 +12,11 @@ import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 
-
 public class Super {
 	public static boolean[] fRule = new boolean[]{ true, true, true, true, true };
 
+	public static ArrayList<VertexSuper> vsId = new ArrayList<>();
+	
 	public static boolean fDrawSurface = false;
 
 	public static final int UP = 0, RIGTHUP = 1, RIGTH = 2, RIGTHDOWN = 3, DOWN = 4, DOWNLEFT = 5, LEFT = 6, LEFTUP = 7;
@@ -24,7 +25,7 @@ public class Super {
 	public static VertexSuper[][] sg; // sg == superGraph
 	private static int nCol, nRow;
 	private static double zMax;
-
+	
 	public static VertexSuper[][] getGraphWithSuperNodesTmp(char[][] board) {
 		nCol = board.length; nRow = board[0].length;
 		sg = buildInitialSuperGraph(board);
@@ -38,7 +39,6 @@ public class Super {
 			if(fRule[2] && rule3()) fAllDone = false; // Remove edge opposite of vertex with no outgoing edge in triangle //Perhaps continue;
 			if(fRule[3] && rule4()) fAllDone = false; // Find W3 and delete an edge in the rim.
 			if(fRule[4] && rule5()) fAllDone = false; // Collapse K4 with most one outgoing edge
-
 
 		} while (!fAllDone);
 		return sg;
@@ -190,32 +190,31 @@ public class Super {
 		return fChange;
 	}
 
-	public static boolean rule6() {
-		int rule = 6; //Partly collapse two triangles with shared sides and no outgoing edges from shared vertices
-		boolean fDone, fChange = false;
-		do {
-			fDone = true;
-			for(int iRow = 0; iRow < nRow; iRow++) {
-				for(int iCol = 0; iCol < nCol; iCol++) {
-					VertexSuper v = sg[iCol][iRow];
-					while(v.vSuper != null) v = v.vSuper; // go to surface
-
-					ArrayList<VertexSuper[]> ts = getTriangles(v);
-
-					/*
-					 * 
-					 * TO-DO
-					 * 
-					 */
-				}
-			}
-		} while (!fDone);
-		return fChange;
-	}
-
-
+//	public static boolean rule6() {
+//		int rule = 6; //Partly collapse two triangles with shared sides and no outgoing edges from shared vertices
+//		boolean fDone, fChange = false;
+//		do {
+//			fDone = true;
+//			for(int iRow = 0; iRow < nRow; iRow++) {
+//				for(int iCol = 0; iCol < nCol; iCol++) {
+//					VertexSuper v = sg[iCol][iRow];
+//					while(v.vSuper != null) v = v.vSuper; // go to surface
+//
+//					ArrayList<VertexSuper[]> ts = getTriangles(v);
+//
+//					/*
+//					 * 
+//					 * TO-DO
+//					 * 
+//					 */
+//				}
+//			}
+//		} while (!fDone);
+//		return fChange;
+//	}
 
 
+/* Template for rule
 	public static boolean rule1000() {
 		int rule = 1000;
 		;System.out.println("Rule " + rule + " called");
@@ -231,7 +230,7 @@ public class Super {
 		} while (!fDone);
 		return fChange;
 	}
-
+*/
 	public static ArrayList<VertexSuper[]> getTriangles(VertexSuper v) {
 		ArrayList<VertexSuper[]> triangles = new ArrayList<>();
 		for (VertexSuper v2 : v.edgeTo) {
@@ -356,6 +355,7 @@ public class Super {
 		double ySuper = (v.yPos * v.value + vAdd.yPos * vAdd.value) / valueSuper;
 		double zSuper = Math.max(v.zPos, vAdd.zPos) + 1.0;
 		VertexSuper vSuper = new VertexSuper(xSuper , ySuper);
+//		if (vsId.size() == vSuper.id) vsId.add(vSuper); else vsId.set(vSuper.id, vSuper);
 		vSuper.addAbsorbedEdge(v); vSuper.addAbsorbedEdge(vAdd);
 		vSuper.value = valueSuper;
 		vSuper.item = v.item;
@@ -384,7 +384,7 @@ public class Super {
 		}
 	}
 
-	private static int counter = 0;
+	;;;private static int counter = 0;
 
 	private static void createSuperNode(VertexSuper[] vs, int rule) {
 		System.out.println("vs-SuperNode created: " + ++counter);
@@ -400,6 +400,7 @@ public class Super {
 		zSuper += 1.0;
 
 		VertexSuper vSuper = new VertexSuper(xSuper , ySuper);
+		
 		for (VertexSuper v : vs)
 		{ vSuper.addAbsorbedEdge(v); v.setSuperNode(vSuper); }
 		vSuper.value = valueSuper;
@@ -423,7 +424,7 @@ public class Super {
 		}
 	}
 
-	private static ArrayList<VertexSuper> vSurfaces;
+	public static ArrayList<VertexSuper> vSurfaces;
 	private static HashMap<VertexSuper, Object> hmVisit;
 
 	public static ArrayList<VertexSuper> getSurface(VertexSuper[][] Graph) {
@@ -576,10 +577,11 @@ public class Super {
 					}
 					shape3d.setTranslateX(xPos2 - xMid + 0.5);
 					shape3d.setTranslateZ(yMid - yPos2 - 0.5);
-					shape3d.setTranslateY(-zPos2); 
+					shape3d.setTranslateY(-zPos2);
 					mat = matCyls[(board[iCol][iRow] - 'A') % matCyls.length];
 					shape3d.setMaterial(mat);
 					grSuper.getChildren().add(shape3d);
+					shape3d.setId("vsRule " + v.id);
 
 					ArrayList<VertexSuper> vCollapsed = v.vCollapsed;
 					for(VertexSuper vDown : vCollapsed) {
@@ -626,6 +628,7 @@ public class Super {
 
 				mat = matCyls[(v.item - 'A') % matCyls.length];
 				sphere.setMaterial(mat);
+				sphere.setId("Surf " + v.id);
 				grSuper.getChildren().add(sphere);
 
 				for (VertexSuper vEdge: v.edgeTo) {
@@ -657,4 +660,7 @@ public class Super {
 		return zMax;
 	}
 
+	public static void reset() {
+		vSurfaces = null;
+	}
 }

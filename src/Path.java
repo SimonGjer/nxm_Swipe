@@ -19,13 +19,34 @@ import javax.imageio.ImageIO;
 
 public class Path {
 
+//	Path() {
+//		ArrayList<Double> xPosPath;
+//		ArrayList<Double> yPosPath;
+//		Color color;
+//		int weight;
+//	}
+
+	
+
+
 	public static final int nImage = 4;
 	public static BufferedImage[] imgs = new BufferedImage[nImage];
 
 	;;;public static Random random = new Random();
+	public static final double PI_180 = Math.PI / 180.0;
+
+	public static Group grPathComp = new Group();
+	public static Group grPathBigComp = new Group();
+	public static Group grPathBruteForce = new Group();
+	public static Group grPathRnd = new Group();
+	public static Group grPathSurface = new Group();
+
 
 	public static int[] path = new int[0]; // {1,0, 1,1, 2,2, 2,3, 3,3, 4,3, 5,3, 4,2, 5,2, 6,2, 7,2, 7,3}; //Format x1,y1, x2,y2, ...
 	public static int[][] paths = new int[0][0]; // {{1,0, 1,1}, {3,3, 4,4}, {5,2, 6,2}, {6,4, 5,4},  {9,9, 8,8, 7,7}}; //Format {swipe, swipe, swipe, etc.}
+
+	public static double[] doublePath;
+	public static double[][] doublePaths;
 
 	public static void resetPath() {
 		paths = new int[0][0];
@@ -35,20 +56,27 @@ public class Path {
 		paths = new int[1][0];
 		paths[0] = s;
 	}
+	public static void setDoublePath(double[] s) {
+		doublePaths = new double[1][0];
+		doublePaths[0] = s;
+	}
+
+
 	public static void setPath(Integer[] s) {
 		int[] sInt = new int[s.length];	for(int i=0; i<s.length; i++) sInt[i] = s[i]; //??LookAt
 		paths = new int[1][0];
 		paths[0] = sInt;
 	}
 
-	public static void setPath(int[][] s) {
-		paths = s;
-	}
 
-	public static void drawPath(int[] s) {
-		setPath(s);
-		drawPath();
-	}
+	public static void setPath(int[][] s) { paths = s; }
+	public static void setDoublePath(double[][] s) { doublePaths = s; }
+
+
+	public static void drawPath(int[] s) { setPath(s); drawPath(); }
+	public static void drawDoublePath(double[] s) { setDoublePath(s); drawPath(); }
+
+
 	public static void drawPath(Integer[] s) {
 		int[] sInt = new int[s.length];	for(int i=0; i<s.length; i++) sInt[i] = s[i]; //??LookAt
 		setPath(sInt);
@@ -78,8 +106,6 @@ public class Path {
 	}
 
 	public static void drawPath() {
-		System.out.println("drawSwipe()"); //**
-
 		Graphics2D g2d = ShowBoard.getGraphic2D();
 		if (g2d == null) return; //??
 
@@ -121,22 +147,49 @@ public class Path {
 	public static void drawPath3d(ArrayList<Integer> s, Group grPath) { //Java can't see the difference between "ArrayList<Integer>" and "ArrayList<Integer[]>" - this is the reason for the "2" in the name "drawSwipe2"
 		int[] tmp = new int[s.size()];
 		for(int i = 0; i < s.size(); i++)
-			tmp[i]=s.get(i);
+			tmp[i] = s.get(i);
 		drawPath3d(tmp, grPath); 
 	}
-	public static void drawPath3d(int[] s, Group grPath) {
-		setPath(s);
-		drawPath3d(paths, grPath);
+	public static void drawDoublePath3d(ArrayList<Double> s, Group grPath) { //Java can't see the difference between "ArrayList<Integer>" and "ArrayList<Integer[]>" - this is the reason for the "2" in the name "drawSwipe2"
+		double[] tmp = new double[s.size()];
+		for(int i = 0; i < s.size(); i++)
+			tmp[i] = s.get(i);
+		drawPath3d(tmp, grPath); 
+	}
+	
+	public static void drawPath3d(ArrayList<Integer> s, Group grPath, Color color) { //Java can't see the difference between "ArrayList<Integer>" and "ArrayList<Integer[]>" - this is the reason for the "2" in the name "drawSwipe2"
+		int[] tmp = new int[s.size()];
+		for(int i = 0; i < s.size(); i++)
+			tmp[i] = s.get(i);
+		drawPath3d(tmp, grPath, color); 
 	}
 
-	public static void drawPath3d(int[][] paths, Group grPath) {
-		drawPath3d(paths, grPath, null);
-	}
+	public static void drawPath3d(int[] s, Group grPath) { setPath(s);	drawPath3d(paths, grPath); }
+	public static void drawDoublePath3d(double[] s, Group grPath) { setDoublePath(s); drawPath3d(paths, grPath); }
+	public static void drawPath3d(int[] s, Group grPath, Color color) { setPath(s);	drawPath3d(paths, grPath, color); }
+	
+	public static void drawPath3d(double[] s, Group grPath) { setDoublePath(s);	drawPath3d(doublePaths, grPath, null); }
+	public static void drawPath3d(int[][] paths, Group grPath) { drawPath3d(paths, grPath, null); }
+
+	//	public static void drawPath3d(int[][] paths, Group grPath, Color cColor) {
+	//		double[][] doublePaths = new double[paths.length][0] ;// = new double[0][0];
+	//
+	//		for (int iPath = 0; iPath < paths.length; iPath++) {
+	//			double[] doublePath = new double[paths[iPath].length];
+	//			for (int i = 0; i < paths[iPath].length; i++) {
+	//				doublePath[i] = paths[iPath][i];
+	//			}	
+	//			doublePaths[iPath] = doublePath;
+	//		}
+	//		drawPath3d(doublePaths, grPath, cColor);
+	//	}
+
 
 	public static void drawPath3d(int[][] paths, Group grPath, Color cColor) {
-		System.out.println("drawSwipe3d()"); //**
+		;;;System.out.println("drawSwipe3d()"); //**
+		//		System.out.println(paths.length);
 
-		Group board3d = Main.board3d;
+		//		Group board3d = Main.board3d;
 		//		;;;System.out.println("board3d.getChildren().size(): " + board3d.getChildren().size());
 		int rot; //angle of swipe
 		double lCyl; //Lenght of Cyl
@@ -147,10 +200,10 @@ public class Path {
 		PhongMaterial matAcorn = new PhongMaterial();
 		PhongMaterial mat = new PhongMaterial();
 
-		Color cApple = Color.RED; //new Color(0xBC, 0x18, 0x15, 0xFF);
-		Color cChestnut = Color.GREEN; // new Color(0xB4, 0x61, 0xC5, 0xAF);
-		Color cBlueberry = Color.BLUE; // new Color(0x40, 0x61, 0xC5, 0xAF);
-		Color cAcorn = Color.BROWN; // new Color(0x7F, 0x53, 0x33, 0xAF);
+		Color cApple = Item.cApple;
+		Color cChestnut = Item.cChestnut;
+		Color cBlueberry = Item.cBlueberry;
+		Color cAcorn = Item.cAcorn;
 
 		if (cColor != null) {
 			matCyl.setDiffuseColor(cColor);
@@ -174,8 +227,6 @@ public class Path {
 
 		char[][] board = Board.getBoard();
 
-//		Group grPath = Main.grPath;
-
 		grPath.getChildren().clear();
 
 		int x1, y1, x2 = 0, y2 = 0, dx, dy;
@@ -194,7 +245,7 @@ public class Path {
 				if (rot == 0 || rot == 90) lCyl = 1; else lCyl = SQRT2;
 
 
-				if (cColor == null) { mat = matCyls[(board[x1][y1] - 'A') % matCyls.length];
+				if (cColor == null) { mat = matCyls[(board[x1][y1] - 'A') % matCyls.length]; //** Ugly
 				} else { mat = matCyl; }
 
 				Sphere sphere = new Sphere(0.1);
@@ -220,60 +271,116 @@ public class Path {
 			grPath.getChildren().add(sphere);
 		}
 	}
-	
+
+
+	public static void drawPath3d(double[][] paths, Group grPath, Color cColor) {
+		;;;System.out.println("Double drawSwipe3d()"); //**
+		boolean fBigBall = (paths[0].length == 2);
+		;;;System.out.println("fBigBall: " + fBigBall + "   paths[0].length: " + paths[0].length);
+		double rot; //angle of swipe
+		double lCyl; //Lenght of Cyl
+		PhongMaterial mat = new PhongMaterial();
+
+		if (cColor == null) cColor = Color.YELLOW;
+		mat.setDiffuseColor(cColor);
+		mat.setSpecularColor(cColor.brighter());
+
+		Rotate rotX90 = new Rotate(90, 0, 0, 0, Rotate.X_AXIS);
+
+		int nCol = Board.nCol, nRow = Board.nRow;
+		double xMid = nCol / 2.0, yMid = nRow / 2.0;
+
+		grPath.getChildren().clear();
+
+		double x1, y1, x2 = 0, y2 = 0, dx, dy;
+		double xPos, yPos;
+		double[] doublePath;
+
+		for(int iPaths = 0; iPaths < paths.length; iPaths++) {
+			doublePath = paths[iPaths];
+			for(int iPath = 0; iPath < doublePath.length - 2; iPath += 2) {
+
+				x1 = doublePath[iPath];     y1 = doublePath[iPath + 1];
+				x2 = doublePath[iPath + 2]; y2 = doublePath[iPath + 3];
+				dx = x2 - x1; dy = y2 - y1;
+				xPos = (x1 + x2) / 2.0; yPos = (y1 + y2) / 2.0;
+
+				lCyl = Math.sqrt(dx * dx + dy * dy);
+
+				rot = (Math.abs(dx) < 1E-6) ? ((dy < 0) ? 180 : 0) : ((dx < 0) ? Math.atan(dy/dx)/PI_180 - 90 : Math.atan(dy/dx)/PI_180 + 90);
+
+				Sphere sphere = new Sphere(0.1);
+				Cylinder cyl = new Cylinder(0.1, lCyl);
+
+				sphere.setMaterial(mat);
+				sphere.setTranslateX(x1 - xMid + 0.5);
+				sphere.setTranslateZ(yMid - y1 - 0.5);
+
+				cyl.setMaterial(mat);
+				cyl.setTranslateX(xPos - xMid + 0.5);
+				cyl.setTranslateZ(yMid - yPos - 0.5);
+				//				cyl.setId("Path " + iPath);
+				Rotate rotZ = new Rotate(-rot, 0, 0, 0, Rotate.Z_AXIS);
+				cyl.getTransforms().addAll(rotX90, rotZ);
+
+				grPath.getChildren().addAll(sphere, cyl);
+			}
+			Sphere sphere = new Sphere((fBigBall) ? 0.5 : 0.1);
+			sphere.setMaterial(mat);
+			sphere.setTranslateX(x2 - xMid + 0.5);
+			sphere.setTranslateZ(yMid - y2 - 0.5);
+			grPath.getChildren().add(sphere);
+		}
+	}
+
+
 	public static void resetPath3d() {
 		paths = new int[0][0];
-		Main.grPathComp.getChildren().clear();
-				Main.grPathBigComp.getChildren().clear();
-		Main.grPathBruteForce.getChildren().clear();
-		Main.grPathRnd.getChildren().clear();
-		
-//		drawPath3d(paths);
+		grPathComp.getChildren().clear();
+		grPathBigComp.getChildren().clear();
+		grPathBruteForce.getChildren().clear();
+		grPathRnd.getChildren().clear();
+		grPathSurface.getChildren().clear();
 	} 
-	
-	public static Group deleteNodes(Group gr, String txt) {
-		Group newGr = new Group();
 
+	public static void deleteNodes(Group gr, String txt) {
 		for(Node node : gr.getChildren()) {
 			String id = node.getId();
-			//			if (id == null || !id.contains(txt)) newGr.getChildren().add(node);
+			if (id == null || !id.contains(txt)) gr.getChildren().remove(node);
 		}
-		return newGr;
 	}
 
 
-	//Only for test
-	;;;public static void rndPath() {
-		path = new int[10 + random.nextInt(5) * 2];
-		path[0] = random.nextInt(8); path[1] = random.nextInt(8);
-
-		for (int i = 2; i < path.length; i += 2) {
-			int a = random.nextInt(8);
-			int dx = 0, dy = 0;
-
-			switch (a) {
-			case 0:	dx = 1;	break;
-			case 1:	dx = 1;	dy = -1; break;
-			case 2:	dy = -1; break;
-			case 3:	dx = -1; dy = -1; break;
-			case 4:	dx = -1; break;
-			case 5:	dx = -1; dy = 1; break;
-			case 6:	dx = 0;	dy = 1; break;
-			case 7:	dx = 1;	dy = 1; break;
-			}
-			path[i] = path[i-2] + dx; path[i+1] = path[i-1] + dy;
-		}
-		paths = new int[1][0];
-		paths[0] = path;
-	}
+	//	//Only for test
+	//	;;;public static void rndPath() {
+	//		path = new int[10 + random.nextInt(5) * 2];
+	//		path[0] = random.nextInt(8); path[1] = random.nextInt(8);
+	//
+	//		for (int i = 2; i < path.length; i += 2) {
+	//			int a = random.nextInt(8);
+	//			int dx = 0, dy = 0;
+	//
+	//			switch (a) {
+	//			case 0:	dx = 1;	break;
+	//			case 1:	dx = 1;	dy = -1; break;
+	//			case 2:	dy = -1; break;
+	//			case 3:	dx = -1; dy = -1; break;
+	//			case 4:	dx = -1; break;
+	//			case 5:	dx = -1; dy = 1; break;
+	//			case 6:	dx = 0;	dy = 1; break;
+	//			case 7:	dx = 1;	dy = 1; break;
+	//			}
+	//			path[i] = path[i-2] + dx; path[i+1] = path[i-1] + dy;
+	//		}
+	//		paths = new int[1][0];
+	//		paths[0] = path;
+	//	}
 
 	public static void readImages() {
 		char ch = '\\';
 		if (!new File("." + ch + "imgs" + ch + "Acorn.png").exists()) {
 			ch = '/';
-			if (!new File("." + ch + "imgs" + ch + "Acorn.png").exists()) {
-				System.out.println("Can't find files!"); return;
-			}
+			if (!new File("." + ch + "imgs" + ch + "Acorn.png").exists()) {	System.out.println("Can't find files!"); return; }
 		}
 		try {
 			imgs[0] = ImageIO.read(new File("." + ch + "imgs" + ch + "Swipe_0_80.png"));
@@ -312,5 +419,9 @@ public class Path {
 	private static Image getImage(int i) {
 		if(imgs[0] == null) readImages();
 		return imgs[i % nImage];
+	}
+
+	public static void update() {
+		Path.grPathSurface.setTranslateY(-Super.getZMax() - 1.0);
 	}
 }

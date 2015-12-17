@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class VertexSuper {
-
-	private static int indexId;
+	static ArrayList<VertexSuper> vsId = new ArrayList<>();
+	static int indexId;
 	int id;
 	VertexSuper[] edgeToSimple = new VertexSuper[8];
 	ArrayList<VertexSuper> edgeTo = new ArrayList<VertexSuper>();
@@ -22,7 +22,8 @@ public class VertexSuper {
 	public VertexSuper(double xPos, double yPos, int value) {
 		this.xPos = xPos; this.yPos = yPos;
 		this.value = value;
-		id = ++indexId;
+		vsId.add(this);
+		id = indexId++;
 	}
 
 	public void createEdge(VertexSuper[][] vs, int col, int row, int d) {
@@ -30,6 +31,12 @@ public class VertexSuper {
 		vs[col][row].edgeToSimple[(d + 4) % 8] = this; //
 	}
 
+	public int getId() {return id;}
+
+	public void resetVsId() {
+		vsId.clear(); indexId = 0;
+	}
+	
 	public void updateSuperEdge() {
 		for(int i = 0; i < edgeToSimple.length; i++) {
 			if (edgeToSimple[i] != null) edgeTo.add(edgeToSimple[i]);
@@ -44,7 +51,7 @@ public class VertexSuper {
 	public void removeEdge(VertexSuper vs) {
 		for (int i = 0; i < edgeTo.size(); i++) if (edgeTo.get(i) == vs) edgeTo.remove(i);
 	}
-	
+
 	public boolean hasEdge(VertexSuper vs) {
 		for (VertexSuper v : edgeTo) if (vs == v) return true;
 		return false;

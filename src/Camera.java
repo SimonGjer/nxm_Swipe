@@ -6,8 +6,8 @@ import javafx.scene.transform.Translate;
 public class Camera {
 
 	public static PerspectiveCamera camera;
-	public static double distToLookAtIni = 15;
-	public static double distToLookAt = 15;
+	public static double distToLookAtIni = 20;
+	public static double distToLookAt = distToLookAtIni;
 	public static double x, y, z;
 	public static double xLook, yLook, zLook;
 	public static double xMove, yMove, zMove;
@@ -18,7 +18,7 @@ public class Camera {
 
 	public static PerspectiveCamera createCamera() {
 		camera = new PerspectiveCamera(true); //ParallelCamera ?
-		camera.getTransforms().addAll(new Rotate(0, Rotate.Y_AXIS), new Rotate(-90, Rotate.X_AXIS), new Translate(0, -0, -15));
+		camera.getTransforms().addAll(new Rotate(0, Rotate.Y_AXIS), new Rotate(-90, Rotate.X_AXIS), new Translate(0, -0, -distToLookAt));
 		camera.setFarClip(1_000); //default 100
 		return camera;
 	}

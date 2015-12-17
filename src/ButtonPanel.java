@@ -232,9 +232,9 @@ public class ButtonPanel extends JPanel implements ActionListener, MouseListener
 			ShowBoard.rePaint();
 			break;
 		case "tmpSwipe":
-			Main.launch(new String[0]);
-			Path.rndPath();
-			ShowBoard.rePaint();
+//			Main.launch(new String[0]);
+////			Path.rndPath();
+//			ShowBoard.rePaint();
 			break;
 		case "BruteForce":
 			//			Thread t = new Thread(new BruteForce());

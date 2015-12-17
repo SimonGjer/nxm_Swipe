@@ -67,12 +67,11 @@ public class Main extends Application {
 
 	;;;public static Stage thisWindow;
 
-	//	public static Group grPath = new Group();
-
-	public static Group grPathComp = new Group();
-	public static Group grPathBigComp = new Group();
-	public static Group grPathBruteForce = new Group();
-	public static Group grPathRnd = new Group();
+//	public static Group grPathComp = new Group();
+//	public static Group grPathBigComp = new Group();
+//	public static Group grPathBruteForce = new Group();
+//	public static Group grPathRnd = new Group();
+//	public static Group grPathSurface = new Group();
 
 	public static Group grSuper = new Group();
 	public static Group grBoard = new Group();
@@ -106,12 +105,13 @@ public class Main extends Application {
 
 		camera = Camera.createCamera();
 
-		grPathComp.setTranslateY(-0.2);
-		grPathBigComp.setTranslateY(-0.4);
-		grPathBruteForce.setTranslateY(-0.6);
-		grPathRnd.setTranslateY(-0.8);
+		Path.grPathComp.setTranslateY(-0.2);
+		Path.grPathBigComp.setTranslateY(-0.4);
+		Path.grPathBruteForce.setTranslateY(-0.6);
+		Path.grPathRnd.setTranslateY(-0.8);
+		Path.grPathSurface.setTranslateY(-5.1234); // "-5.1234" is just a number
 
-		board3d.getChildren().addAll(grPathComp, grPathBigComp, grPathBruteForce, grPathRnd, grSuper, grBoard);
+		board3d.getChildren().addAll(Path.grPathComp, Path.grPathBigComp, Path.grPathBruteForce, Path.grPathRnd, grSuper, grBoard, Path.grPathSurface);
 		SubScene subScene = new SubScene(board3d, 750, 750, true, SceneAntialiasing.BALANCED);
 		subScene.setFill(Color.WHITE);
 		subScene.setCamera(camera);
@@ -136,6 +136,7 @@ public class Main extends Application {
 			;;;System.out.println(e.getPickResult().getIntersectedNode().getId());
 			;;;System.out.println("picked: " + picked);
 			if (picked != null && picked.getId() != null) {
+				if (picked.getId().contains("Field")) {
 				double pScale = (picked.getScaleX() > 1 ) ? 1.0 : 1.1;
 				picked.setScaleX(pScale); picked.setScaleY(pScale);	picked.setScaleZ(pScale);
 				String id = picked.getId();
@@ -143,6 +144,7 @@ public class Main extends Application {
 					if (id.contains("*")) id = id.substring(0, id.length() - 2); else id += " *";
 				}
 				picked.setId(id);
+			}
 			}
 		});
 
@@ -192,8 +194,6 @@ public class Main extends Application {
 
 		window.setScene(scene);
 
-	
-
 		timer = new AnimationTimer() { //https://docs.oracle.com/javafx/2/animations/basics.htm#CJAFADFJ
 			@Override
 			public void handle(long l) {
@@ -210,6 +210,7 @@ public class Main extends Application {
 
 				if (LeftButtonPanel.fBtn_Random) EventCalls.doRandom();
 				if (LeftButtonPanel.fBtn_BruteForce && !BruteForce.fDoneRe) EventCalls.doBruteForce();
+				if (LeftButtonPanel.fBtn_BruteForceSurf && !BruteForce.fDoneSurf) EventCalls.doBruteForceSurf();
 			}
 		};
 		;;;thisWindow = window;

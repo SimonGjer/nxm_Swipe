@@ -27,13 +27,11 @@ public class LeftButtonPanel {
 
 	public static Random random = new Random();
 
-	public static boolean fBtnTmp1 = false;
-	public static boolean fBtnTmp2 = false;
 	public static boolean fBtn_Comp = false;
 	public static boolean fBtn_BigComp = false;
 	public static boolean fBtn_BruteForce = false;
-	//	public static boolean fBtn_SuperNode = false;
 	public static boolean fBtn_Random = false;
+	public static boolean fBtn_BruteForceSurf = false;
 
 	public static CheckBox cBoxSuper, cBoxR1, cBoxR2, cBoxR3, cBoxR4, cBoxR5;
 	public static CheckBox cBoxApple, cBoxBlueberry, cBoxChestnut, cBoxAcorn;
@@ -47,14 +45,8 @@ public class LeftButtonPanel {
 		int spacing = 5;
 		VBox leftPanel = new VBox(spacing);
 		leftPanel.setPadding(new Insets(5));
-		//				leftPanel.setAlignment();
 		Button btn;
 		CheckBox cBox;
-
-		
-
-		
-
 
 		//Canvas canvas = new Canvas();
 		//canvas.
@@ -66,14 +58,11 @@ public class LeftButtonPanel {
 			vBoxFreq.setPadding(new Insets(5));
 			vBoxFreq.setSpacing(3);
 			vBoxFreq.setAlignment(Pos.TOP_CENTER);
-			
+
 			btn = new Button("New Board"); btn.setId("New");
 			btn.setOnAction( e -> { doNew(); });
 			vBoxFreq.getChildren().add(btn);
-			
-			
-			
-			//			vBoxFreq.
+
 			hBoxApple = new HBox(); hBoxApple.setSpacing(3);
 			hBoxChestNut = new HBox(); hBoxChestNut.setSpacing(3);
 			hBoxBlueberry = new HBox(); hBoxBlueberry.setSpacing(3);
@@ -112,12 +101,6 @@ public class LeftButtonPanel {
 				lblAcornFreq = new Label();
 				updateFreq();
 
-//				HBox.setMargin(ivMinusApple, new Insets(5,5,5,5));
-				
-				
-				
-				
-				
 				hBoxApple.getChildren().addAll(lblApple, btnAppleMinus, btnApplePlus, lblAppleFreq);
 				hBoxChestNut.getChildren().addAll(lblChestNut, btnChestNutMinus, btnChestNutPlus, lblChestNutFreq);
 				hBoxBlueberry.getChildren().addAll(lblBlueberry, btnBlueberryMinus, btnBlueberryPlus, lblBlueberryFreq);
@@ -125,17 +108,20 @@ public class LeftButtonPanel {
 				vBoxFreq.getChildren().addAll(hBoxApple, hBoxChestNut, hBoxBlueberry, hBoxAcorn);
 			}
 		}
-		//		
 		leftPanel.getChildren().add(vBoxFreq);
 
-		
-		btn = new Button("Open..."); btn.setId("Open");
-		btn.setOnAction( e -> { doOpen(); });
-		leftPanel.getChildren().add(btn);
+		HBox hBoxOpenSave = new HBox(); hBoxOpenSave.setAlignment(Pos.TOP_CENTER); 
+		{
+			btn = new Button("Open..."); btn.setId("Open");
+			btn.setOnAction( e -> { doOpen(); });
+			hBoxOpenSave.getChildren().add(btn);
 
-		btn = new Button("Save..."); btn.setId("Save");
-		btn.setOnAction( e -> { doSave(); });
-		leftPanel.getChildren().add(btn);
+			btn = new Button("Save..."); btn.setId("Save");
+			btn.setOnAction( e -> { doSave(); });
+			hBoxOpenSave.getChildren().add(btn);
+		}
+		leftPanel.getChildren().add(hBoxOpenSave);
+
 
 		HBox colBtns = new HBox();
 
@@ -159,29 +145,25 @@ public class LeftButtonPanel {
 
 		cBoxApple = new CheckBox("Apple"); cBoxApple.setId("Apple"); cBoxApple.setSelected(Item.fSelcApple);
 		cBoxApple.setOnAction( e -> {
-			Item.fSelcApple = cBoxApple.isSelected(); doBtn_Actions();
-			//				if(cBoxApple.isSelected()) {} else {  }
+			Item.fSelcApple = cBoxApple.isSelected(); doBtn_Actions(); //if(cBoxApple.isSelected()) {} else {  }
 		} );
 		leftPanel.getChildren().add(cBoxApple);
 
 		cBoxBlueberry = new CheckBox("Blueberry"); cBoxBlueberry.setId("Blueberry"); cBoxBlueberry.setSelected(Item.fSelcBlueberry);
 		cBoxBlueberry.setOnAction( e -> {
-			Item.fSelcBlueberry = cBoxBlueberry.isSelected(); doBtn_Actions();
-			if(cBoxBlueberry.isSelected()) {} else {  }
+			Item.fSelcBlueberry = cBoxBlueberry.isSelected(); doBtn_Actions(); //if(cBoxBlueberry.isSelected()) {} else {  }
 		} );
 		leftPanel.getChildren().add(cBoxBlueberry);
 
 		cBoxChestnut = new CheckBox("Chestnut"); cBoxChestnut.setId("Chestnut"); cBoxChestnut.setSelected(Item.fSelcChestnut);
 		cBoxChestnut.setOnAction( e -> {
-			Item.fSelcChestnut = cBoxChestnut.isSelected(); doBtn_Actions();
-			if(cBoxChestnut.isSelected()) {} else {  }
+			Item.fSelcChestnut = cBoxChestnut.isSelected(); doBtn_Actions(); //if(cBoxChestnut.isSelected()) {} else {  }
 		} );
 		leftPanel.getChildren().add(cBoxChestnut);
 
 		cBoxAcorn = new CheckBox("Acorn"); cBoxAcorn.setId("Acorn"); cBoxAcorn.setSelected(Item.fSelcAcorn);
 		cBoxAcorn.setOnAction( e -> {
-			Item.fSelcAcorn = cBoxAcorn.isSelected(); doBtn_Actions();
-			if(cBoxAcorn.isSelected()) {} else {  }
+			Item.fSelcAcorn = cBoxAcorn.isSelected(); doBtn_Actions(); //if(cBoxAcorn.isSelected()) {} else {  }
 		} );
 		leftPanel.getChildren().add(cBoxAcorn);
 
@@ -189,24 +171,33 @@ public class LeftButtonPanel {
 		cBox = new CheckBox("Components"); cBox.setId("Components");
 		cBox.setOnAction( e -> {
 			fBtn_Comp = !fBtn_Comp;
-			if(fBtn_Comp) {	doComp(); } else { Main.grPathComp.getChildren().clear(); }
+			if(fBtn_Comp) {	doComp(); } else { Path.grPathComp.getChildren().clear(); }
 		} );
 		leftPanel.getChildren().add(cBox);
 
 		cBox = new CheckBox("Big Comp."); cBox.setId("Big Comp.");
 		cBox.setOnAction( e -> {
 			fBtn_BigComp = !fBtn_BigComp;
-			if(fBtn_BigComp) { doBigComp(); } else { Main.grPathBigComp.getChildren().clear(); }
+			if(fBtn_BigComp) { doBigComp(); } else { Path.grPathBigComp.getChildren().clear(); }
 		} );
 		leftPanel.getChildren().add(cBox);
 
 		cBox = new CheckBox("Brute Force"); cBox.setId("Brute Force");
 		cBox.setOnAction( e -> {
-			System.out.println("Button: Brute Force");
 			fBtn_BruteForce = !fBtn_BruteForce;
-			if(fBtn_BruteForce) { doBruteForce(); } else { resetOngoing(); Main.grPathBruteForce.getChildren().clear(); }
+			if(fBtn_BruteForce) { doBruteForce(); } else { resetOngoing(); RightPanel.textBrute.setText(""); Path.grPathBruteForce.getChildren().clear(); }
 		} );
 		leftPanel.getChildren().add(cBox);
+
+		CheckBox cBoxBFSurf = new CheckBox("Brute Force Surf"); cBox.setId("Brute Force Surf");
+		cBoxBFSurf.setOnAction( e -> {
+			;;;System.out.println("Button: Brute Force Surf");
+			fBtn_BruteForceSurf = !fBtn_BruteForceSurf;
+			if(fBtn_BruteForceSurf) { doBruteForceSurf(); } else {
+				resetOngoing(); RightPanel.textBruteSurf.setText(""); Path.grPathSurface.getChildren().clear();
+				}
+		} );
+		leftPanel.getChildren().add(cBoxBFSurf);
 
 		cBox = new CheckBox("Path Progress"); cBox.setId("Path Progress");
 		cBox.setOnAction( e -> {	} );
@@ -218,7 +209,7 @@ public class LeftButtonPanel {
 
 		cBox = new CheckBox("Random"); cBox.setId("Random");
 		cBox.setOnAction( e -> { fBtn_Random = !fBtn_Random;
-		if(fBtn_Random) { doRandom(); } else { resetOngoing(); Path.resetPath3d(); }
+		if(fBtn_Random) { doRandom(); } else { resetOngoing(); RightPanel.textRandom.setText(""); Path.grPathRnd.getChildren().clear(); }
 		} );
 		leftPanel.getChildren().add(cBox);
 
@@ -269,16 +260,10 @@ public class LeftButtonPanel {
 		leftPanel.getChildren().add(cBoxR5);
 
 
-		btn = new Button("Tmp 1"); btn.setId("Tmp 1");
-		btn.setOnAction( e -> { fBtnTmp1 = !fBtnTmp1; } );
-		leftPanel.getChildren().add(btn);
-
 		return leftPanel;
 	}
 
 	public static void updateFreq() {
-		;;;System.out.println((" " + ProbItem.fqs[0] * 100 / ProbItem.sumFre) + "%");
-
 		lblAppleFreq.setText(" " + ProbItem.fqs[0] * 100 / ProbItem.sumFre + "%");
 		lblChestNutFreq.setText(" " + ProbItem.fqs[1] * 100 / ProbItem.sumFre + "%");
 		lblBlueberryFreq.setText(" " + ProbItem.fqs[2] * 100 / ProbItem.sumFre + "%");
@@ -289,10 +274,12 @@ public class LeftButtonPanel {
 		if (fBtn_Comp) doComp();
 		if (fBtn_BigComp) doBigComp();
 		if (fBtn_BruteForce) doBruteForce();
+		if (fBtn_BruteForceSurf) doBruteForceSurf();
 		if (cBoxSuper.isSelected()) doSuperNode();
+		Path.update();
 	}
 
-	public static void doNew() { Board.newRndBoard(); Path.resetPath(); Graph.setGraph(null); Board3D.update(); RightPanel.updateTextBoardInfo(); doBtn_Actions(); resetOngoing();}
+	public static void doNew() { Board.newRndBoard(); Path.resetPath(); Super.reset(); Graph.setGraph(null); Board3D.update(); RightPanel.updateTextBoardInfo(); doBtn_Actions(); resetOngoing(); }
 	public static void doNew(int nCol, int nRow) { Board.newRndBoard(nCol, nRow); doNew(); }
 	public static void doOpen() { Board.openFile(); Board3D.update(); doBtn_Actions(); resetOngoing(); }
 	public static void doSave() { Board.saveFile(); /*Board3D.update(); doBtn_Actions();*/ }
@@ -300,22 +287,26 @@ public class LeftButtonPanel {
 	public static void doComp() {
 		boolean[][][] components = Component.getComponents(Board.getBoard());
 		int[][] path = Path.compToPath(components);
-		Path.drawPath3d(path, Main.grPathComp);
+		Path.drawPath3d(path, Path.grPathComp);
 		RightPanel.updateComponents();
 	}
 	public static void doBigComp() {
 		boolean[][][] compBig1 = Component.getNBigestComponents(Board.getBoard(), 1);
 		int[][] sBigPath = Path.compToPath(compBig1);
-		Path.drawPath3d(sBigPath,Main.grPathBigComp ,Color.WHITESMOKE);
+		Path.drawPath3d(sBigPath, Path.grPathBigComp, Color.WHITESMOKE);
 		RightPanel.updateBigComp();
 	}
-	public static void doBruteForce() {
-		EventCalls.resetBruteForce();
-	}
+	public static void doBruteForce() {	EventCalls.resetBruteForce(); }
+
+	public static void doBruteForceSurf() {	Path.update(); EventCalls.resetBruteForceSurf(); }
+
 	public static void doSuperNode() {
 		VertexSuper[][] G = Super.getGraphWithSuperNodesTmp(Board.getBoard());
 		Graph.setGraph(G);
+		if (fBtn_BruteForce) doBruteForce();
+		if (fBtn_BruteForceSurf) doBruteForceSurf();
 		Super.draw3d(G);
+		Path.update();
 		Camera.update();
 	}
 	public static void doRandom() {
@@ -324,6 +315,7 @@ public class LeftButtonPanel {
 	public static void resetOngoing() {
 		EventCalls.resetBruteForce();
 		EventCalls.resetLongestRandomPath();
+		EventCalls.resetBruteForceSurf();
 		RightPanel.updateStopBtn();
 		if(fBtn_BruteForce) RightPanel.updateBruteForce();
 		else if(fBtn_Random) RightPanel.updateRandom();
