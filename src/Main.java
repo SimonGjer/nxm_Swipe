@@ -209,7 +209,7 @@ public class Main extends Application {
 				//				thisBox.setRotate(System.currentTimeMillis() / 100.0);
 
 				if (LeftButtonPanel.fBtn_Random) EventCalls.doRandom();
-				if (LeftButtonPanel.fBtn_BruteForce && !BruteForce.fDoneRe) EventCalls.doBruteForce();
+				if (LeftButtonPanel.fBtn_BruteForce && !BruteForce.fDoneRec) EventCalls.doBruteForce();
 				if (LeftButtonPanel.fBtn_BruteForceSurf && !BruteForce.fDoneSurf) EventCalls.doBruteForceSurf();
 			}
 		};

@@ -56,7 +56,6 @@ public class BruteForce implements Runnable {
 		return vertex;
 	}
 
-
 	public static int iStep, iStepSurf;
 	public static int iStepAtLongPath, iStepAtLongPathSurf;
 	private static ArrayList<Integer> longestPath;
@@ -84,7 +83,6 @@ public class BruteForce implements Runnable {
 		longestPathSurf = new ArrayList<Double>();
 		iStep = 0; iStepAtLongPath = 0;
 		iStepSurf = 0; iStepAtLongPathSurf = 0;
-
 		//		iCall = 0;
 		fDoneRe = false;
 		iColRe = 0; iRowRe = 0;
@@ -101,7 +99,89 @@ public class BruteForce implements Runnable {
 		wLPSurf = 0;
 
 		if (vSurfaces != null) for(VertexSuper v : vSurfaces) v.fUsed = false;
+
+		{
+			fNewField = true;
+			iColRec = 0; iRowRec = 0; dRec = 0;
+			iStepRec = 0;
+			iStepAtLP = 0;
+			fRetDueToTimeRec = false;
+			fDoneRec = false;
+			fVisRec = new boolean[nCol][nRow];
+			colStack = new Stack<>();
+			rowStack = new Stack<>();
+			dRecStack = new Stack<>();
+		}
 	}
+
+	public static int iColRec, iRowRec, dRec;
+	public static int iStepRec, iStepAtLP;
+	public static char iniItemRec;
+	public static boolean fRetDueToTimeRec, fDoneRec, fNewField;
+	public static boolean[][] fVisRec;
+	public static Stack<Integer> colStack, rowStack, dRecStack;
+
+	public static ArrayList<Integer> findLongestPath(long tRet) {
+		int nCol = Board.nCol, nRow = Board.nRow;
+		board = Board.getBoard();
+
+		while(true)	{
+			if (tRet < System.currentTimeMillis()) { fRetDueToTime = true; return longestPath; }
+			
+			if (fNewField) {
+				fNewField = false;
+				fVisRec[iColRec][iRowRec] = true;
+				colStack.push(iColRec); rowStack.push(iRowRec); dRecStack.push(dRec);
+				//			colStack.push(iColRec); rowStack.push(iRowRec); dRecStack.push(dRec);
+				iniItemRec = board[iColRec][iRowRec];
+				path.add(iColRec); path.add(iRowRec);
+			}
+//			System.out.println("iStep:" + iStep + " Stack.size:" + colStack.size() + " iColRec" + iColRec + " iRowRec" + iRowRec);
+			iStepRec++;
+			while (dRec < 8) {
+				int cCol = iColRec + dCol[dRec], cRow = iRowRec + dRow[dRec];
+				if (cCol >= 0 && cCol < nCol) {
+					if (cRow >= 0 && cRow < nRow) {
+						if(board[cCol][cRow] == iniItemRec) {
+							if (!fVisRec[cCol][cRow]) {
+								dRec++;
+								colStack.push(iColRec); rowStack.push(iRowRec); dRecStack.push(dRec);
+								iColRec = cCol; iRowRec = cRow; dRec = 0;
+								fVisRec[iColRec][iRowRec] = true;
+								path.add(iColRec); path.add(iRowRec);
+							}
+						}
+					}
+				}
+				dRec++;
+			}
+			dRec = 0;
+					
+			Buffer.addEachPath(path);
+			if(path.size() > longestPath.size()) {
+				longestPath = new ArrayList<Integer>(path);
+				iStepAtLP = iStep;
+				Buffer.addBestPath(longestPath);
+			}	
+			
+			path.remove(path.size() - 1); path.remove(path.size() - 1);
+
+			fVisRec[iColRec][iRowRec] = false;
+			iColRec = colStack.pop(); iRowRec = rowStack.pop(); dRec = dRecStack.pop();
+
+			if (colStack.isEmpty()) {
+				fNewField = true;
+				iColRec++;
+				if (iColRec == nCol) { iColRec = 0; iRowRec++; }
+				if (iRowRec == nRow) { iRowRec = 0; fDoneRec = true; return longestPath; }
+			}
+
+		}
+	}
+
+
+
+
 
 	public static ArrayList<Integer> doLongestPath(long tReturn) {
 		tRet = tReturn;

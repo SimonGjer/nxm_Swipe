@@ -47,7 +47,7 @@ public class EventCalls {
 		while (!fUpdatePath && tRet > System.currentTimeMillis()) {
 			iCall++;
 			long t1 = System.currentTimeMillis();
-			ArrayList<Integer> longestPath = BruteForce.doLongestPath(tRet);
+			ArrayList<Integer> longestPath = BruteForce.findLongestPath(tRet);
 			long t2 = System.currentTimeMillis();
 			tSumBrute += t2 - t1;
 			if(longestPath.size() > currentLongestPath.size()) {
@@ -59,7 +59,7 @@ public class EventCalls {
 		RightPanel.updateBruteForce();
 
 		boolean fBtnStop = RightPanel.grStopBtn.getChildren().contains(RightPanel.btnStop);
-		if (BruteForce.fDoneRe) {
+		if (BruteForce.fDoneRec) {
 			if (fBtnStop) RightPanel.grStopBtn.getChildren().clear();
 		} else {
 			if (!fBtnStop) RightPanel.grStopBtn.getChildren().add(RightPanel.btnStop);

@@ -99,7 +99,7 @@ public static HBox hBoxStop;
 		String txt = "Brute Force:"
 				+ '\n' + "Longest Path Size: " + (EventCalls.currentLongestPath.size() / 2 )
 				+ '\n' + "Found at step: " + getNumWithDecades(BruteForce.iStepAtLongPath)
-				+ '\n' + "Steps: " + getNumWithDecades(BruteForce.iStep)
+				+ '\n' + "Steps: " + getNumWithDecades(BruteForce.iStepRec)
 				+ '\n' + "Time: " + getNumWithDecades((int) EventCalls.tSumBrute) + " ms"
 				+ '\n' + getTxtRunning(!BruteForce.fDoneRe) + '\n';
 		RightPanel.textBrute.setText(txt);

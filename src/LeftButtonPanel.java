@@ -300,6 +300,7 @@ public class LeftButtonPanel {
 
 	public static void doBruteForceSurf() {	Path.update(); EventCalls.resetBruteForceSurf(); }
 
+	
 	public static void doSuperNode() {
 		VertexSuper[][] G = Super.getGraphWithSuperNodesTmp(Board.getBoard());
 		Graph.setGraph(G);
