@@ -65,13 +65,7 @@ public class Main extends Application {
 
 	static final double SQRT2 = Math.sqrt(2);
 
-	;;;public static Stage thisWindow;
-
-//	public static Group grPathComp = new Group();
-//	public static Group grPathBigComp = new Group();
-//	public static Group grPathBruteForce = new Group();
-//	public static Group grPathRnd = new Group();
-//	public static Group grPathSurface = new Group();
+//	;;;public static Stage thisWindow;
 
 	public static Group grSuper = new Group();
 	public static Group grBoard = new Group();
@@ -123,8 +117,8 @@ public class Main extends Application {
 		borderPane.setLeft(leftPanel);
 		borderPane.setCenter(group);
 		borderPane.setRight(rightPanel);
-		borderPane.setBottom(bottomPanel);
-		
+//**    borderPane.setBottom(bottomPanel);
+
 
 		Scene scene = new Scene(borderPane, 1100, 800);
 
@@ -137,14 +131,14 @@ public class Main extends Application {
 			;;;System.out.println("picked: " + picked);
 			if (picked != null && picked.getId() != null) {
 				if (picked.getId().contains("Field")) {
-				double pScale = (picked.getScaleX() > 1 ) ? 1.0 : 1.1;
-				picked.setScaleX(pScale); picked.setScaleY(pScale);	picked.setScaleZ(pScale);
-				String id = picked.getId();
-				if (id != null) {
-					if (id.contains("*")) id = id.substring(0, id.length() - 2); else id += " *";
+					double pScale = (picked.getScaleX() > 1 ) ? 1.0 : 1.1;
+					picked.setScaleX(pScale); picked.setScaleY(pScale);	picked.setScaleZ(pScale);
+					String id = picked.getId();
+					if (id != null) {
+						if (id.contains("*")) id = id.substring(0, id.length() - 2); else id += " *";
+					}
+					picked.setId(id);
 				}
-				picked.setId(id);
-			}
 			}
 		});
 
@@ -200,20 +194,12 @@ public class Main extends Application {
 				tms = System.currentTimeMillis();
 				dT = tms - tmsLast;
 				tmsLast = tms;
-
-				//				if (LeftButtonPanel.fBtnTmp1) {
-				//					thisBox.setTranslateX(random.nextInt(5) + 2);
-				//					System.out.println("camera.getRotationAxis() = " + camera.getRotationAxis());
-				//					camera.setRotationAxis(new Point3D(0.0, 1.0, 0.0));
-				//					camera.setRotate(System.currentTimeMillis() / 70.0);
-				//				thisBox.setRotate(System.currentTimeMillis() / 100.0);
-
 				if (LeftButtonPanel.fBtn_Random) EventCalls.doRandom();
 				if (LeftButtonPanel.fBtn_BruteForce && !BruteForce.fDoneRec) EventCalls.doBruteForce();
 				if (LeftButtonPanel.fBtn_BruteForceSurf && !BruteForce.fDoneSurf) EventCalls.doBruteForceSurf();
 			}
 		};
-		;;;thisWindow = window;
+//		;;;thisWindow = window;
 		window.show();
 		timer.start(); 
 	}

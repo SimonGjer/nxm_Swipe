@@ -7,23 +7,24 @@ public class EventCalls {
 	public static int iCall, iCallSurf;
 	public static long tSumRandom, tSumBrute, tSumBruteSurf;
 
-
-	public static ArrayList<Integer> currentLongestPath = new ArrayList<>();
+	public static ArrayList<Integer> curLongestPathRnd = new ArrayList<>();
+	public static ArrayList<Integer> curLongestPathBF = new ArrayList<>();
 	public static ArrayList<Double> currentLongestPathSurf = new ArrayList<>();
 
 	public static void doRandom() {
-		long t = System.currentTimeMillis();
+		long tRet = System.currentTimeMillis() + 20;
 		boolean fUpdatePath = false;
 
-		while (!fUpdatePath && t + 20 > System.currentTimeMillis()) {
+		while (!fUpdatePath && tRet > System.currentTimeMillis()) {
 			iCall++;
 			long t1 = System.currentTimeMillis();
-			ArrayList<Integer> longestPath = RandomAlgorithm.random();
+			ArrayList<Integer> longestPath = RandomAlgorithm.random(tRet);
 			long t2 = System.currentTimeMillis();
 			tSumRandom += t2 - t1;
-			if(longestPath.size() > currentLongestPath.size()) {
+//			System.out.println("tSumRandom: " + tSumRandom);
+			if(longestPath.size() > curLongestPathRnd.size()) {
 				fUpdatePath = true;
-				currentLongestPath = longestPath;
+				curLongestPathRnd = longestPath;
 				Path.drawPath3d(longestPath, Path.grPathRnd);
 			}
 		}
@@ -31,10 +32,11 @@ public class EventCalls {
 	}
 
 	public static void resetLongestRandomPath() {
-		currentLongestPath = new ArrayList<>();
+		curLongestPathRnd = new ArrayList<>();
 		iCall = 0;
 		tSumRandom = 0;
-		RightPanel.setTextGen("");
+		RandomAlgorithm.reset();
+		RightPanel.textRandom.setText("");
 	}
 
 
@@ -50,9 +52,9 @@ public class EventCalls {
 			ArrayList<Integer> longestPath = BruteForce.findLongestPath(tRet);
 			long t2 = System.currentTimeMillis();
 			tSumBrute += t2 - t1;
-			if(longestPath.size() > currentLongestPath.size()) {
+			if(longestPath.size() > curLongestPathBF.size()) {
 				fUpdatePath = true;
-				currentLongestPath = longestPath;
+				curLongestPathBF = longestPath;
 				Path.drawPath3d(longestPath, Path.grPathBruteForce, Color.ORANGE);
 			}
 		}
@@ -68,7 +70,7 @@ public class EventCalls {
 	}
 
 	public static void resetBruteForce() {
-		currentLongestPath = new ArrayList<>(); //**
+		curLongestPathBF = new ArrayList<>(); //**
 		iCall = 0;
 		BruteForce.iniLongestPath();
 		tSumBrute = 0;

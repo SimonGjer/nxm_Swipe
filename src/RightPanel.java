@@ -97,11 +97,11 @@ public static HBox hBoxStop;
 
 	public static void updateBruteForce() {
 		String txt = "Brute Force:"
-				+ '\n' + "Longest Path Size: " + (EventCalls.currentLongestPath.size() / 2 )
-				+ '\n' + "Found at step: " + getNumWithDecades(BruteForce.iStepAtLongPath)
-				+ '\n' + "Steps: " + getNumWithDecades(BruteForce.iStepRec)
+				+ '\n' + "Longest Path Size: " + (EventCalls.curLongestPathBF.size() / 2 )
+//				+ '\n' + "Found at step: " + getNumWithDecades(BruteForce.iStepAtLongPath)
+//				+ '\n' + "Steps: " + getNumWithDecades(BruteForce.iStepRec)
 				+ '\n' + "Time: " + getNumWithDecades((int) EventCalls.tSumBrute) + " ms"
-				+ '\n' + getTxtRunning(!BruteForce.fDoneRe) + '\n';
+				+ '\n' + getTxtRunning(!BruteForce.fDoneRec) + '\n';
 		RightPanel.textBrute.setText(txt);
 	}
 
@@ -111,8 +111,8 @@ public static HBox hBoxStop;
 
 	public static void updateRandom() {
 		RightPanel.textRandom.setText("Random:"
-				+ '\n' + "Longest Path Size: " + (EventCalls.currentLongestPath.size() / 2 )
-				+ '\n' + "runs: " + getNumWithDecades(EventCalls.iCall)
+				+ '\n' + "Longest Path Size: " + (EventCalls.curLongestPathRnd.size() / 2 )
+//				+ '\n' + "runs: " + getNumWithDecades(EventCalls.iCall)
 				+ '\n' + "Time: " + getNumWithDecades((int) EventCalls.tSumRandom) + " ms"
 				+ '\n' + getTxtRunning(true));
 
@@ -124,8 +124,8 @@ public static HBox hBoxStop;
 		String txt = "Brute Force Surf:"
 //				+ '\n' + "Longest Path Size: " + (EventCalls.currentLongestPathSurf.size() / 2 )
 				+ '\n' + "Heaviest Path: " + (BruteForce.wLPSurf)
-				+ '\n' + "Found at step: " + getNumWithDecades(BruteForce.iStepAtLongPathSurf)
-				+ '\n' + "Steps: " + getNumWithDecades(BruteForce.iStepSurf)
+//				+ '\n' + "Found at step: " + getNumWithDecades(BruteForce.iStepAtLongPathSurf)
+//				+ '\n' + "Steps: " + getNumWithDecades(BruteForce.iStepSurf)
 				+ '\n' + "Time: " + getNumWithDecades((int) EventCalls.tSumBruteSurf) + " ms"
 				+ '\n' + getTxtRunning(!BruteForce.fDoneSurf) + '\n';
 		RightPanel.textBruteSurf.setText(txt);

@@ -111,6 +111,7 @@ public class BruteForce implements Runnable {
 			colStack = new Stack<>();
 			rowStack = new Stack<>();
 			dRecStack = new Stack<>();
+			pathRec = new ArrayList<Integer>();
 		}
 	}
 
@@ -120,13 +121,17 @@ public class BruteForce implements Runnable {
 	public static boolean fRetDueToTimeRec, fDoneRec, fNewField;
 	public static boolean[][] fVisRec;
 	public static Stack<Integer> colStack, rowStack, dRecStack;
-
+public static ArrayList<Integer> pathRec; 
+	
 	public static ArrayList<Integer> findLongestPath(long tRet) {
+//		System.out.println("pathRec:" + pathRec + " fNewField:" + fNewField);
+		
 		int nCol = Board.nCol, nRow = Board.nRow;
 		board = Board.getBoard();
 
 		while(true)	{
-			if (tRet < System.currentTimeMillis()) { fRetDueToTime = true; return longestPath; }
+//			
+			if (tRet < System.currentTimeMillis()) { fRetDueToTimeRec = true; return longestPath; }
 			
 			if (fNewField) {
 				fNewField = false;
@@ -134,7 +139,7 @@ public class BruteForce implements Runnable {
 				colStack.push(iColRec); rowStack.push(iRowRec); dRecStack.push(dRec);
 				//			colStack.push(iColRec); rowStack.push(iRowRec); dRecStack.push(dRec);
 				iniItemRec = board[iColRec][iRowRec];
-				path.add(iColRec); path.add(iRowRec);
+				pathRec.add(iColRec); pathRec.add(iRowRec);
 			}
 //			System.out.println("iStep:" + iStep + " Stack.size:" + colStack.size() + " iColRec" + iColRec + " iRowRec" + iRowRec);
 			iStepRec++;
@@ -146,9 +151,9 @@ public class BruteForce implements Runnable {
 							if (!fVisRec[cCol][cRow]) {
 								dRec++;
 								colStack.push(iColRec); rowStack.push(iRowRec); dRecStack.push(dRec);
-								iColRec = cCol; iRowRec = cRow; dRec = 0;
+								iColRec = cCol; iRowRec = cRow; dRec = -1;
 								fVisRec[iColRec][iRowRec] = true;
-								path.add(iColRec); path.add(iRowRec);
+								pathRec.add(iColRec); pathRec.add(iRowRec);
 							}
 						}
 					}
@@ -157,14 +162,14 @@ public class BruteForce implements Runnable {
 			}
 			dRec = 0;
 					
-			Buffer.addEachPath(path);
-			if(path.size() > longestPath.size()) {
-				longestPath = new ArrayList<Integer>(path);
+			Buffer.addEachPath(pathRec);
+			if(pathRec.size() > longestPath.size()) {
+				longestPath = new ArrayList<Integer>(pathRec);
 				iStepAtLP = iStep;
 				Buffer.addBestPath(longestPath);
 			}	
 			
-			path.remove(path.size() - 1); path.remove(path.size() - 1);
+			pathRec.remove(pathRec.size() - 1); pathRec.remove(pathRec.size() - 1);
 
 			fVisRec[iColRec][iRowRec] = false;
 			iColRec = colStack.pop(); iRowRec = rowStack.pop(); dRec = dRecStack.pop();
@@ -175,8 +180,7 @@ public class BruteForce implements Runnable {
 				if (iColRec == nCol) { iColRec = 0; iRowRec++; }
 				if (iRowRec == nRow) { iRowRec = 0; fDoneRec = true; return longestPath; }
 			}
-
-		}
+		}//EndWhile
 	}
 
 

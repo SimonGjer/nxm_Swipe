@@ -98,7 +98,7 @@ public class Board {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt") /*, new ExtensionFilter("All Files", "*.*") */ );
-		File selectedFile = fileChooser.showOpenDialog(Main.thisWindow); // 'null' can also be used
+		File selectedFile = fileChooser.showOpenDialog(null); // 
 
 		if (selectedFile != null) {
 			int sRead = 0;
@@ -153,7 +153,7 @@ public class Board {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt") /*, new ExtensionFilter("All Files", "*.*") */ );
-		File selectedFile = fileChooser.showSaveDialog(Main.thisWindow); // 'null' can also be used
+		File selectedFile = fileChooser.showSaveDialog(null); // 'null' can also be used
 
 		if (selectedFile != null) {
 			//			char[][] board = Board.getBoard();

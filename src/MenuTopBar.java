@@ -50,7 +50,7 @@ public class MenuTopBar {
 			}
 
 
-			menuBar.getMenus().addAll(menuFile, menuEdit, menuView, menuHelp);
+			menuBar.getMenus().addAll(menuFile /*, menuEdit, menuView, menuHelp*/);
 		}
 		return menuBar;
 	}

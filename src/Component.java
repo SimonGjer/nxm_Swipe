@@ -47,7 +47,6 @@ public class Component {
 		for(int i = 0; i < tmpSort.length; i++) {
 			compRet[i] = tmpSort[i].getBoard();
 			txtComps += "\n" + (i + 1) + ". Component size: " + tmpSort[i].getSize();
-			//			System.out.println("Component size: " + tmpSort[i].getSize());
 		}
 		return compRet;
 	}

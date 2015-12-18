@@ -7,10 +7,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Text;
 
-
 public class BottomPanel {
-
-
 
 	public static HBox greateBottomPanel() {
 		HBox bottomPanel = new HBox();
@@ -24,16 +21,13 @@ public class BottomPanel {
 		redLine.setStroke(Color.RED);
 		redLine.setStrokeWidth(10);
 		redLine.setStrokeLineCap(StrokeLineCap.BUTT);
-
-
 		
 		// slider min, max, and current value
 		Slider slider = new Slider(0, 100, 0);
 //		slider.
 		slider.setLayoutX(10);
 		slider.setLayoutY(95);
-		
-		
+				
 		// bind the stroke dash offset property
 		redLine.strokeDashOffsetProperty().bind(slider.valueProperty());
 		Text offsetText = new Text("Stroke Dash Offset: 0.0");
@@ -47,6 +41,4 @@ public class BottomPanel {
 		
 		return bottomPanel;	
 	}
-
-
 }

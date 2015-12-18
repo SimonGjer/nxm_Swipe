@@ -195,17 +195,17 @@ public class LeftButtonPanel {
 			fBtn_BruteForceSurf = !fBtn_BruteForceSurf;
 			if(fBtn_BruteForceSurf) { doBruteForceSurf(); } else {
 				resetOngoing(); RightPanel.textBruteSurf.setText(""); Path.grPathSurface.getChildren().clear();
-				}
+			}
 		} );
 		leftPanel.getChildren().add(cBoxBFSurf);
 
 		cBox = new CheckBox("Path Progress"); cBox.setId("Path Progress");
 		cBox.setOnAction( e -> {	} );
-		leftPanel.getChildren().add(cBox);
+//		leftPanel.getChildren().add(cBox);
 
 		cBox = new CheckBox("Path Steps"); cBox.setId("Path Steps");
 		cBox.setOnAction( e -> {	} );
-		leftPanel.getChildren().add(cBox);
+//		leftPanel.getChildren().add(cBox);
 
 		cBox = new CheckBox("Random"); cBox.setId("Random");
 		cBox.setOnAction( e -> { fBtn_Random = !fBtn_Random;
@@ -215,7 +215,7 @@ public class LeftButtonPanel {
 
 		cBox = new CheckBox("Rnd Big Comp."); cBox.setId("Rnd Big Comp.");
 		cBox.setOnAction( e -> {	} );
-		leftPanel.getChildren().add(cBox);
+//		leftPanel.getChildren().add(cBox);
 
 		cBoxSuper = new CheckBox("Supernode"); cBoxSuper.setId("Supernode");
 		cBoxSuper.setSelected(Super.fDrawSurface);
@@ -279,7 +279,7 @@ public class LeftButtonPanel {
 		Path.update();
 	}
 
-	public static void doNew() { Board.newRndBoard(); Path.resetPath(); Super.reset(); Graph.setGraph(null); Board3D.update(); RightPanel.updateTextBoardInfo(); doBtn_Actions(); resetOngoing(); }
+	public static void doNew() { Board.newRndBoard(); Path.resetPath(); Super.reset(); /*Graph.setGraph(null);*/ Board3D.update(); RightPanel.updateTextBoardInfo(); doBtn_Actions(); resetOngoing(); }
 	public static void doNew(int nCol, int nRow) { Board.newRndBoard(nCol, nRow); doNew(); }
 	public static void doOpen() { Board.openFile(); Board3D.update(); doBtn_Actions(); resetOngoing(); }
 	public static void doSave() { Board.saveFile(); /*Board3D.update(); doBtn_Actions();*/ }
@@ -300,19 +300,18 @@ public class LeftButtonPanel {
 
 	public static void doBruteForceSurf() {	Path.update(); EventCalls.resetBruteForceSurf(); }
 
-	
+
 	public static void doSuperNode() {
 		VertexSuper[][] G = Super.getGraphWithSuperNodesTmp(Board.getBoard());
-		Graph.setGraph(G);
+//		Graph.setGraph(G);
 		if (fBtn_BruteForce) doBruteForce();
 		if (fBtn_BruteForceSurf) doBruteForceSurf();
 		Super.draw3d(G);
 		Path.update();
 		Camera.update();
 	}
-	public static void doRandom() {
-		EventCalls.resetLongestRandomPath();
-	}
+	public static void doRandom() {	EventCalls.resetLongestRandomPath(); }
+
 	public static void resetOngoing() {
 		EventCalls.resetBruteForce();
 		EventCalls.resetLongestRandomPath();
